@@ -1,26 +1,33 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@plugin "daisyui" {
+  themes: false;
+}
+
+/* Tema de la marca Los Santos Customs */
+@plugin "daisyui/theme" {
+  name: "lossantos";
+  default: true;
+  color-scheme: light;
+
+  --color-base-100: #ffffff;
+  --color-base-200: #e6e6ea;
+  --color-base-300: #d9d9de;
+  --color-base-content: #1f2a2e;
+
+  --color-primary: #e8804a;
+  --color-primary-content: #ffffff;
+  --color-secondary: #3e0e09;
+  --color-secondary-content: #ffffff;
+
+  --color-error: #dc2626;
+  --color-error-content: #ffffff;
+
+  --radius-field: 0.6rem;
+  --radius-box: 0.75rem;
+  --border: 1px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  --font-sans: var(--font-poppins);
 }
