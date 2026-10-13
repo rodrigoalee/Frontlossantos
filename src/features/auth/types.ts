@@ -1,8 +1,18 @@
 export type LoginState = {
   error?: string;
-  username?: string;
+  correo?: string;
 } | undefined;
 
+export type UsuarioSesion = {
+  idUsuario: number;
+  nombreCompleto: string;
+  correo: string;
+};
+
+/** Respuesta de POST /api/auth/login en CustomCore.API */
 export type LoginResponse = {
-  token: string;
+  accessToken: string;
+  tokenType: string;
+  expiraEn: string;
+  usuario: UsuarioSesion;
 };
