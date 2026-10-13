@@ -18,15 +18,16 @@ export default function LoginForm() {
       <div className="card-body gap-0 p-5">
         <h1 className="mb-6 text-center text-3xl font-bold text-secondary">Bienvenido</h1>
 
-        <label htmlFor="username" className={labelClass}>
+        <label htmlFor="correo" className={labelClass}>
           Usuario
         </label>
         <input
-          id="username"
-          name="username"
-          placeholder="ingresar usuario..."
-          autoComplete="username"
-          defaultValue={state?.username}
+          id="correo"
+          name="correo"
+          type="email"
+          placeholder="ingresar correo..."
+          autoComplete="email"
+          defaultValue={state?.correo}
           required
           className="input mb-5 w-full border-0 bg-base-200"
         />

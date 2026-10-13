@@ -6,27 +6,25 @@ import { createSession } from "./session";
 import type { LoginResponse, LoginState } from "./types";
 
 export async function login(_prev: LoginState, formData: FormData): Promise<LoginState> {
-  const username = String(formData.get("username") ?? "").trim();
+  const correo = String(formData.get("correo") ?? "").trim();
   const password = String(formData.get("password") ?? "");
 
-  if (!username || !password) {
-    return { error: "Ingresa tu usuario y contraseña.", username };
+  if (!correo || !password) {
+    return { error: "Ingresa tu correo y contraseña.", correo };
   }
 
   try {
-    const { token } = await apiFetch<LoginResponse>("/api/auth/login", {
+    const sesion = await apiFetch<LoginResponse>("/api/auth/login", {
       method: "POST",
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ correo, password }),
     });
-    await createSession(token);
+    await createSession(sesion);
   } catch (error) {
-    const isInvalidCredentials = error instanceof ApiError && [400, 401].includes(error.status);
-    return {
-      error: isInvalidCredentials
-        ? "Usuario o contraseña incorrectos."
-        : "No se pudo conectar con el servidor. Intenta más tarde.",
-      username,
-    };
+    if (error instanceof ApiError && [400, 401].includes(error.status)) {
+      return { error: "Correo o contraseña incorrectos.", correo };
+    }
+    console.error("Error en login:", error);
+    return { error: "No se pudo conectar con el servidor. Intenta más tarde.", correo };
   }
 
   redirect("/");
