@@ -23,11 +23,11 @@ export async function GET(request: NextRequest) {
 
   try {
     const idToken = await exchangeCodeForIdToken(code, codeVerifier, getRedirectUri(request.url));
-    const { token } = await apiFetch<LoginResponse>("/api/auth/google", {
+    const sesion = await apiFetch<LoginResponse>("/api/auth/google", {
       method: "POST",
       body: JSON.stringify({ idToken }),
     });
-    await createSession(token);
+    await createSession(sesion);
   } catch (error) {
     console.error("Error en login con Google:", error);
     redirect(LOGIN_ERROR_URL);
