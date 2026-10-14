@@ -19,6 +19,9 @@
   --color-primary-content: #ffffff;
   --color-secondary: #3e0e09;
   --color-secondary-content: #ffffff;
+    --color-neutral: #000000;
+  --color-neutral-content: #ffffff;
+
 
   --color-error: #dc2626;
   --color-error-content: #ffffff;
