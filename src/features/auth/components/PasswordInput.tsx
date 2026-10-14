@@ -6,9 +6,10 @@ import { FaEye, FaEyeSlash } from "react-icons/fa6";
 type Props = {
   id: string;
   name: string;
+  autoComplete?: "current-password" | "new-password";
 };
 
-export default function PasswordInput({ id, name }: Props) {
+export default function PasswordInput({ id, name, autoComplete = "current-password" }: Props) {
   const [visible, setVisible] = useState(false);
   const Icon = visible ? FaEyeSlash : FaEye;
 
@@ -19,7 +20,7 @@ export default function PasswordInput({ id, name }: Props) {
         name={name}
         type={visible ? "text" : "password"}
         placeholder="••••••••"
-        autoComplete="current-password"
+        autoComplete={autoComplete}
         required
         className="grow"
       />

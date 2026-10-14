@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
-import Footer from "@/components/Footer";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import "./globals.css";
 
@@ -25,7 +24,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="es" data-theme="lossantos" className={`${poppins.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col bg-base-100 font-sans text-base-content">
         <main className="flex flex-1 flex-col">{children}</main>
-        <Footer />
         <ServiceWorkerRegister />
       </body>
     </html>
