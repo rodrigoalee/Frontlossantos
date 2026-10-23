@@ -8,7 +8,6 @@ import { ApiError, apiFetch } from "@/lib/api";
 
 const LOGIN_ERROR_URL = "/login?error=google";
 
-/** La API responde 403 a cuentas del taller y 409 si el correo ya tiene ficha en el taller. */
 const LOGIN_ERROR_POR_ESTADO: Record<number, string> = {
   403: "/login?error=empleado",
   409: "/login?error=taller",

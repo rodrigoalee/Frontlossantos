@@ -20,12 +20,10 @@ export async function createSession({ accessToken, expiraEn }: LoginResponse) {
   });
 }
 
-/** JWT de la API guardado en la cookie de sesión, si existe. */
 export async function getSessionToken(): Promise<string | undefined> {
   return (await cookies()).get(SESSION_COOKIE)?.value;
 }
 
-/** Borra la cookie de sesión. Solo funciona en Server Actions y Route Handlers. */
 export async function destroySession(): Promise<void> {
   (await cookies()).delete({ name: SESSION_COOKIE, path: "/" });
 }

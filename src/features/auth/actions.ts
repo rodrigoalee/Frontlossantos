@@ -5,7 +5,6 @@ import { ApiError, apiFetch } from "@/lib/api";
 import { createSession, destroySession, RUTA_DESPUES_DE_LOGIN } from "./session";
 import type { CompletarPerfilState, LoginResponse, LoginState, UsuarioSesion } from "./types";
 
-/** Mismo formato que exige la API: E.164, porque el teléfono se usa para WhatsApp. */
 const TELEFONO_E164 = /^\+[1-9]\d{7,14}$/;
 
 export async function login(_prev: LoginState, formData: FormData): Promise<LoginState> {
@@ -33,7 +32,6 @@ export async function login(_prev: LoginState, formData: FormData): Promise<Logi
   redirect(RUTA_DESPUES_DE_LOGIN);
 }
 
-/** Entrega el teléfono que falta en una cuenta creada con Google; la API crea la ficha del taller. */
 export async function completarPerfil(
   _prev: CompletarPerfilState,
   formData: FormData,
@@ -59,7 +57,6 @@ export async function completarPerfil(
       redirect("/login");
     }
     if (error.status === 409) {
-      // El 409 también llega si el perfil ya estaba completo (doble envío): en ese caso, al portal.
       const usuario = await apiFetch<UsuarioSesion>("/api/auth/me").catch(() => undefined);
       if (usuario?.perfilCompleto) redirect(RUTA_DESPUES_DE_LOGIN);
       return {
@@ -76,7 +73,6 @@ export async function completarPerfil(
   redirect(RUTA_DESPUES_DE_LOGIN);
 }
 
-/** Cierra la sesión del portal. */
 export async function cerrarSesion() {
   await destroySession();
   redirect("/login");

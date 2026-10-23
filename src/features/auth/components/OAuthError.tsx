@@ -8,7 +8,6 @@ const MENSAJES: Record<string, string> = {
   taller: "Ese correo ya está registrado en el taller. Comunícate con nosotros para activar tu acceso.",
 };
 
-/** Muestra el error con el que el callback de Google redirige a /login?error=... */
 export default function OAuthError() {
   const error = useSearchParams().get("error");
   const mensaje = error ? MENSAJES[error] : undefined;

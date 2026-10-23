@@ -11,13 +11,8 @@ export const metadata: Metadata = {
   title: "Completa tu perfil | Los Santos Customs",
 };
 
-/** Bloquea en el servidor hasta verificar la sesión, igual que /panel. */
 export const instant = false;
 
-/**
- * Gate de las cuentas creadas con Google: piden el teléfono antes de entrar al portal.
- * Fuera de /panel a propósito, o el layout del portal la redirigiría a sí misma.
- */
 export default async function CompletarPerfilPage() {
   const usuario = await verificarSesion();
   if (usuario.perfilCompleto) redirect(RUTA_DESPUES_DE_LOGIN);
@@ -35,7 +30,6 @@ export default async function CompletarPerfilPage() {
 
             <CompletarPerfilForm />
 
-            {/* Salida obligatoria: si el taller ya tiene una ficha con este correo, el formulario nunca podrá guardarse. */}
             <form action={cerrarSesion} className="mt-6 text-center">
               <button type="submit" className="text-xs font-medium text-primary hover:underline">
                 Cerrar sesión

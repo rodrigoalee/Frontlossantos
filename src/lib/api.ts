@@ -11,10 +11,7 @@ export class ApiError extends Error {
   }
 }
 
-/**
- * Cliente HTTP para la API del taller (solo se ejecuta en el servidor).
- * Si hay sesión, manda el JWT; los endpoints anónimos simplemente lo ignoran.
- */
+/** Cliente HTTP para la API del taller (solo se ejecuta en el servidor). */
 export async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const token = await getSessionToken();
 
