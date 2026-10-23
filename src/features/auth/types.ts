@@ -3,6 +3,11 @@ export type LoginState = {
   correo?: string;
 } | undefined;
 
+export type CompletarPerfilState = {
+  error?: string;
+  telefono?: string;
+} | undefined;
+
 export type UsuarioSesion = {
   idUsuario: number;
   nombreCompleto: string;

@@ -97,7 +97,7 @@ La regla 3 es estricta a propósito: un cliente es un cliente y solo carga permi
 
 El caso 4 conserva deliberadamente la regla de `RegistroService.cs:34-41`: quien sepa el correo de un cliente no debe heredar su historial, y esa vinculación la hace el taller verificando identidad. Que Google verifique el correo prueba que la persona controla ese buzón, no que sea el dueño del historial que el taller registró.
 
-El caso 2 es distinto y por eso sí se vincula: esa cuenta la creó la propia persona con ese correo, así que controlar el buzón sí prueba que es la misma.
+El caso 2 es distinto y por eso sí se vincula, pero **quitando la contraseña**. Corrección del 23/10/2026: la versión original suponía que esa cuenta la creó la propia persona, y no es cierto mientras `/api/auth/registro` no verifique el correo. Un atacante puede registrarse con contraseña usando el Gmail de la víctima antes que ella (*account pre-hijacking*); al entrar la víctima con Google se vincularía a esa cuenta y el atacante seguiría entrando con su contraseña. Por eso, al vincular se escribe el `GoogleId`, se pone `PasswordHash = null` y se rota `VersionCredenciales`: el dueño del buzón se queda con la cuenta, la contraseña deja de servir y las sesiones previas mueren. Si la cuenta sí era de la persona, solo pierde su contraseña y sigue entrando con Google. Cuando el registro verifique el correo, se puede volver a conservar la contraseña.
 
 ### 6. Perfil incompleto es `rol Cliente` más `ClienteId` nulo
 

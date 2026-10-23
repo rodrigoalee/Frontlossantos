@@ -4,9 +4,15 @@ import type { NextRequest } from "next/server";
 import { exchangeCodeForIdToken, getRedirectUri, OAUTH_COOKIE } from "@/features/auth/google";
 import { createSession, RUTA_DESPUES_DE_LOGIN } from "@/features/auth/session";
 import type { LoginResponse } from "@/features/auth/types";
-import { apiFetch } from "@/lib/api";
+import { ApiError, apiFetch } from "@/lib/api";
 
 const LOGIN_ERROR_URL = "/login?error=google";
+
+/** La API responde 403 a cuentas del taller y 409 si el correo ya tiene ficha en el taller. */
+const LOGIN_ERROR_POR_ESTADO: Record<number, string> = {
+  403: "/login?error=empleado",
+  409: "/login?error=taller",
+};
 
 /** Google redirige aquí con el código; se valida y se crea la sesión con la API. */
 export async function GET(request: NextRequest) {
@@ -21,6 +27,7 @@ export async function GET(request: NextRequest) {
 
   if (!code || !codeVerifier || !state || state !== savedState) redirect(LOGIN_ERROR_URL);
 
+  let perfilCompleto: boolean;
   try {
     const idToken = await exchangeCodeForIdToken(code, codeVerifier, getRedirectUri(request.url));
     const sesion = await apiFetch<LoginResponse>("/api/auth/google", {
@@ -28,10 +35,14 @@ export async function GET(request: NextRequest) {
       body: JSON.stringify({ idToken }),
     });
     await createSession(sesion);
+    perfilCompleto = sesion.usuario.perfilCompleto;
   } catch (error) {
+    if (error instanceof ApiError && LOGIN_ERROR_POR_ESTADO[error.status]) {
+      redirect(LOGIN_ERROR_POR_ESTADO[error.status]);
+    }
     console.error("Error en login con Google:", error);
     redirect(LOGIN_ERROR_URL);
   }
 
-  redirect(RUTA_DESPUES_DE_LOGIN);
+  redirect(perfilCompleto ? RUTA_DESPUES_DE_LOGIN : "/completar-perfil");
 }
