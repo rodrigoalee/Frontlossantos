@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { ApiError, apiFetch } from "@/lib/api";
-import { createSession } from "./session";
+import { createSession, RUTA_DESPUES_DE_LOGIN } from "./session";
 import type { LoginResponse, LoginState } from "./types";
 
 export async function login(_prev: LoginState, formData: FormData): Promise<LoginState> {
@@ -27,5 +27,5 @@ export async function login(_prev: LoginState, formData: FormData): Promise<Logi
     return { error: "No se pudo conectar con el servidor. Intenta más tarde.", correo };
   }
 
-  redirect("/");
+  redirect(RUTA_DESPUES_DE_LOGIN);
 }

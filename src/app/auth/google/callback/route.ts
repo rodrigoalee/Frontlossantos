@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import type { NextRequest } from "next/server";
 import { exchangeCodeForIdToken, getRedirectUri, OAUTH_COOKIE } from "@/features/auth/google";
-import { createSession } from "@/features/auth/session";
+import { createSession, RUTA_DESPUES_DE_LOGIN } from "@/features/auth/session";
 import type { LoginResponse } from "@/features/auth/types";
 import { apiFetch } from "@/lib/api";
 
@@ -33,5 +33,5 @@ export async function GET(request: NextRequest) {
     redirect(LOGIN_ERROR_URL);
   }
 
-  redirect("/");
+  redirect(RUTA_DESPUES_DE_LOGIN);
 }
