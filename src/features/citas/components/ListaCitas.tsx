@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { FaCalendarPlus } from "react-icons/fa6";
+import CargandoPantalla from "@/components/CargandoPantalla";
 import { ApiError } from "@/lib/api";
 import { obtenerMisCitas } from "../dal";
 import type { CitaPortal } from "../types";
@@ -36,7 +37,7 @@ export default async function ListaCitas() {
   }
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-4">
       {citas.map((cita) => (
         <CitaCard key={cita.idCita} cita={cita} />
       ))}
@@ -52,13 +53,19 @@ function Aviso({ texto }: { texto: string }) {
 
 export function ListaCitasCargando() {
   return (
-    <div className="flex flex-col gap-5" aria-busy="true" aria-label="Cargando tus citas">
-      {[0, 1].map((i) => (
-        <div key={i} className="flex flex-col gap-4 rounded-3xl border border-base-300 p-6">
-          <div className="skeleton h-6 w-2/3" />
-          <div className="skeleton h-4 w-1/2" />
-          <div className="skeleton h-4 w-3/5" />
-          <div className="skeleton mt-2 h-8 w-full" />
+    <div className="flex flex-col gap-4" aria-busy="true" aria-label="Cargando tus citas">
+      <CargandoPantalla texto="Cargando tus citas…" />
+      {[0, 1, 2].map((i) => (
+        <div key={i} className="flex flex-col gap-2 rounded-3xl bg-base-200/40 px-7 py-5">
+          <div className="flex justify-between gap-4">
+            <div className="skeleton h-6 w-1/2" />
+            <div className="skeleton h-5 w-24" />
+          </div>
+          <div className="skeleton h-4 w-1/3" />
+          <div className="flex justify-between gap-4">
+            <div className="skeleton h-4 w-32" />
+            <div className="skeleton h-4 w-28" />
+          </div>
         </div>
       ))}
     </div>

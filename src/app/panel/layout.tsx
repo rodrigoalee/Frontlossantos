@@ -5,9 +5,10 @@ export const instant = false;
 
 export default async function PanelLayout({ children }: { children: React.ReactNode }) {
   const usuario = await verificarPerfilCompleto();
+
   return (
     <>
-      <PanelNavbar usuario={usuario} />
+      <PanelNavbar nombreCompleto={usuario.nombreCompleto} />
       {children}
     </>
   );

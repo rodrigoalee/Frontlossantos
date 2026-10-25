@@ -13,6 +13,7 @@ export type UsuarioSesion = {
   nombreCompleto: string;
   correo: string;
   perfilCompleto: boolean;
+  permisos?: string[] | null;
 };
 
 /** Respuesta de POST /api/auth/login en CustomCore.API */
