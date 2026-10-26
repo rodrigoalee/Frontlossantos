@@ -1,11 +1,11 @@
+import { CORREO_TALLER, TELEFONO_TALLER } from "@/lib/contacto";
+
 const HORARIO_DE_ATENCION = [
   { dias: "Lunes a Viernes", horas: "8:00 – 18:00" },
   { dias: "Sábado", horas: "8:00 – 13:00" },
   { dias: "Domingo", horas: "Cerrado" },
 ];
 
-const TELEFONO_TALLER = "2245-8890";
-const CORREO_TALLER = "contacto@lossantoscustoms.gt";
 
 export default function HorarioYContacto() {
   return (

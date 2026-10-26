@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
 import { cerrarSesion } from "@/features/auth/actions";
 import CompletarPerfilForm from "@/features/auth/components/CompletarPerfilForm";
-import { verificarSesion } from "@/features/auth/dal";
+import { esEmpleado, RUTA_ADMIN, verificarSesion } from "@/features/auth/dal";
 import { RUTA_DESPUES_DE_LOGIN } from "@/features/auth/session";
 
 export const metadata: Metadata = {
@@ -15,6 +15,7 @@ export const instant = false;
 
 export default async function CompletarPerfilPage() {
   const usuario = await verificarSesion();
+  if (esEmpleado(usuario)) redirect(RUTA_ADMIN);
   if (usuario.perfilCompleto) redirect(RUTA_DESPUES_DE_LOGIN);
 
   return (

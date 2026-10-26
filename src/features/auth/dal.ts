@@ -5,6 +5,12 @@ import { ApiError, apiFetch } from "@/lib/api";
 import { getSessionToken } from "./session";
 import type { UsuarioSesion } from "./types";
 
+export const RUTA_ADMIN = "/admin";
+
+export function esEmpleado(usuario: UsuarioSesion) {
+  return (usuario.permisos?.length ?? 0) > 0;
+}
+
 export const verificarSesion = cache(async (): Promise<UsuarioSesion> => {
   if (!(await getSessionToken())) redirect("/login");
 
@@ -21,6 +27,13 @@ export const verificarSesion = cache(async (): Promise<UsuarioSesion> => {
 
 export const verificarPerfilCompleto = cache(async (): Promise<UsuarioSesion> => {
   const usuario = await verificarSesion();
+  if (esEmpleado(usuario)) redirect(RUTA_ADMIN);
   if (!usuario.perfilCompleto) redirect("/completar-perfil");
+  return usuario;
+});
+
+export const verificarEmpleado = cache(async (): Promise<UsuarioSesion> => {
+  const usuario = await verificarSesion();
+  if (!esEmpleado(usuario)) redirect("/panel");
   return usuario;
 });
