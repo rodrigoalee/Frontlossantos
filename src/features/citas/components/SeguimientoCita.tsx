@@ -37,7 +37,7 @@ export default async function SeguimientoCita({ idCita }: { idCita: number }) {
   const actual = hitos.findLast((hito) => hito.estado !== "pendiente");
 
   return (
-    <div className="grid gap-6 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
       <section className="flex flex-col gap-6 rounded-3xl border border-base-300 bg-base-100 p-5 sm:p-8 lg:col-span-2">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0">
@@ -172,7 +172,7 @@ function Dato({ etiqueta, children }: { etiqueta: string; children: React.ReactN
 
 export function SeguimientoCitaCargando() {
   return (
-    <div className="grid gap-6 lg:grid-cols-3" aria-busy="true" aria-label="Cargando el seguimiento">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-3" aria-busy="true" aria-label="Cargando el seguimiento">
       <CargandoPantalla texto="Cargando el seguimiento…" />
       <div className="flex flex-col gap-5 rounded-3xl border border-base-300 p-8 lg:col-span-2">
         <div className="skeleton h-6 w-1/2" />

@@ -109,7 +109,7 @@ export default async function FichaRepuesto({ idRepuesto }: { idRepuesto: number
         <p className="text-base-content/60">Código {repuesto.codigoStock}</p>
       </div>
 
-      <div className="grid items-start gap-6 lg:grid-cols-[1fr_2fr]">
+      <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
         <div className="flex flex-col gap-6">
           <DatosRepuesto repuesto={repuesto} puedeEditar={permisos.has("repuestos.editar")} />
           <EstadoCatalogo
@@ -143,7 +143,7 @@ export function FichaRepuestoCargando() {
         <div className="skeleton h-8 w-1/2" />
         <div className="skeleton h-4 w-32" />
       </div>
-      <div className="grid gap-6 lg:grid-cols-[1fr_2fr]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
         <div className="skeleton h-72 rounded-3xl" />
         <div className="skeleton h-72 rounded-3xl" />
       </div>

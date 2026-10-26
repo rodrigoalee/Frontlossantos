@@ -59,7 +59,7 @@ export default async function AbrirOrden({ idCita }: { idCita: number }) {
   }
 
   return (
-    <div className="grid items-start gap-6 lg:grid-cols-3">
+    <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-3">
       <section className="flex flex-col gap-6 rounded-3xl border border-base-300 bg-base-100 p-5 sm:p-8 lg:col-span-2">
         <h2 className="text-xl font-semibold text-secondary">Recepción del vehículo</h2>
         <AbrirOrdenForm citaId={cita.idCita} mecanicos={mecanicos} />

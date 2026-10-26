@@ -71,7 +71,7 @@ export default async function DetalleOrden({ idOrden }: { idOrden: number }) {
             </span>
           </div>
 
-          <dl className="grid gap-5 sm:grid-cols-2">
+          <dl className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <Dato etiqueta="Ingreso">{formatearFechaCita(orden.fechaIngreso)}</Dato>
             <Dato etiqueta="Salida">
               {orden.fechaFinalizacion ? formatearFechaCita(orden.fechaFinalizacion) : "Todavía en el taller"}
@@ -215,7 +215,7 @@ export function DetalleOrdenCargando() {
       <div className="flex flex-col gap-6 lg:col-span-2">
         <div className="flex flex-col gap-5 rounded-3xl border border-base-300 p-8">
           <div className="skeleton h-6 w-1/3" />
-          <div className="grid gap-5 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             {[0, 1, 2, 3].map((i) => (
               <div key={i} className="skeleton h-10 w-full" />
             ))}

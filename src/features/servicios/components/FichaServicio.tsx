@@ -32,7 +32,7 @@ export default async function FichaServicio({ idServicio }: { idServicio: number
     <>
       <h1 className="text-3xl font-bold break-words text-secondary">{servicio.nombre}</h1>
 
-      <div className="grid items-start gap-6 md:grid-cols-2">
+      <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-2">
         <DatosServicio servicio={servicio} puedeEditar={permisos.has("servicios.editar")} />
         <EstadoCatalogo
           activo={servicio.activo}
@@ -52,7 +52,7 @@ export function FichaServicioCargando() {
     <div className="flex flex-col gap-6" aria-busy="true" aria-label="Cargando la ficha del servicio">
       <CargandoPantalla texto="Cargando servicio…" />
       <div className="skeleton h-8 w-1/2" />
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div className="skeleton h-56 rounded-3xl" />
         <div className="skeleton h-56 rounded-3xl" />
       </div>

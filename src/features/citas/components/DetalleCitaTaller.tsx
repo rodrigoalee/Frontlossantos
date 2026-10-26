@@ -54,7 +54,7 @@ export default async function DetalleCitaTaller({ idCita }: { idCita: number }) 
   const estado = PRESENTACION_ESTADO[cita.estado];
 
   return (
-    <div className="grid items-start gap-6 lg:grid-cols-3">
+    <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-3">
       <section className="flex flex-col gap-6 rounded-3xl border border-base-300 bg-base-100 p-5 sm:p-8 lg:col-span-2">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <h2 className="text-xl font-semibold text-secondary">Cita #{cita.idCita}</h2>
@@ -63,7 +63,7 @@ export default async function DetalleCitaTaller({ idCita }: { idCita: number }) 
           </span>
         </div>
 
-        <dl className="grid gap-5 sm:grid-cols-2">
+        <dl className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <Dato etiqueta="Fecha y hora">{formatearFechaCita(cita.fechaHora)}</Dato>
           <Dato etiqueta="Duración">{formatearDuracion(cita.duracionMinutos)}</Dato>
           <Dato etiqueta="Sede">{sede ?? `Sede #${cita.sucursalId}`}</Dato>
@@ -121,11 +121,11 @@ export default async function DetalleCitaTaller({ idCita }: { idCita: number }) 
 
 export function DetalleCitaTallerCargando() {
   return (
-    <div className="grid gap-6 lg:grid-cols-3" aria-busy="true" aria-label="Cargando la cita">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-3" aria-busy="true" aria-label="Cargando la cita">
       <CargandoPantalla texto="Cargando la cita…" />
       <div className="flex flex-col gap-5 rounded-3xl border border-base-300 p-8 lg:col-span-2">
         <div className="skeleton h-6 w-1/3" />
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           {[0, 1, 2, 3].map((i) => (
             <div key={i} className="skeleton h-10 w-full" />
           ))}

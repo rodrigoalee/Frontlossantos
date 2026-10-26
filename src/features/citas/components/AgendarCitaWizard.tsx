@@ -98,7 +98,7 @@ export default function AgendarCitaWizard({ vehiculos, sucursales, servicios }: 
             <p className="mt-1.5 text-xs text-base-content/60">Solo aparecen los vehículos registrados a tu nombre.</p>
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <div>
               <label htmlFor="sede" className="mb-1.5 block text-sm font-semibold">
                 Sede
