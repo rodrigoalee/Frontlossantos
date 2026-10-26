@@ -25,6 +25,22 @@ const formatoFechaCorta = new Intl.DateTimeFormat("es-GT", {
 
 const formatoMoneda = new Intl.NumberFormat("es-GT", { style: "currency", currency: "GTQ" });
 
+const formatoDiaIso = new Intl.DateTimeFormat("en-CA", { timeZone: ZONA_DEL_TALLER });
+
+const DESFASE_GUATEMALA = "-06:00";
+
+export function inicioDeHoy() {
+  return new Date(`${formatoDiaIso.format(new Date())}T00:00:00${DESFASE_GUATEMALA}`);
+}
+
+export function formatearDuracion(minutos: number) {
+  const horas = Math.floor(minutos / 60);
+  const resto = minutos % 60;
+  if (horas === 0) return `${resto} min`;
+  const textoHoras = horas === 1 ? "1 hora" : `${horas} horas`;
+  return resto === 0 ? textoHoras : `${textoHoras} ${resto} min`;
+}
+
 export function formatearHora(fechaHora: string) {
   return formatoHora.format(new Date(fechaHora));
 }

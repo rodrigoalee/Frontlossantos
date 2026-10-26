@@ -2,7 +2,6 @@ import type { IconType } from "react-icons";
 import {
   FaBoxesStacked,
   FaCalendarDays,
-  FaCarSide,
   FaClipboardList,
   FaScrewdriverWrench,
   FaUser,
@@ -19,17 +18,10 @@ export type Modulo = {
 export const MODULOS: Modulo[] = [
   {
     slug: "clientes",
-    titulo: "Clientes",
-    descripcion: "Registra y consulta los datos de contacto de cada cliente, con sus vehículos y su historial en el taller.",
+    titulo: "Clientes y vehículos",
+    descripcion: "Registra a cada cliente con sus datos de contacto y sus vehículos. Encuéntralo por nombre, correo o placa con los filtros de la tabla.",
     permiso: "clientes.leer",
     Icono: FaUser,
-  },
-  {
-    slug: "vehiculos",
-    titulo: "Vehículos",
-    descripcion: "Da de alta los vehículos que atiende el taller y vincúlalos con su dueño por placa.",
-    permiso: "vehiculos.leer",
-    Icono: FaCarSide,
   },
   {
     slug: "citas",

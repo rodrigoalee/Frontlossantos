@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { registrarVehiculo } from "../actions";
+import type { RegistrarVehiculoState } from "../types";
 
 const CAMPOS = [
   { name: "placa", label: "Placa", maxLength: 20, className: "uppercase" },
@@ -9,8 +10,12 @@ const CAMPOS = [
   { name: "modelo", label: "Modelo", maxLength: 50 },
 ] as const;
 
-export default function RegistrarVehiculoForm() {
-  const [state, action, pending] = useActionState(registrarVehiculo, undefined);
+type Props = {
+  accion?: (prev: RegistrarVehiculoState, formData: FormData) => Promise<RegistrarVehiculoState>;
+};
+
+export default function RegistrarVehiculoForm({ accion = registrarVehiculo }: Props) {
+  const [state, action, pending] = useActionState(accion, undefined);
   const valores = state?.valores;
 
   return (

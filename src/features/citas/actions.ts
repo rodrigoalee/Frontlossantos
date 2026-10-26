@@ -1,9 +1,10 @@
 "use server";
 
+import { refresh } from "next/cache";
 import { redirect } from "next/navigation";
-import { ApiError } from "@/lib/api";
+import { ApiError, apiFetch } from "@/lib/api";
 import { crearCita, obtenerDisponibilidad } from "./dal";
-import type { DiaDisponibilidad, NuevaCita } from "./types";
+import type { CambiarEstadoCitaState, DiaDisponibilidad, EstadoCita, NuevaCita } from "./types";
 
 const FECHA = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -41,4 +42,26 @@ export async function agendarCita(datos: NuevaCita): Promise<{ error: string } |
   }
 
   redirect("/panel");
+}
+
+export async function cambiarEstadoCita(idCita: number, estado: EstadoCita): Promise<CambiarEstadoCitaState> {
+  try {
+    await apiFetch<void>(`/api/citas/${idCita}/estado`, {
+      method: "PATCH",
+      body: JSON.stringify({ estado }),
+    });
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 401) redirect("/login");
+    if (error instanceof ApiError && error.status === 403) {
+      return { error: "Tu cuenta no tiene permiso para cambiar el estado de las citas." };
+    }
+    if (error instanceof ApiError && error.status === 404) {
+      return { error: "Esta cita ya no existe." };
+    }
+    console.error("Error al cambiar el estado de la cita:", error);
+    return { error: "No se pudo actualizar la cita. Intenta más tarde." };
+  }
+
+  refresh();
+  return undefined;
 }

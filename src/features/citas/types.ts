@@ -60,3 +60,28 @@ export type SeguimientoCita = {
   fechaFinalizacion: string | null;
   pagado: boolean;
 };
+
+export type CitaTaller = {
+  idCita: number;
+  sucursalId: number;
+  vehiculoId: number;
+  placa: string;
+  nombreCliente: string;
+  fechaHora: string;
+  duracionMinutos: number;
+  estado: EstadoCita;
+  servicio: string | null;
+  idOrden: number | null;
+};
+
+export type CitaTallerDetalle = CitaTaller & {
+  marca: string;
+  modelo: string;
+  clienteId: number;
+  telefonoCliente: string;
+  motivo: string | null;
+};
+
+export type CambiarEstadoCitaState = {
+  error?: string;
+} | undefined;

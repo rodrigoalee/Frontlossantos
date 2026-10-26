@@ -32,6 +32,6 @@ export async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> 
   });
 
   if (!res.ok) throw new ApiError(res.status, res.statusText, await leerDetalle(res));
-  if (res.status === 204) return undefined as T;
+  if (res.status === 204 || !res.headers.get("content-type")?.includes("json")) return undefined as T;
   return res.json() as Promise<T>;
 }

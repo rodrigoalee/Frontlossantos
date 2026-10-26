@@ -1,6 +1,18 @@
 import "server-only";
 import { apiFetch } from "@/lib/api";
-import type { CitaPortal, DiaDisponibilidad, NuevaCita, SeguimientoCita, Servicio, Sucursal } from "./types";
+import type { ResultadoPaginado } from "@/features/clientes/types";
+import type {
+  CitaPortal,
+  CitaTaller,
+  CitaTallerDetalle,
+  DiaDisponibilidad,
+  NuevaCita,
+  SeguimientoCita,
+  Servicio,
+  Sucursal,
+} from "./types";
+
+const TAMANIO_MAXIMO = 100;
 
 export function obtenerMisCitas() {
   return apiFetch<CitaPortal[]>("/api/portal/citas");
@@ -29,4 +41,18 @@ export async function crearCita(datos: NuevaCita) {
     body: JSON.stringify(datos),
   });
   return idCita;
+}
+
+export async function obtenerCitasDelTaller() {
+  const citas: CitaTaller[] = [];
+  for (let pagina = 1; ; pagina++) {
+    const parametros = new URLSearchParams({ pagina: String(pagina), tamanio: String(TAMANIO_MAXIMO) });
+    const resultado = await apiFetch<ResultadoPaginado<CitaTaller>>(`/api/citas?${parametros}`);
+    citas.push(...resultado.items);
+    if (resultado.items.length === 0 || citas.length >= resultado.total) return citas;
+  }
+}
+
+export function obtenerCitaDelTaller(idCita: number) {
+  return apiFetch<CitaTallerDetalle>(`/api/citas/${idCita}`);
 }
