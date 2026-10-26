@@ -61,7 +61,7 @@ export default async function DetalleOrden({ idOrden }: { idOrden: number }) {
   const estado = PRESENTACION_ESTADO_ORDEN[orden.estado];
 
   return (
-    <div className="grid items-start gap-6 lg:grid-cols-3">
+    <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-3">
       <div className="flex flex-col gap-6 lg:col-span-2">
         <section className="flex flex-col gap-6 rounded-3xl border border-base-300 bg-base-100 p-5 sm:p-8">
           <div className="flex flex-wrap items-start justify-between gap-3">
@@ -97,12 +97,6 @@ export default async function DetalleOrden({ idOrden }: { idOrden: number }) {
               </p>
             )}
           </div>
-
-          {permisos.has("ordenes.cambiar_estado") && (
-            <div className="border-t border-base-300 pt-5">
-              <BotonEstadoOrden idOrden={orden.idOrdenEncabezado} estado={orden.estado} />
-            </div>
-          )}
         </section>
 
         <section className="flex flex-col gap-4 rounded-3xl border border-base-300 bg-base-100 p-5 sm:p-8">
@@ -115,8 +109,8 @@ export default async function DetalleOrden({ idOrden }: { idOrden: number }) {
                 <thead>
                   <tr>
                     <th>Concepto</th>
-                    <th className="text-right">Cant.</th>
-                    <th className="text-right">Precio</th>
+                    <th className="hidden text-right sm:table-cell">Cant.</th>
+                    <th className="hidden text-right sm:table-cell">Precio</th>
                     <th className="text-right">Subtotal</th>
                     {puedeEditar && <th aria-label="Acciones" />}
                   </tr>
@@ -126,10 +120,13 @@ export default async function DetalleOrden({ idOrden }: { idOrden: number }) {
                     <tr key={linea.idOrdenDetalle}>
                       <td>
                         <span className="text-xs text-base-content/50">{linea.tipoLinea}</span>
-                        <span className="block font-semibold text-secondary">{linea.descripcion}</span>
+                        <span className="block font-semibold break-words text-secondary">{linea.descripcion}</span>
+                        <span className="text-xs text-base-content/60 sm:hidden">
+                          {linea.cantidad} × {formatearMoneda(linea.precioUnitario)}
+                        </span>
                       </td>
-                      <td className="text-right">{linea.cantidad}</td>
-                      <td className="text-right">{formatearMoneda(linea.precioUnitario)}</td>
+                      <td className="hidden text-right sm:table-cell">{linea.cantidad}</td>
+                      <td className="hidden text-right sm:table-cell">{formatearMoneda(linea.precioUnitario)}</td>
                       <td className="text-right font-semibold">{formatearMoneda(linea.subtotalEstimado)}</td>
                       {puedeEditar && (
                         <td className="text-right">
@@ -145,9 +142,10 @@ export default async function DetalleOrden({ idOrden }: { idOrden: number }) {
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colSpan={3} className="text-right">
+                    <td colSpan={3} className="hidden text-right sm:table-cell">
                       Total estimado
                     </td>
+                    <td className="text-right sm:hidden">Total estimado</td>
                     <td className="text-right text-base font-bold text-secondary">
                       {formatearMoneda(orden.totalEstimado)}
                     </td>
@@ -161,6 +159,13 @@ export default async function DetalleOrden({ idOrden }: { idOrden: number }) {
             <AgregarLineaForm idOrden={orden.idOrdenEncabezado} repuestos={repuestos} servicios={servicios} />
           )}
         </section>
+
+        {abierta && permisos.has("ordenes.cambiar_estado") && (
+          <section className="flex flex-col gap-4 rounded-3xl border border-base-300 bg-base-100 p-5 sm:p-8">
+            <h2 className="text-xl font-semibold text-secondary">Avance de la orden</h2>
+            <BotonEstadoOrden idOrden={orden.idOrdenEncabezado} estado={orden.estado} />
+          </section>
+        )}
       </div>
 
       <aside className="flex flex-col gap-6">
@@ -205,7 +210,7 @@ export default async function DetalleOrden({ idOrden }: { idOrden: number }) {
 
 export function DetalleOrdenCargando() {
   return (
-    <div className="grid gap-6 lg:grid-cols-3" aria-busy="true" aria-label="Cargando la orden">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-3" aria-busy="true" aria-label="Cargando la orden">
       <CargandoPantalla texto="Cargando la orden…" />
       <div className="flex flex-col gap-6 lg:col-span-2">
         <div className="flex flex-col gap-5 rounded-3xl border border-base-300 p-8">
