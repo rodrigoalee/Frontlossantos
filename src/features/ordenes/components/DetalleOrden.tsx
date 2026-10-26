@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import CargandoPantalla from "@/components/CargandoPantalla";
 import { verificarEmpleado } from "@/features/auth/dal";
+import CotizacionesOrden from "@/features/cotizaciones/components/CotizacionesOrden";
+import CobroOrden from "@/features/pagos/components/CobroOrden";
 import { formatearFechaCita, formatearMoneda } from "@/features/citas/formato";
 import { formatearPlaca } from "@/features/vehiculos/formato";
 import { ApiError } from "@/lib/api";
@@ -160,11 +162,20 @@ export default async function DetalleOrden({ idOrden }: { idOrden: number }) {
           )}
         </section>
 
+        <CotizacionesOrden
+          idOrden={orden.idOrdenEncabezado}
+          puedeCotizar={abierta && permisos.has("ordenes.cotizar")}
+        />
+
         {abierta && permisos.has("ordenes.cambiar_estado") && (
           <section className="flex flex-col gap-4 rounded-3xl border border-base-300 bg-base-100 p-5 sm:p-8">
             <h2 className="text-xl font-semibold text-secondary">Avance de la orden</h2>
             <BotonEstadoOrden idOrden={orden.idOrdenEncabezado} estado={orden.estado} />
           </section>
+        )}
+
+        {orden.estado === "Finalizado" && (
+          <CobroOrden idOrden={orden.idOrdenEncabezado} totalEstimado={orden.totalEstimado} permisos={permisos} />
         )}
       </div>
 

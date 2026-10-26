@@ -7,13 +7,15 @@ import { agendarCita } from "../actions";
 import { formatearFechaCita, formatearMoneda } from "../formato";
 import type { Servicio, Sucursal } from "../types";
 import SelectorFechaHora from "./SelectorFechaHora";
-import Stepper from "./Stepper";
+import Stepper from "@/components/Stepper";
 
 type Props = {
   vehiculos: Vehiculo[];
   sucursales: Sucursal[];
   servicios: Servicio[];
 };
+
+const PASOS = ["Datos de la cita", "Confirmación"] as const;
 
 const CLASE_SELECT = "select w-full border-0 bg-base-200";
 
@@ -56,7 +58,7 @@ export default function AgendarCitaWizard({ vehiculos, sucursales, servicios }: 
 
   return (
     <div className="flex flex-col gap-8 rounded-3xl border border-base-300 bg-base-100 p-5 sm:p-8">
-      <Stepper paso={paso} />
+      <Stepper pasos={PASOS} paso={paso} />
 
       {error && (
         <p role="alert" className="rounded-2xl bg-error/10 px-4 py-3 text-sm text-error">

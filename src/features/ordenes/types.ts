@@ -24,7 +24,7 @@ export type ConteoOrdenesPorEstado = {
 
 export type LineaOrden = {
   idOrdenDetalle: number;
-  tipoLinea: "Repuesto" | "Servicio";
+  tipoLinea: "Repuesto" | "Servicio" | "Adicional";
   repuestoId: number | null;
   servicioId: number | null;
   descripcion: string;

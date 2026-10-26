@@ -7,9 +7,11 @@ type Props = {
   id: string;
   name: string;
   autoComplete?: "current-password" | "new-password";
+  value?: string;
+  onChange?: (valor: string) => void;
 };
 
-export default function PasswordInput({ id, name, autoComplete = "current-password" }: Props) {
+export default function PasswordInput({ id, name, autoComplete = "current-password", value, onChange }: Props) {
   const [visible, setVisible] = useState(false);
   const Icon = visible ? FaEyeSlash : FaEye;
 
@@ -21,6 +23,8 @@ export default function PasswordInput({ id, name, autoComplete = "current-passwo
         type={visible ? "text" : "password"}
         placeholder="••••••••"
         autoComplete={autoComplete}
+        value={value}
+        onChange={onChange && ((e) => onChange(e.target.value))}
         required
         className="grow"
       />

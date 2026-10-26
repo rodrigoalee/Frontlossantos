@@ -5,6 +5,7 @@ import {
   FaClipboardList,
   FaScrewdriverWrench,
   FaUser,
+  FaUserShield,
 } from "react-icons/fa6";
 
 export type Modulo = {
@@ -50,6 +51,13 @@ export const MODULOS: Modulo[] = [
     descripcion: "Mantén al día los servicios que ofrece el taller y la tarifa de mano de obra de cada uno.",
     permiso: "servicios.leer",
     Icono: FaScrewdriverWrench,
+  },
+  {
+    slug: "usuarios",
+    titulo: "Usuarios y accesos",
+    descripcion: "Crea las cuentas del personal, asígnales rol y sede, y decide qué puede hacer cada rol.",
+    permiso: "usuarios.leer",
+    Icono: FaUserShield,
   },
 ];
 
