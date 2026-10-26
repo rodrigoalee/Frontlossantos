@@ -1,7 +1,7 @@
 import "server-only";
 import type { CitaTaller } from "@/features/citas/types";
-import type { ResultadoPaginado } from "@/features/clientes/types";
 import { apiFetch } from "@/lib/api";
+import { todasLasPaginas } from "@/lib/paginacion";
 import type {
   EstadoOrden,
   MecanicoDisponible,
@@ -10,18 +10,6 @@ import type {
   RepuestoInventario,
   ServicioCatalogo,
 } from "./types";
-
-const TAMANIO_MAXIMO = 100;
-
-async function todasLasPaginas<T>(ruta: string, filtros: Record<string, string> = {}) {
-  const items: T[] = [];
-  for (let pagina = 1; ; pagina++) {
-    const parametros = new URLSearchParams({ ...filtros, pagina: String(pagina), tamanio: String(TAMANIO_MAXIMO) });
-    const resultado = await apiFetch<ResultadoPaginado<T>>(`${ruta}?${parametros}`);
-    items.push(...resultado.items);
-    if (resultado.items.length === 0 || items.length >= resultado.total) return items;
-  }
-}
 
 export function obtenerOrdenes(filtros: { estado?: EstadoOrden; busqueda?: string; asignadasAMi?: boolean } = {}) {
   return todasLasPaginas<OrdenLista>("/api/ordenes", {
