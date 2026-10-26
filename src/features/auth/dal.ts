@@ -6,9 +6,20 @@ import { getSessionToken } from "./session";
 import type { UsuarioSesion } from "./types";
 
 export const RUTA_ADMIN = "/admin";
+export const RUTA_MIS_ORDENES = "/admin/ordenes";
 
 export function esEmpleado(usuario: UsuarioSesion) {
   return (usuario.permisos?.length ?? 0) > 0;
+}
+
+// Mismo criterio que la API: trabaja órdenes pero no las abre.
+export function esMecanico(usuario: UsuarioSesion) {
+  const permisos = usuario.permisos ?? [];
+  return permisos.includes("ordenes.trabajar") && !permisos.includes("ordenes.crear");
+}
+
+export function rutaInicio(usuario: UsuarioSesion) {
+  return esMecanico(usuario) ? RUTA_MIS_ORDENES : RUTA_ADMIN;
 }
 
 export const verificarSesion = cache(async (): Promise<UsuarioSesion> => {
@@ -27,7 +38,7 @@ export const verificarSesion = cache(async (): Promise<UsuarioSesion> => {
 
 export const verificarPerfilCompleto = cache(async (): Promise<UsuarioSesion> => {
   const usuario = await verificarSesion();
-  if (esEmpleado(usuario)) redirect(RUTA_ADMIN);
+  if (esEmpleado(usuario)) redirect(rutaInicio(usuario));
   if (!usuario.perfilCompleto) redirect("/completar-perfil");
   return usuario;
 });
