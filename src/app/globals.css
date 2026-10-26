@@ -34,3 +34,16 @@
 @theme inline {
   --font-sans: var(--font-poppins);
 }
+
+@theme {
+  --animate-aparecer: aparecer 200ms ease-out 150ms both;
+
+  @keyframes aparecer {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}

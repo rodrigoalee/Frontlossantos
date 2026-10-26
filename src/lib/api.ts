@@ -6,9 +6,15 @@ import { requireEnv } from "./env";
 const TIMEOUT_MS = 15_000;
 
 export class ApiError extends Error {
-  constructor(public status: number, message: string) {
+  constructor(public status: number, message: string, public detalle?: string) {
     super(message);
   }
+}
+
+async function leerDetalle(res: Response): Promise<string | undefined> {
+  if (!res.headers.get("content-type")?.includes("application/problem+json")) return undefined;
+  const problema = await res.json().catch(() => undefined);
+  return typeof problema?.detail === "string" ? problema.detail : undefined;
 }
 
 /** Cliente HTTP para la API del taller (solo se ejecuta en el servidor). */
@@ -25,7 +31,7 @@ export async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> 
     signal: AbortSignal.timeout(TIMEOUT_MS),
   });
 
-  if (!res.ok) throw new ApiError(res.status, res.statusText);
-  if (res.status === 204) return undefined as T;
+  if (!res.ok) throw new ApiError(res.status, res.statusText, await leerDetalle(res));
+  if (res.status === 204 || !res.headers.get("content-type")?.includes("json")) return undefined as T;
   return res.json() as Promise<T>;
 }
