@@ -3,6 +3,11 @@ export type LoginState = {
   correo?: string;
 } | undefined;
 
+export type RegistroState = {
+  error?: string;
+  valores?: { nombreCompleto: string; correo: string; telefono: string };
+} | undefined;
+
 export type CompletarPerfilState = {
   error?: string;
   telefono?: string;
