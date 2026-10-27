@@ -42,7 +42,6 @@ export default function NuevoClienteForm() {
               onBlur={campo.name === "telefono" ? alSalirDelTelefono : undefined}
               className="input w-full border-0 bg-base-200"
             />
-            {"ayuda" in campo && <p className="mt-1.5 text-xs text-base-content/60">{campo.ayuda}</p>}
           </div>
         ))}
       </div>
