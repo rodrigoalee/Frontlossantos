@@ -1,5 +1,6 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import { useState, useTransition } from "react";
 import { FaPlus } from "react-icons/fa6";
 import { formatearMoneda } from "@/features/citas/formato";
@@ -105,9 +106,9 @@ export default function AgregarLineaForm({
       </div>
 
       {error && (
-        <p role="alert" className="text-sm text-error">
+        <AvisoAccion>
           {error}
-        </p>
+        </AvisoAccion>
       )}
     </form>
   );

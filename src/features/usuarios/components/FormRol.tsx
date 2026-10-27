@@ -1,7 +1,9 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import Link from "next/link";
 import { useState, useTransition } from "react";
+import ConfirmacionAccion from "@/components/ConfirmacionAccion";
 import { eliminarRol, guardarRol } from "../actions";
 import type { Rol } from "../types";
 import { CLASE_CAMPO } from "./CamposRolSede";
@@ -45,14 +47,13 @@ export function FormRol({ rol, rutaCancelar }: { rol?: Rol; rutaCancelar: string
           value={descripcion}
           onChange={(e) => setDescripcion(e.target.value)}
           maxLength={200}
-          placeholder="Para qué sirve este rol"
           className={`input ${CLASE_CAMPO}`}
         />
       </div>
       {error && (
-        <p role="alert" className="rounded-2xl bg-error/10 px-4 py-3 text-sm text-error">
+        <AvisoAccion>
           {error}
-        </p>
+        </AvisoAccion>
       )}
       <div className="flex flex-wrap justify-end gap-3">
         <Link href={rutaCancelar} className="btn rounded-full px-6">
@@ -82,37 +83,29 @@ export function EliminarRolBoton({ rol, usuariosConRol }: { rol: Rol; usuariosCo
 
   return (
     <div className="flex flex-col gap-2">
-      {confirmando ? (
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm text-error">¿Eliminar el rol {rol.nombre}?</span>
-          <button
-            type="button"
-            disabled={pendiente}
-            onClick={() =>
-              startTransition(async () => {
-                const resultado = await eliminarRol(rol.idRol);
-                setError(resultado?.error);
-                setConfirmando(false);
-              })
-            }
-            className="btn btn-error btn-sm rounded-full px-4"
-          >
-            {pendiente && <span className="loading loading-spinner loading-xs" />}
-            Sí, eliminar
-          </button>
-          <button type="button" onClick={() => setConfirmando(false)} disabled={pendiente} className="btn btn-sm rounded-full px-4">
-            Cancelar
-          </button>
-        </div>
-      ) : (
-        <button type="button" onClick={() => setConfirmando(true)} className="btn btn-ghost btn-sm self-start rounded-full text-error">
-          Eliminar rol
-        </button>
+      {confirmando && (
+        <ConfirmacionAccion
+          titulo={`¿Eliminar el rol ${rol.nombre}?`}
+          textoConfirmar="Sí, eliminar"
+          textoCancelar="Volver"
+          pendiente={pendiente}
+          onConfirmar={() =>
+            startTransition(async () => {
+              const resultado = await eliminarRol(rol.idRol);
+              setError(resultado?.error);
+              setConfirmando(false);
+            })
+          }
+          onCancelar={() => setConfirmando(false)}
+        />
       )}
+      <button type="button" onClick={() => setConfirmando(true)} className="btn btn-ghost btn-sm self-start rounded-full text-error">
+        Eliminar rol
+      </button>
       {error && (
-        <p role="alert" className="text-sm text-error">
+        <AvisoAccion>
           {error}
-        </p>
+        </AvisoAccion>
       )}
     </div>
   );

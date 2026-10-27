@@ -1,9 +1,10 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import { useActionState, useState } from "react";
 import { FaPen } from "react-icons/fa6";
 import { actualizarVehiculo } from "../actions";
-import { formatearPlaca } from "../formato";
+import { alSalirDeLaPlaca, formatearPlaca } from "../formato";
 import type { RegistrarVehiculoState, Vehiculo } from "../types";
 import EliminarVehiculoBoton from "./EliminarVehiculoBoton";
 
@@ -48,6 +49,7 @@ function EditorVehiculo({ vehiculo, clienteId, onTerminar }: EditorProps) {
             aria-label={campo.etiqueta}
             maxLength={campo.maxLength}
             defaultValue={state?.valores?.[campo.name] ?? campo.valor}
+            onBlur={campo.name === "placa" ? alSalirDeLaPlaca : undefined}
             required
             className={`input input-sm w-full border-0 bg-base-100 text-center ${campo.className ?? ""}`}
           />
@@ -77,9 +79,9 @@ function EditorVehiculo({ vehiculo, clienteId, onTerminar }: EditorProps) {
             Cancelar
           </button>
           {state?.error && (
-            <p role="alert" className="max-w-40 text-center text-xs text-error">
+            <AvisoAccion origen={state}>
               {state.error}
-            </p>
+            </AvisoAccion>
           )}
         </form>
       </td>

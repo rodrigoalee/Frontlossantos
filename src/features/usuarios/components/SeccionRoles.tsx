@@ -8,7 +8,7 @@ import type { Permiso, Rol, UsuarioResumen } from "../types";
 import EditorPermisos from "./EditorPermisos";
 import { EliminarRolBoton, FormRol } from "./FormRol";
 
-const RUTA_ROLES = "/admin/usuarios?tab=roles";
+const RUTA_ROLES = "/admin/ajustes?tab=roles";
 
 function rutaRol(idRol: number, editar = false) {
   return `${RUTA_ROLES}&rol=${idRol}${editar ? "&editar=1" : ""}`;

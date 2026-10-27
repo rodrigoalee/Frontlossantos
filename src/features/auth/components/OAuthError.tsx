@@ -1,5 +1,6 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import { useSearchParams } from "next/navigation";
 
 const MENSAJES: Record<string, string> = {
@@ -14,8 +15,8 @@ export default function OAuthError() {
   if (!mensaje) return null;
 
   return (
-    <p role="alert" className="mt-3 text-center text-sm text-error">
+    <AvisoAccion>
       {mensaje}
-    </p>
+    </AvisoAccion>
   );
 }

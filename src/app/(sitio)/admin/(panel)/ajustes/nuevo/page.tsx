@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 async function Asistente() {
   const usuario = await verificarEmpleado();
-  if (!usuario.permisos?.includes("usuarios.crear")) redirect("/admin/usuarios");
+  if (!usuario.permisos?.includes("usuarios.crear")) redirect("/admin/ajustes");
 
   const [roles, sedes] = await Promise.all([obtenerRolesDelPersonal(), obtenerSedes()]);
   const permisosPorRol = await permisosDeCadaRol(roles);
@@ -29,8 +29,8 @@ export default function NuevoUsuarioPage() {
             Inicio
           </Link>
           <span className="mx-2">/</span>
-          <Link href="/admin/usuarios" className="hover:text-secondary">
-            Usuarios y accesos
+          <Link href="/admin/ajustes" className="hover:text-secondary">
+            Ajustes
           </Link>
           <span className="mx-2">/</span>
           <span className="text-secondary">Nuevo usuario</span>

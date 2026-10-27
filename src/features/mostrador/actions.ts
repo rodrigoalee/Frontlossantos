@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { obtenerCliente } from "@/features/clientes/dal";
 import { validarVehiculo } from "@/features/vehiculos/validacion";
 import { ApiError, apiFetch } from "@/lib/api";
-import { CORREO, TELEFONO_E164 } from "@/lib/validaciones";
+import { completarTelefono, CORREO, TELEFONO_E164 } from "@/lib/validaciones";
 import type { ClienteMostrador, DatosCitaMostrador, DatosClienteNuevo, DatosVehiculoNuevo, Resultado, VehiculoMostrador } from "./types";
 
 // Misma duración fija que usan las citas del portal.
@@ -24,7 +24,7 @@ function traducirError(error: unknown, contexto: string): { error: string } {
 export async function registrarClienteMostrador(datos: DatosClienteNuevo): Promise<Resultado<ClienteMostrador>> {
   const cliente = {
     nombreCompleto: datos.nombreCompleto.trim(),
-    telefono: datos.telefono.replace(/[\s-]/g, ""),
+    telefono: completarTelefono(datos.telefono),
     correo: datos.correo.trim().toLowerCase(),
     nit: datos.nit.trim() || null,
   };
@@ -78,8 +78,11 @@ export async function registrarVehiculoMostrador(
 
 export async function crearCitaMostrador(datos: DatosCitaMostrador): Promise<{ error: string }> {
   const fecha = new Date(datos.fechaHora);
-  if (!datos.vehiculoId || !datos.servicioId || Number.isNaN(fecha.getTime())) {
+  if (!datos.vehiculoId || Number.isNaN(fecha.getTime())) {
     return { error: "Elige el servicio y la fecha de la cita." };
+  }
+  if (datos.servicioId === null && !datos.motivo.trim()) {
+    return { error: "Describe el servicio que necesita el cliente para poder cotizarlo." };
   }
 
   let idCita: number;
@@ -93,6 +96,7 @@ export async function crearCitaMostrador(datos: DatosCitaMostrador): Promise<{ e
         fechaHora: datos.fechaHora,
         duracionMinutos: DURACION_MINUTOS,
         motivo: datos.motivo.trim() || null,
+        servicioPersonalizado: datos.servicioId === null,
       }),
     }));
   } catch (error) {

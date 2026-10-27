@@ -1,5 +1,6 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import { useState, useTransition } from "react";
 import { guardarDiagnostico } from "../actions";
 
@@ -39,9 +40,9 @@ export default function DiagnosticoOrden({ idOrden, inicial }: { idOrden: number
           Guardar diagnóstico
         </button>
         {mensaje && (
-          <p role={mensaje.tipo === "error" ? "alert" : "status"} className={`text-sm ${mensaje.tipo === "error" ? "text-error" : "text-emerald-700"}`}>
+          <AvisoAccion exito={mensaje.tipo !== "error"} origen={mensaje}>
             {mensaje.texto}
-          </p>
+          </AvisoAccion>
         )}
       </div>
     </div>

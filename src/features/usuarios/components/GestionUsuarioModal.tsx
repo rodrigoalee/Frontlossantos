@@ -1,5 +1,7 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
+import ConfirmacionAccion from "@/components/ConfirmacionAccion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
@@ -9,7 +11,7 @@ import type { Permiso, Rol, Sucursal, UsuarioResumen } from "../types";
 import CampoPassword from "./CampoPassword";
 import CamposRolSede, { CLASE_CAMPO } from "./CamposRolSede";
 
-const RUTA_LISTA = "/admin/usuarios";
+const RUTA_LISTA = "/admin/ajustes";
 
 type Seccion = "datos" | "password" | "acceso";
 type Mensaje = { tipo: "ok" | "error"; texto: string } | undefined;
@@ -27,12 +29,9 @@ type Props = {
 function Aviso({ mensaje }: { mensaje: Mensaje }) {
   if (!mensaje) return null;
   return (
-    <p
-      role={mensaje.tipo === "error" ? "alert" : "status"}
-      className={`rounded-2xl px-4 py-3 text-sm ${mensaje.tipo === "error" ? "bg-error/10 text-error" : "bg-emerald-50 text-emerald-800"}`}
-    >
+    <AvisoAccion exito={mensaje.tipo !== "error"} origen={mensaje}>
       {mensaje.texto}
-    </p>
+    </AvisoAccion>
   );
 }
 
@@ -161,26 +160,9 @@ function SeccionAcceso({ usuario, esPropio }: { usuario: UsuarioResumen; esPropi
       {esPropio ? (
         <p className="rounded-2xl bg-base-200 px-4 py-3 text-sm text-base-content/70">No puedes desactivar tu propia cuenta.</p>
       ) : usuario.activo ? (
-        confirmando ? (
-          <div className="flex flex-col gap-3 rounded-2xl bg-error/10 p-4">
-            <p className="text-sm text-error">
-              {usuario.nombreCompleto} perderá el acceso de inmediato, incluso si tiene una sesión abierta.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              <button type="button" onClick={() => cambiar(false)} disabled={pendiente} className="btn btn-error rounded-full px-6">
-                {pendiente && <span className="loading loading-spinner loading-sm" />}
-                Sí, desactivar
-              </button>
-              <button type="button" onClick={() => setConfirmando(false)} disabled={pendiente} className="btn rounded-full px-6">
-                Cancelar
-              </button>
-            </div>
-          </div>
-        ) : (
-          <button type="button" onClick={() => setConfirmando(true)} className="btn btn-outline btn-error self-start rounded-full px-6">
-            Desactivar cuenta
-          </button>
-        )
+        <button type="button" onClick={() => setConfirmando(true)} className="btn btn-outline btn-error self-start rounded-full px-6">
+          Desactivar cuenta
+        </button>
       ) : (
         <button type="button" onClick={() => cambiar(true)} disabled={pendiente} className="btn btn-primary self-start rounded-full px-6">
           {pendiente && <span className="loading loading-spinner loading-sm" />}
@@ -188,6 +170,17 @@ function SeccionAcceso({ usuario, esPropio }: { usuario: UsuarioResumen; esPropi
         </button>
       )}
 
+      {confirmando && (
+        <ConfirmacionAccion
+          titulo="¿Desactivar la cuenta?"
+          mensaje={`${usuario.nombreCompleto} perderá el acceso de inmediato.`}
+          textoConfirmar="Sí, desactivar"
+          textoCancelar="Volver"
+          pendiente={pendiente}
+          onConfirmar={() => cambiar(false)}
+          onCancelar={() => setConfirmando(false)}
+        />
+      )}
       <Aviso mensaje={mensaje} />
     </div>
   );

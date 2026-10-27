@@ -1,5 +1,6 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import { useState, useTransition } from "react";
 import { cambiarPermisoDeRol } from "../actions";
 import { agruparPorModulo, etiquetaPermiso } from "../permisos";
@@ -46,9 +47,9 @@ export default function EditorPermisos({ idRol, permisos, asignados, editable }:
   return (
     <div className="flex flex-col gap-4">
       {error && (
-        <p role="alert" className="rounded-2xl bg-error/10 px-4 py-3 text-sm text-error">
+        <AvisoAccion>
           {error}
-        </p>
+        </AvisoAccion>
       )}
 
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">

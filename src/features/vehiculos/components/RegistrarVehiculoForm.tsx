@@ -1,7 +1,9 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import { useActionState } from "react";
 import { registrarVehiculo } from "../actions";
+import { alSalirDeLaPlaca } from "../formato";
 import type { RegistrarVehiculoState } from "../types";
 
 const CAMPOS = [
@@ -33,6 +35,7 @@ export default function RegistrarVehiculoForm({ accion = registrarVehiculo }: Pr
               name={campo.name}
               maxLength={campo.maxLength}
               defaultValue={valores?.[campo.name]}
+              onBlur={campo.name === "placa" ? alSalirDeLaPlaca : undefined}
               required
               className={`input w-full border-0 bg-base-200 ${"className" in campo ? campo.className : ""}`}
             />
@@ -57,14 +60,14 @@ export default function RegistrarVehiculoForm({ accion = registrarVehiculo }: Pr
       </div>
 
       {state?.error && (
-        <p role="alert" className="text-sm text-error">
+        <AvisoAccion origen={state}>
           {state.error}
-        </p>
+        </AvisoAccion>
       )}
       {state?.ok && (
-        <p role="status" className="text-sm text-emerald-700">
+        <AvisoAccion exito origen={state}>
           Vehículo registrado.
-        </p>
+        </AvisoAccion>
       )}
 
       <button type="submit" disabled={pending} className="btn btn-primary self-start rounded-full px-6">

@@ -1,5 +1,6 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import Link from "next/link";
 import { Suspense, useActionState } from "react";
 import { FaArrowLeft } from "react-icons/fa6";
@@ -42,9 +43,9 @@ export default function LoginForm() {
         </Link>
 
         {state?.error && (
-          <p role="alert" className="mt-3 text-center text-sm text-error">
+          <AvisoAccion origen={state}>
             {state.error}
-          </p>
+          </AvisoAccion>
         )}
         <Suspense>
           <OAuthError />

@@ -12,7 +12,7 @@ export type DatosVehiculoNuevo = { placa: string; marca: string; modelo: string;
 
 export type DatosCitaMostrador = {
   vehiculoId: number;
-  servicioId: number;
+  servicioId: number | null;
   sucursalId: number | null;
   /** ISO en UTC; el navegador lo convierte desde su hora local, que es la del taller. */
   fechaHora: string;

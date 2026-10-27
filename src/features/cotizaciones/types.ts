@@ -20,3 +20,5 @@ export type Cotizacion = {
 export type NuevaLineaCotizacion = Pick<LineaCotizacion, "descripcion" | "cantidad" | "precioUnitario">;
 
 export type ResultadoAccion = { error?: string } | undefined;
+
+export type DestinoCotizacion = { tipo: "orden" | "cita"; id: number };

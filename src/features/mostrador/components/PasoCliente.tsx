@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { FaMagnifyingGlass, FaUserPlus } from "react-icons/fa6";
 import { formatearTelefono } from "@/features/clientes/formato";
+import { completarTelefono } from "@/lib/validaciones";
 import { registrarClienteMostrador } from "../actions";
 import type { ClienteMostrador } from "../types";
 import { CLASE_CAMPO, Campo, MensajeError } from "./campos";
@@ -36,7 +37,7 @@ function FormClienteNuevo({ onRegistrado, onCancelar }: { onRegistrado: (c: Clie
           <input id="cliente-nombre" value={datos.nombreCompleto} onChange={cambiar("nombreCompleto")} maxLength={150} required autoFocus autoComplete="off" className={`input ${CLASE_CAMPO}`} />
         </Campo>
         <Campo id="cliente-telefono" etiqueta="Teléfono" ayuda="Con código de país, por ejemplo +50255551234.">
-          <input id="cliente-telefono" type="tel" value={datos.telefono} onChange={cambiar("telefono")} maxLength={20} required autoComplete="off" className={`input ${CLASE_CAMPO}`} />
+          <input id="cliente-telefono" type="tel" value={datos.telefono} onChange={cambiar("telefono")} onBlur={() => setDatos((actual) => ({ ...actual, telefono: completarTelefono(actual.telefono) }))} maxLength={20} required autoComplete="off" className={`input ${CLASE_CAMPO}`} />
         </Campo>
         <Campo id="cliente-correo" etiqueta="Correo">
           <input id="cliente-correo" type="email" value={datos.correo} onChange={cambiar("correo")} maxLength={100} required autoComplete="off" className={`input ${CLASE_CAMPO}`} />

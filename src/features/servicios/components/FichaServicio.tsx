@@ -38,7 +38,7 @@ export default async function FichaServicio({ idServicio }: { idServicio: number
           activo={servicio.activo}
           descripcionActivo="Los clientes pueden elegirlo al agendar su cita y el taller puede agregarlo a las órdenes."
           descripcionBaja="No aparece al agendar citas ni al armar órdenes. Las citas y órdenes anteriores lo conservan."
-          confirmacionBaja="¿Dar de baja este servicio? Los clientes dejarán de verlo al agendar. Podrás reactivarlo después."
+          confirmacionBaja="Los clientes dejarán de verlo al agendar. Podrás reactivarlo después."
           darDeBaja={permisos.has("servicios.baja") ? darDeBajaServicio.bind(null, servicio.idServicio) : undefined}
           reactivar={permisos.has("servicios.editar") ? reactivarServicio.bind(null, servicio.idServicio) : undefined}
         />

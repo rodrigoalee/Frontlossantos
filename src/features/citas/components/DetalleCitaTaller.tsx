@@ -8,7 +8,7 @@ import { ApiError } from "@/lib/api";
 import { obtenerCitaDelTaller, obtenerSucursales } from "../dal";
 import { formatearDuracion, formatearFechaCita, PRESENTACION_ESTADO } from "../formato";
 import type { CitaTallerDetalle } from "../types";
-import AccionesCita from "./AccionesCita";
+import FlujoCita from "./FlujoCita";
 
 const COLOR_ESTADO = {
   Pendiente: "bg-amber-100 text-amber-800",
@@ -71,20 +71,7 @@ export default async function DetalleCitaTaller({ idCita }: { idCita: number }) 
           <Dato etiqueta="Motivo">{cita.motivo?.trim() || "Sin motivo registrado"}</Dato>
         </dl>
 
-        {cita.idOrden && permisos.has("ordenes.leer") && (
-          <Link href={`/admin/ordenes/${cita.idOrden}`} className="btn btn-primary self-start rounded-full px-6">
-            Ver orden #{cita.idOrden}
-          </Link>
-        )}
-        {!cita.idOrden && cita.estado !== "Cancelada" && permisos.has("ordenes.crear") && (
-          <Link href={`/admin/ordenes/nueva?cita=${cita.idCita}`} className="btn btn-primary self-start rounded-full px-6">
-            Abrir orden de trabajo
-          </Link>
-        )}
-
-        {permisos.has("citas.cambiar_estado") && !cita.idOrden && (
-          <AccionesCita idCita={cita.idCita} estado={cita.estado} />
-        )}
+        <FlujoCita cita={cita} permisos={permisos} />
       </section>
 
       <aside className="flex flex-col gap-6">

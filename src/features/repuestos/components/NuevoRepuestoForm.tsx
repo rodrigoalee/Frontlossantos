@@ -1,5 +1,6 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import Link from "next/link";
 import { useActionState } from "react";
 import { crearRepuesto } from "../actions";
@@ -15,9 +16,9 @@ export default function NuevoRepuestoForm() {
       </div>
 
       {state?.error && (
-        <p role="alert" className="rounded-2xl bg-error/10 px-4 py-3 text-sm text-error">
+        <AvisoAccion origen={state}>
           {state.error}
-        </p>
+        </AvisoAccion>
       )}
 
       <div className="flex flex-wrap justify-end gap-3">

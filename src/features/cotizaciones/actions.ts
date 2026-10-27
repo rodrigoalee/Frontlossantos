@@ -3,7 +3,7 @@
 import { refresh } from "next/cache";
 import { redirect } from "next/navigation";
 import { ApiError, apiFetch } from "@/lib/api";
-import type { NuevaLineaCotizacion, ResultadoAccion } from "./types";
+import type { DestinoCotizacion, NuevaLineaCotizacion, ResultadoAccion } from "./types";
 
 function traducirError(error: unknown, contexto: string): { error: string } {
   if (error instanceof ApiError) {
@@ -18,18 +18,19 @@ function traducirError(error: unknown, contexto: string): { error: string } {
 }
 
 export async function crearCotizacion(
-  idOrden: number,
+  destino: DestinoCotizacion,
   nota: string,
   lineas: NuevaLineaCotizacion[],
 ): Promise<ResultadoAccion> {
   const limpias = lineas.map((linea) => ({ ...linea, descripcion: linea.descripcion.trim() }));
+  if (!Number.isInteger(destino.id) || destino.id < 1) return { error: "La cotización no tiene a qué asociarse." };
   if (limpias.length === 0) return { error: "Agrega al menos una línea." };
   if (limpias.some((l) => !l.descripcion || l.cantidad < 1 || l.precioUnitario < 0)) {
     return { error: "Cada línea necesita concepto, una cantidad de al menos 1 y un precio válido." };
   }
 
   try {
-    await apiFetch<void>(`/api/ordenes/${idOrden}/cotizaciones`, {
+    await apiFetch<void>(`/api/${destino.tipo === "cita" ? "citas" : "ordenes"}/${destino.id}/cotizaciones`, {
       method: "POST",
       body: JSON.stringify({ nota: nota.trim() || null, lineas: limpias }),
     });
@@ -48,6 +49,19 @@ export async function responderCotizacion(idCotizacion: number, aceptar: boolean
     });
   } catch (error) {
     return traducirError(error, "responder la cotización");
+  }
+  refresh();
+  return undefined;
+}
+
+export async function registrarRespuestaCotizacion(idCotizacion: number, aceptar: boolean): Promise<ResultadoAccion> {
+  try {
+    await apiFetch<void>(`/api/citas/cotizaciones/${idCotizacion}/respuesta`, {
+      method: "POST",
+      body: JSON.stringify({ aceptar }),
+    });
+  } catch (error) {
+    return traducirError(error, "registrar la respuesta del cliente");
   }
   refresh();
   return undefined;

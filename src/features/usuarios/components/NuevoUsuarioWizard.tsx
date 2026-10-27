@@ -1,5 +1,6 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import Link from "next/link";
 import { useState, useTransition } from "react";
 import { FaArrowLeft, FaArrowRight, FaCheck } from "react-icons/fa6";
@@ -124,14 +125,14 @@ export default function NuevoUsuarioWizard({ roles, sedes, permisosPorRol }: Pro
         )}
 
         {error && (
-          <p role="alert" className="rounded-2xl bg-error/10 px-4 py-3 text-sm text-error">
+          <AvisoAccion>
             {error}
-          </p>
+          </AvisoAccion>
         )}
 
         <div className="flex flex-wrap justify-between gap-3">
           {paso === 1 ? (
-            <Link href="/admin/usuarios" className="btn rounded-full px-6">
+            <Link href="/admin/ajustes" className="btn rounded-full px-6">
               Cancelar
             </Link>
           ) : (

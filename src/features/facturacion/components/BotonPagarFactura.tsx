@@ -1,5 +1,6 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import { useState, useTransition } from "react";
 import { FaCreditCard } from "react-icons/fa6";
 import { formatearMoneda } from "@/features/citas/formato";
@@ -25,9 +26,9 @@ export default function BotonPagarFactura({ idFactura, total }: { idFactura: num
         Pagar {formatearMoneda(total)}
       </button>
       {error && (
-        <p role="alert" className="text-sm text-error">
+        <AvisoAccion>
           {error}
-        </p>
+        </AvisoAccion>
       )}
     </div>
   );

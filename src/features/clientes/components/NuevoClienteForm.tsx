@@ -1,7 +1,9 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import Link from "next/link";
 import { useActionState } from "react";
+import { alSalirDelTelefono } from "@/lib/validaciones";
 import { crearCliente } from "../actions";
 
 const CAMPOS = [
@@ -13,7 +15,6 @@ const CAMPOS = [
     maxLength: 20,
     required: true,
     autoComplete: "tel",
-    ayuda: "Con código de país, por ejemplo +50255551234.",
   },
   { name: "correo", label: "Correo", type: "email", maxLength: 100, required: true, autoComplete: "email" },
   { name: "nit", label: "NIT (opcional)", type: "text", maxLength: 20, required: false, autoComplete: "off" },
@@ -38,6 +39,7 @@ export default function NuevoClienteForm() {
               required={campo.required}
               autoComplete={campo.autoComplete}
               defaultValue={state?.valores?.[campo.name]}
+              onBlur={campo.name === "telefono" ? alSalirDelTelefono : undefined}
               className="input w-full border-0 bg-base-200"
             />
             {"ayuda" in campo && <p className="mt-1.5 text-xs text-base-content/60">{campo.ayuda}</p>}
@@ -46,9 +48,9 @@ export default function NuevoClienteForm() {
       </div>
 
       {state?.error && (
-        <p role="alert" className="rounded-2xl bg-error/10 px-4 py-3 text-sm text-error">
+        <AvisoAccion origen={state}>
           {state.error}
-        </p>
+        </AvisoAccion>
       )}
 
       <div className="flex flex-wrap justify-end gap-3">

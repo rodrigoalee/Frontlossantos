@@ -65,7 +65,6 @@ export default async function FichaCliente({ idCliente }: { idCliente: number })
               etiqueta="Teléfono"
               tipo="tel"
               maxLength={20}
-              ayuda="Con código de país, por ejemplo +50255551234."
             >
               <a href={`tel:${cliente.telefono}`} className="hover:text-primary">
                 {formatearTelefono(cliente.telefono)}
