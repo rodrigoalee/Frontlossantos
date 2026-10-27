@@ -40,8 +40,9 @@ export type DiaDisponibilidad = {
 export type NuevaCita = {
   vehiculoId: number;
   sucursalId: number;
-  servicioId: number;
+  servicioId: number | null;
   fechaHora: string;
+  descripcionServicio?: string;
 };
 
 export type SeguimientoCita = {
@@ -80,6 +81,7 @@ export type CitaTallerDetalle = CitaTaller & {
   clienteId: number;
   telefonoCliente: string;
   motivo: string | null;
+  servicioPersonalizado: boolean;
 };
 
 export type CambiarEstadoCitaState = {

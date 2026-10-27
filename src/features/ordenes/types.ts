@@ -76,12 +76,6 @@ export type ServicioCatalogo = {
   activo: boolean;
 };
 
-export type NuevaOrden = {
-  citaId: number;
-  mecanicoAsignadoId: number | null;
-  motivoIngreso: string | null;
-};
-
 export type NuevaLinea = {
   repuestoId: number | null;
   servicioId: number | null;

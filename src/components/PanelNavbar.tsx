@@ -15,9 +15,10 @@ type Props = {
   nombreCompleto: string;
   inicio?: string;
   conPerfil?: boolean;
+  conAjustes?: boolean;
 };
 
-export default function PanelNavbar({ nombreCompleto, inicio = "/panel", conPerfil = true }: Props) {
+export default function PanelNavbar({ nombreCompleto, inicio = "/panel", conPerfil = true, conAjustes = false }: Props) {
   return (
     <header className="bg-neutral text-neutral-content">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
@@ -28,7 +29,7 @@ export default function PanelNavbar({ nombreCompleto, inicio = "/panel", conPerf
           </span>
         </Link>
 
-        <MenuOpciones iniciales={iniciales(nombreCompleto)} conPerfil={conPerfil} />
+        <MenuOpciones iniciales={iniciales(nombreCompleto)} conPerfil={conPerfil} conAjustes={conAjustes} />
       </nav>
     </header>
   );

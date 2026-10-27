@@ -1,5 +1,6 @@
 "use client";
 
+import ConfirmacionAccion from "@/components/ConfirmacionAccion";
 import Link from "next/link";
 import { useState, useTransition } from "react";
 import { FaArrowLeft, FaArrowRight, FaCheck } from "react-icons/fa6";
@@ -14,6 +15,7 @@ import PasoCliente from "./PasoCliente";
 import PasoVehiculo from "./PasoVehiculo";
 
 const PASOS = ["Cliente", "Vehículo", "Cita", "Confirmar"] as const;
+const OTRO_SERVICIO = "otro";
 
 /** "Ahora" en la hora local del navegador, con el formato de <input type="datetime-local">. */
 function ahoraLocal() {
@@ -47,9 +49,11 @@ export default function NuevaCitaTallerWizard({ clientes, servicios, sedes }: Pr
   const [fechaHora, setFechaHora] = useState("");
   const [motivo, setMotivo] = useState("");
   const [error, setError] = useState<string>();
+  const [confirmando, setConfirmando] = useState(false);
   const [pendiente, startTransition] = useTransition();
 
   const servicio = servicios.find((s) => String(s.idServicio) === servicioId);
+  const otro = servicioId === OTRO_SERVICIO;
   const sede = sedes.find((s) => String(s.idSucursal) === sucursalId);
 
   function elegirCliente(elegido: ClienteMostrador) {
@@ -80,14 +84,19 @@ export default function NuevaCitaTallerWizard({ clientes, servicios, sedes }: Pr
       setPaso(4);
       return;
     }
+    setConfirmando(true);
+  }
+
+  function crear() {
     startTransition(async () => {
       const resultado = await crearCitaMostrador({
         vehiculoId: vehiculo!.idVehiculo,
-        servicioId: Number(servicioId),
+        servicioId: otro ? null : Number(servicioId),
         sucursalId: sucursalId ? Number(sucursalId) : null,
         fechaHora: new Date(fechaHora).toISOString(),
         motivo,
       });
+      setConfirmando(false);
       setError(resultado.error);
     });
   }
@@ -121,6 +130,7 @@ export default function NuevaCitaTallerWizard({ clientes, servicios, sedes }: Pr
                       {s.nombre}
                     </option>
                   ))}
+                  <option value={OTRO_SERVICIO}>Otro servicio (se cotiza)</option>
                 </select>
               </Campo>
               {sedes.length > 0 && (
@@ -141,13 +151,18 @@ export default function NuevaCitaTallerWizard({ clientes, servicios, sedes }: Pr
                 <input id="cita-fecha" type="datetime-local" value={fechaHora} onChange={(e) => setFechaHora(e.target.value)} required className={`input ${CLASE_CAMPO}`} />
               </Campo>
               <div className="sm:col-span-2">
-                <Campo id="cita-motivo" etiqueta="Lo que reporta el cliente (opcional)">
+                <Campo
+                  id="cita-motivo"
+                  etiqueta={otro ? "Describe el servicio que necesita" : "Lo que reporta el cliente (opcional)"}
+                  ayuda={otro ? "Al crear la cita irás directo a armar la cotización." : undefined}
+                >
                   <textarea
                     id="cita-motivo"
                     value={motivo}
                     onChange={(e) => setMotivo(e.target.value)}
                     maxLength={500}
                     rows={3}
+                    required={otro}
                     placeholder="Ej. Hace un ruido al frenar"
                     className={`textarea ${CLASE_CAMPO}`}
                   />
@@ -160,7 +175,7 @@ export default function NuevaCitaTallerWizard({ clientes, servicios, sedes }: Pr
               <Dato etiqueta="Vehículo">
                 {vehiculo && `${formatearPlaca(vehiculo.placa)} · ${vehiculo.marca} ${vehiculo.modelo} ${vehiculo.anio}`}
               </Dato>
-              <Dato etiqueta="Servicio">{servicio?.nombre}</Dato>
+              <Dato etiqueta="Servicio">{otro ? "Otro servicio (por cotizar)" : servicio?.nombre}</Dato>
               <Dato etiqueta="Fecha y hora">{fechaHora && formatearFechaCita(new Date(fechaHora).toISOString())}</Dato>
               {sede && <Dato etiqueta="Sede">{sede.nombre}</Dato>}
               {motivo.trim() && <Dato etiqueta="Lo que reporta">{motivo.trim()}</Dato>}
@@ -180,6 +195,18 @@ export default function NuevaCitaTallerWizard({ clientes, servicios, sedes }: Pr
               {paso === 3 && <FaArrowRight aria-hidden className="size-3" />}
             </button>
           </div>
+          {confirmando && (
+            <ConfirmacionAccion
+              titulo="¿Crear la cita?"
+              mensaje={vehiculo && `${formatearPlaca(vehiculo.placa)} · ${formatearFechaCita(new Date(fechaHora).toISOString())}`}
+              textoConfirmar="Sí, crear"
+              textoCancelar="Volver"
+              tono="primario"
+              pendiente={pendiente}
+              onConfirmar={crear}
+              onCancelar={() => setConfirmando(false)}
+            />
+          )}
         </form>
       )}
 

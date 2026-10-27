@@ -35,7 +35,7 @@ function FormVehiculoNuevo({
     <form onSubmit={registrar} className="flex flex-col gap-5">
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <Campo id="vehiculo-placa" etiqueta="Placa">
-          <input id="vehiculo-placa" value={datos.placa} onChange={cambiar("placa")} maxLength={20} required autoFocus className={`input uppercase ${CLASE_CAMPO}`} />
+          <input id="vehiculo-placa" value={datos.placa} onChange={cambiar("placa")} onBlur={() => setDatos((actual) => ({ ...actual, placa: formatearPlaca(actual.placa.trim().toUpperCase()) }))} maxLength={20} required autoFocus className={`input uppercase ${CLASE_CAMPO}`} />
         </Campo>
         <Campo id="vehiculo-anio" etiqueta="Año">
           <input id="vehiculo-anio" type="number" inputMode="numeric" min={1900} max={2100} value={datos.anio} onChange={cambiar("anio")} required className={`input ${CLASE_CAMPO}`} />

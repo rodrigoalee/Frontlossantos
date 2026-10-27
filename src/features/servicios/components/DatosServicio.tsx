@@ -1,5 +1,6 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import { useActionState, useState } from "react";
 import { FaPen } from "react-icons/fa6";
 import { formatearMoneda } from "@/features/citas/formato";
@@ -30,9 +31,9 @@ function EditorServicio({ servicio, onTerminar }: EditorProps) {
     <form action={action} className="flex flex-col gap-4">
       <CamposServicio valores={valores} compacto />
       {state?.error && (
-        <p role="alert" className="text-sm text-error">
+        <AvisoAccion origen={state}>
           {state.error}
-        </p>
+        </AvisoAccion>
       )}
       <div className="flex gap-2">
         <button type="submit" disabled={pending} className="btn btn-primary btn-sm rounded-full px-5">

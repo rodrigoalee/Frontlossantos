@@ -7,7 +7,7 @@ import SeccionRoles from "@/features/usuarios/components/SeccionRoles";
 import SeccionUsuarios from "@/features/usuarios/components/SeccionUsuarios";
 
 export const metadata: Metadata = {
-  title: "Usuarios y accesos | Los Santos Customs",
+  title: "Ajustes | Los Santos Customs",
 };
 
 type Consulta = { tab?: string | string[]; rol?: string | string[]; editar?: string | string[]; gestionar?: string | string[] };
@@ -18,8 +18,8 @@ function primero(valor: string | string[] | undefined) {
 
 function Pestanas({ actual, conUsuarios, conRoles }: { actual: "usuarios" | "roles"; conUsuarios: boolean; conRoles: boolean }) {
   const pestanas = [
-    ...(conUsuarios ? [{ valor: "usuarios", etiqueta: "Usuarios", href: "/admin/usuarios" }] : []),
-    ...(conRoles ? [{ valor: "roles", etiqueta: "Roles y permisos", href: "/admin/usuarios?tab=roles" }] : []),
+    ...(conUsuarios ? [{ valor: "usuarios", etiqueta: "Usuarios", href: "/admin/ajustes" }] : []),
+    ...(conRoles ? [{ valor: "roles", etiqueta: "Roles y permisos", href: "/admin/ajustes?tab=roles" }] : []),
   ];
 
   return (
@@ -73,7 +73,7 @@ async function Contenido({ consulta }: { consulta: Promise<Consulta> }) {
   );
 }
 
-export default function UsuariosPage({ searchParams }: PageProps<"/admin/usuarios">) {
+export default function AjustesPage({ searchParams }: PageProps<"/admin/ajustes">) {
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 sm:py-10">
       <div>
@@ -82,9 +82,9 @@ export default function UsuariosPage({ searchParams }: PageProps<"/admin/usuario
             Inicio
           </Link>
           <span className="mx-2">/</span>
-          <span className="text-secondary">Usuarios y accesos</span>
+          <span className="text-secondary">Ajustes</span>
         </p>
-        <h1 className="mt-2 text-3xl font-bold text-secondary">Usuarios y accesos</h1>
+        <h1 className="mt-2 text-3xl font-bold text-secondary">Ajustes</h1>
         <p className="text-base-content/60">Crea las cuentas del personal y decide qué puede hacer cada rol</p>
       </div>
 

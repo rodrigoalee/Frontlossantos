@@ -1,5 +1,7 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
+import ConfirmacionAccion from "@/components/ConfirmacionAccion";
 import { useState, useTransition } from "react";
 import { formatearPlaca } from "@/features/vehiculos/formato";
 import type { Vehiculo } from "@/features/vehiculos/types";
@@ -18,6 +20,7 @@ type Props = {
 const PASOS = ["Datos de la cita", "Confirmación"] as const;
 
 const CLASE_SELECT = "select w-full border-0 bg-base-200";
+const OTRO_SERVICIO = "otro";
 
 function describirVehiculo(vehiculo: Vehiculo) {
   return `${vehiculo.marca} ${vehiculo.modelo} ${vehiculo.anio} · ${formatearPlaca(vehiculo.placa)}`;
@@ -28,15 +31,18 @@ export default function AgendarCitaWizard({ vehiculos, sucursales, servicios }: 
   const [vehiculoId, setVehiculoId] = useState(vehiculos.length === 1 ? String(vehiculos[0].idVehiculo) : "");
   const [sucursalId, setSucursalId] = useState("");
   const [servicioId, setServicioId] = useState("");
+  const [descripcion, setDescripcion] = useState("");
   const [fechaHora, setFechaHora] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [confirmando, setConfirmando] = useState(false);
   const [version, setVersion] = useState(0);
   const [pendiente, startTransition] = useTransition();
 
   const vehiculo = vehiculos.find((v) => String(v.idVehiculo) === vehiculoId);
   const sucursal = sucursales.find((s) => String(s.idSucursal) === sucursalId);
   const servicio = servicios.find((s) => String(s.idServicio) === servicioId);
-  const completo = vehiculo && sucursal && servicio && fechaHora;
+  const otro = servicioId === OTRO_SERVICIO;
+  const completo = vehiculo && sucursal && (servicio || (otro && descripcion.trim())) && fechaHora;
 
   function confirmar() {
     if (!completo) return;
@@ -44,9 +50,11 @@ export default function AgendarCitaWizard({ vehiculos, sucursales, servicios }: 
       const resultado = await agendarCita({
         vehiculoId: vehiculo.idVehiculo,
         sucursalId: sucursal.idSucursal,
-        servicioId: servicio.idServicio,
+        servicioId: servicio?.idServicio ?? null,
         fechaHora,
+        descripcionServicio: otro ? descripcion.trim() : undefined,
       });
+      setConfirmando(false);
       if (resultado?.error) {
         setError(resultado.error);
         setFechaHora(null);
@@ -60,11 +68,7 @@ export default function AgendarCitaWizard({ vehiculos, sucursales, servicios }: 
     <div className="flex flex-col gap-8 rounded-3xl border border-base-300 bg-base-100 p-5 sm:p-8">
       <Stepper pasos={PASOS} paso={paso} />
 
-      {error && (
-        <p role="alert" className="rounded-2xl bg-error/10 px-4 py-3 text-sm text-error">
-          {error}
-        </p>
-      )}
+      {error && <AvisoAccion>{error}</AvisoAccion>}
 
       {paso === 1 ? (
         <form
@@ -145,10 +149,32 @@ export default function AgendarCitaWizard({ vehiculos, sucursales, servicios }: 
                     {s.nombre}
                   </option>
                 ))}
+                <option value={OTRO_SERVICIO}>Otro servicio (descríbelo)</option>
               </select>
-              <p className="mt-1.5 text-xs text-base-content/60">El precio es estimado; puede variar tras el diagnóstico.</p>
+              <p className="mt-1.5 text-xs text-base-content/60">
+                {otro
+                  ? "Te enviaremos una cotización; la cita se confirma cuando la aceptes."
+                  : "El precio es estimado; puede variar tras el diagnóstico."}
+              </p>
             </div>
           </div>
+
+          {otro && (
+            <div>
+              <label htmlFor="descripcion" className="mb-1.5 block text-sm font-semibold">
+                ¿Qué necesitas?
+              </label>
+              <textarea
+                id="descripcion"
+                value={descripcion}
+                onChange={(e) => setDescripcion(e.target.value)}
+                maxLength={500}
+                rows={3}
+                required
+                className="textarea w-full rounded-2xl border-0 bg-base-200"
+              />
+            </div>
+          )}
 
           <fieldset>
             <legend className="mb-1.5 text-sm font-semibold">Fecha y hora</legend>
@@ -184,27 +210,44 @@ export default function AgendarCitaWizard({ vehiculos, sucursales, servicios }: 
               <dl className="flex flex-col gap-4">
                 <Dato etiqueta="Vehículo" valor={describirVehiculo(vehiculo)} />
                 <Dato etiqueta="Sede" valor={`${sucursal.nombre} — ${sucursal.direccion}`} />
-                <Dato etiqueta="Servicio" valor={servicio.nombre} />
+                <Dato etiqueta="Servicio" valor={servicio?.nombre ?? `Otro: ${descripcion.trim()}`} />
                 <Dato etiqueta="Fecha y hora" valor={formatearFechaCita(fechaHora)} />
                 <div className="border-t border-base-300 pt-4">
                   <dt className="font-semibold text-base-content/50">Precio</dt>
-                  <dd className="text-2xl font-bold text-secondary">{formatearMoneda(servicio.tarifaManoObra)}</dd>
+                  <dd className="text-2xl font-bold text-secondary">
+                    {servicio ? formatearMoneda(servicio.tarifaManoObra) : "Por cotizar"}
+                  </dd>
                   <dd className="mt-1 text-xs text-base-content/60">
-                    Mano de obra estimada; puede variar tras el diagnóstico.
+                    {servicio
+                      ? "Mano de obra estimada; puede variar tras el diagnóstico."
+                      : "El taller te enviará la cotización; la cita se confirma cuando la aceptes."}
                   </dd>
                 </div>
               </dl>
             </section>
-            <p className="text-center text-sm text-base-content/60">El taller confirmará tu cita antes de la visita.</p>
+            <p className="text-center text-sm text-base-content/60">
+              {servicio ? "El taller confirmará tu cita antes de la visita." : "Recibirás la cotización por WhatsApp y en tu portal."}
+            </p>
             <div className="flex flex-wrap justify-end gap-3">
               <button type="button" onClick={() => setPaso(1)} disabled={pendiente} className="btn rounded-full px-6">
                 Volver
               </button>
-              <button type="button" onClick={confirmar} disabled={pendiente} className="btn btn-primary rounded-full px-8">
-                {pendiente && <span className="loading loading-spinner loading-sm" />}
+              <button type="button" onClick={() => setConfirmando(true)} disabled={pendiente} className="btn btn-primary rounded-full px-8">
                 Confirmar cita
               </button>
             </div>
+            {confirmando && (
+              <ConfirmacionAccion
+                titulo="¿Agendar esta cita?"
+                mensaje={`${formatearFechaCita(fechaHora)} en ${sucursal.nombre}.`}
+                textoConfirmar="Sí, agendar"
+                textoCancelar="Volver"
+                tono="primario"
+                pendiente={pendiente}
+                onConfirmar={confirmar}
+                onCancelar={() => setConfirmando(false)}
+              />
+            )}
           </div>
         )
       )}

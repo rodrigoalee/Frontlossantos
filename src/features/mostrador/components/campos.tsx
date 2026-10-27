@@ -1,3 +1,4 @@
+import AvisoAccion from "@/components/AvisoAccion";
 export const CLASE_CAMPO = "w-full border-0 bg-base-200";
 
 export function Campo({ id, etiqueta, ayuda, children }: { id: string; etiqueta: string; ayuda?: string; children: React.ReactNode }) {
@@ -15,8 +16,6 @@ export function Campo({ id, etiqueta, ayuda, children }: { id: string; etiqueta:
 export function MensajeError({ error }: { error?: string }) {
   if (!error) return null;
   return (
-    <p role="alert" className="rounded-2xl bg-error/10 px-4 py-3 text-sm text-error">
-      {error}
-    </p>
+<AvisoAccion>{error}</AvisoAccion>
   );
 }

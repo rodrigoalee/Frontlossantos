@@ -116,7 +116,7 @@ export default async function FichaRepuesto({ idRepuesto }: { idRepuesto: number
             activo={repuesto.activo}
             descripcionActivo="Se puede agregar a las órdenes y tener existencias en cada sede."
             descripcionBaja="No aparece al armar órdenes ni se le asignan existencias. Las órdenes y facturas anteriores lo conservan."
-            confirmacionBaja="¿Dar de baja este repuesto? Podrás reactivarlo después."
+            confirmacionBaja="Podrás reactivarlo después."
             darDeBaja={permisos.has("repuestos.baja") ? darDeBajaRepuesto.bind(null, repuesto.idRepuesto) : undefined}
             reactivar={permisos.has("repuestos.editar") ? reactivarRepuesto.bind(null, repuesto.idRepuesto) : undefined}
           />

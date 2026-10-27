@@ -43,5 +43,5 @@ export type FacturaPortal = {
 /** Sin pago no hay forma; pagada sin id de Stripe significa que se cobró en caja. */
 export function formaDePago(estado: EstadoPago, conTarjeta: boolean) {
   if (estado !== "Pagado") return "—";
-  return conTarjeta ? "Tarjeta (Stripe)" : "Efectivo";
+  return conTarjeta ? "Tarjeta" : "Efectivo";
 }

@@ -54,7 +54,7 @@ export async function crearUsuario(datos: DatosUsuario, password: string): Promi
   } catch (error) {
     return traducirError(error, "crear el usuario");
   }
-  redirect("/admin/usuarios");
+  redirect("/admin/ajustes");
 }
 
 export async function actualizarUsuario(idUsuario: number, datos: DatosUsuario): Promise<ResultadoAccion> {
@@ -106,7 +106,7 @@ export async function guardarRol(idRol: number | null, nombre: string, descripci
   } catch (error) {
     return traducirError(error, "guardar el rol");
   }
-  redirect(`/admin/usuarios?tab=roles&rol=${nuevoId}`);
+  redirect(`/admin/ajustes?tab=roles&rol=${nuevoId}`);
 }
 
 export async function eliminarRol(idRol: number): Promise<ResultadoAccion> {
@@ -115,7 +115,7 @@ export async function eliminarRol(idRol: number): Promise<ResultadoAccion> {
   } catch (error) {
     return traducirError(error, "eliminar el rol");
   }
-  redirect("/admin/usuarios?tab=roles");
+  redirect("/admin/ajustes?tab=roles");
 }
 
 export async function cambiarPermisoDeRol(idRol: number, idPermiso: number, asignar: boolean): Promise<ResultadoAccion> {

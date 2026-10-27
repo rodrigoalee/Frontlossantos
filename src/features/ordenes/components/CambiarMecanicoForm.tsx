@@ -1,5 +1,6 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import { useState, useTransition } from "react";
 import { cambiarMecanico } from "../actions";
 import { describirCarga } from "../formato";
@@ -51,9 +52,9 @@ export default function CambiarMecanicoForm({
         </button>
       </div>
       {error && (
-        <p role="alert" className="text-sm text-error">
+        <AvisoAccion>
           {error}
-        </p>
+        </AvisoAccion>
       )}
     </div>
   );

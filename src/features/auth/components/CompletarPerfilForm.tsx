@@ -1,5 +1,7 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
+import { alSalirDelTelefono } from "@/lib/validaciones";
 import { useActionState } from "react";
 import { completarPerfil } from "../actions";
 
@@ -18,6 +20,7 @@ export default function CompletarPerfilForm() {
         placeholder="+50241961558"
         autoComplete="tel"
         defaultValue={state?.telefono ?? "+502"}
+        onBlur={alSalirDelTelefono}
         pattern="\+[1-9][\d\s\-]{7,18}"
         title="Incluye el código de país, por ejemplo +50241961558."
         required
@@ -25,9 +28,9 @@ export default function CompletarPerfilForm() {
       />
 
       {state?.error && (
-        <p role="alert" className="mt-3 text-center text-sm text-error">
+        <AvisoAccion origen={state}>
           {state.error}
-        </p>
+        </AvisoAccion>
       )}
 
       <button type="submit" disabled={pending} className="btn btn-primary mt-6 w-full rounded-full">

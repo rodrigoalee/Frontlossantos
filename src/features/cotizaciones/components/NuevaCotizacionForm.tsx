@@ -1,9 +1,11 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import { useRef, useState, useTransition } from "react";
 import { FaPaperPlane, FaPlus, FaTrash } from "react-icons/fa6";
 import { formatearMoneda } from "@/features/citas/formato";
 import { crearCotizacion } from "../actions";
+import type { DestinoCotizacion } from "../types";
 
 const MAX_LINEAS = 20;
 const CLASE_CAMPO = "input w-full border-0 bg-base-200";
@@ -12,9 +14,15 @@ type Fila = { id: number; descripcion: string; cantidad: string; precio: string 
 
 const filaVacia = (id: number): Fila => ({ id, descripcion: "", cantidad: "1", precio: "" });
 
-export default function NuevaCotizacionForm({ idOrden }: { idOrden: number }) {
+export default function NuevaCotizacionForm({
+  destino,
+  siempreAbierto = false,
+}: {
+  destino: DestinoCotizacion;
+  siempreAbierto?: boolean;
+}) {
   const siguienteId = useRef(1);
-  const [abierto, setAbierto] = useState(false);
+  const [abierto, setAbierto] = useState(siempreAbierto);
   const [filas, setFilas] = useState<Fila[]>(() => [filaVacia(0)]);
   const [nota, setNota] = useState("");
   const [error, setError] = useState<string>();
@@ -31,7 +39,7 @@ export default function NuevaCotizacionForm({ idOrden }: { idOrden: number }) {
     setError(undefined);
     startTransition(async () => {
       const resultado = await crearCotizacion(
-        idOrden,
+        destino,
         nota,
         filas.map((fila) => ({
           descripcion: fila.descripcion,
@@ -45,7 +53,7 @@ export default function NuevaCotizacionForm({ idOrden }: { idOrden: number }) {
       }
       setFilas([filaVacia(siguienteId.current++)]);
       setNota("");
-      setAbierto(false);
+      setAbierto(siempreAbierto);
     });
   }
 
@@ -77,7 +85,6 @@ export default function NuevaCotizacionForm({ idOrden }: { idOrden: number }) {
                 onChange={(e) => cambiar(fila.id, "descripcion", e.target.value)}
                 maxLength={200}
                 required
-                placeholder="Ej. Instalación de luces LED"
                 aria-label={`Concepto de la línea ${i + 1}`}
                 className={CLASE_CAMPO}
               />
@@ -137,7 +144,6 @@ export default function NuevaCotizacionForm({ idOrden }: { idOrden: number }) {
           onChange={(e) => setNota(e.target.value)}
           maxLength={500}
           rows={2}
-          placeholder="Ej. Incluye mano de obra; tiempo estimado: 2 días."
           className="textarea w-full border-0 bg-base-200"
         />
       </label>
@@ -148,15 +154,17 @@ export default function NuevaCotizacionForm({ idOrden }: { idOrden: number }) {
       </div>
 
       {error && (
-        <p role="alert" className="rounded-2xl bg-error/10 px-4 py-3 text-sm text-error">
+        <AvisoAccion>
           {error}
-        </p>
+        </AvisoAccion>
       )}
 
       <div className="flex flex-wrap justify-end gap-3">
-        <button type="button" onClick={() => setAbierto(false)} disabled={pendiente} className="btn rounded-full px-6">
-          Cancelar
-        </button>
+        {!siempreAbierto && (
+          <button type="button" onClick={() => setAbierto(false)} disabled={pendiente} className="btn rounded-full px-6">
+            Cancelar
+          </button>
+        )}
         <button type="submit" disabled={pendiente} className="btn btn-primary rounded-full px-6">
           {pendiente ? <span className="loading loading-spinner loading-sm" /> : <FaPaperPlane aria-hidden className="size-3.5" />}
           Enviar al cliente

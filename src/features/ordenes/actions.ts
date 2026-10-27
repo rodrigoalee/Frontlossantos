@@ -2,9 +2,8 @@
 
 import { refresh } from "next/cache";
 import { redirect } from "next/navigation";
-import type { CitaTallerDetalle } from "@/features/citas/types";
 import { ApiError, apiFetch } from "@/lib/api";
-import type { EstadoOrden, NuevaLinea, NuevaOrden, ResultadoAccion } from "./types";
+import type { EstadoOrden, NuevaLinea, ResultadoAccion } from "./types";
 
 function traducirError(error: unknown, contexto: string): { error: string } {
   if (error instanceof ApiError) {
@@ -17,15 +16,17 @@ function traducirError(error: unknown, contexto: string): { error: string } {
   return { error: "No se pudo completar la acción. Intenta más tarde." };
 }
 
-export async function abrirOrden(datos: NuevaOrden): Promise<ResultadoAccion> {
+export async function abrirOrden(citaId: number, motivoIngreso: string | null): Promise<ResultadoAccion> {
   try {
-    await apiFetch<void>("/api/ordenes", { method: "POST", body: JSON.stringify(datos) });
+    await apiFetch<void>("/api/ordenes", {
+      method: "POST",
+      body: JSON.stringify({ citaId, mecanicoAsignadoId: null, motivoIngreso }),
+    });
   } catch (error) {
-    return traducirError(error, "abrir la orden");
+    return traducirError(error, "recibir el vehículo");
   }
-
-  const cita = await apiFetch<CitaTallerDetalle>(`/api/citas/${datos.citaId}`).catch(() => undefined);
-  redirect(cita?.idOrden ? `/admin/ordenes/${cita.idOrden}` : "/admin/ordenes");
+  refresh();
+  return undefined;
 }
 
 export async function cambiarEstadoOrden(idOrden: number, estado: EstadoOrden): Promise<ResultadoAccion> {

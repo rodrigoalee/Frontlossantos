@@ -5,9 +5,9 @@ import ModuloCard from "./ModuloCard";
 import ModuloIcono from "./ModuloIcono";
 
 // En pantallas táctiles (teléfono y tablet, aunque esté horizontal) se muestran solo los íconos;
-// las tarjetas con descripción quedan para computadora con mouse.
+// las tarjetas con botón quedan para computadora con mouse.
 const CLASES_ICONOS = "grid grid-cols-3 gap-x-2 gap-y-6 sm:grid-cols-4 md:grid-cols-5 lg:pointer-fine:hidden";
-const CLASES_TARJETAS = "hidden gap-6 lg:pointer-fine:grid lg:pointer-fine:grid-cols-3";
+const CLASES_TARJETAS = "hidden gap-6 lg:pointer-fine:grid lg:pointer-fine:grid-cols-4";
 
 export default async function RejillaModulos() {
   const usuario = await verificarEmpleado();
@@ -50,14 +50,10 @@ export function RejillaModulosCargando() {
         ))}
       </div>
       <div className={CLASES_TARJETAS}>
-        {[0, 1, 2, 3, 4, 5].map((i) => (
-          <div key={i} className="flex flex-col gap-5 rounded-3xl border border-base-300 p-6">
-            <div className="flex items-center gap-3">
-              <div className="skeleton size-9 rounded-lg" />
-              <div className="skeleton h-5 w-1/2" />
-            </div>
-            <div className="skeleton h-4 w-full" />
-            <div className="skeleton h-4 w-4/5" />
+        {[0, 1, 2, 3].map((i) => (
+          <div key={i} className="flex flex-col items-center gap-4 rounded-3xl border border-base-300 p-6">
+            <div className="skeleton size-20 rounded-2xl" />
+            <div className="skeleton h-5 w-2/3" />
             <div className="skeleton h-10 w-full rounded-full" />
           </div>
         ))}

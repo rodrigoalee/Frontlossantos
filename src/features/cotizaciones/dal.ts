@@ -9,3 +9,7 @@ export function obtenerCotizacionesDeOrden(idOrden: number) {
 export function obtenerCotizacionesDeCita(idCita: number) {
   return apiFetch<Cotizacion[]>(`/api/portal/citas/${idCita}/cotizaciones`);
 }
+
+export function obtenerCotizacionesDeCitaTaller(idCita: number) {
+  return apiFetch<Cotizacion[]>(`/api/citas/${idCita}/cotizaciones`);
+}

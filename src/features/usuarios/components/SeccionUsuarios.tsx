@@ -36,7 +36,7 @@ export default async function SeccionUsuarios({ usuario, gestionar }: { usuario:
           <p className="text-sm text-base-content/60">Toca “Gestionar” para editar, cambiar la contraseña o el acceso.</p>
         </div>
         {permisos.has("usuarios.crear") && (
-          <Link href="/admin/usuarios/nuevo" className="btn btn-primary min-h-11 rounded-full px-6">
+          <Link href="/admin/ajustes/nuevo" className="btn btn-primary min-h-11 rounded-full px-6">
             <FaPlus aria-hidden className="size-3" />
             Nuevo usuario
           </Link>

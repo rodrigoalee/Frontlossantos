@@ -1,5 +1,6 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import { useState, useTransition } from "react";
 import { FaXmark } from "react-icons/fa6";
 import { quitarLinea } from "../actions";
@@ -36,9 +37,9 @@ export default function QuitarLineaBoton({
         {pending ? <span className="loading loading-spinner loading-xs" /> : <FaXmark aria-hidden className="size-3.5" />}
       </button>
       {error && (
-        <span role="alert" className="block text-xs text-error">
+        <AvisoAccion>
           {error}
-        </span>
+        </AvisoAccion>
       )}
     </>
   );

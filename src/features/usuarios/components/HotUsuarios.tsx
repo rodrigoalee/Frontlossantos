@@ -33,7 +33,7 @@ function CeldaEstado({ value }: HotRendererProps) {
 function CeldaGestionar({ value }: HotRendererProps) {
   return (
     <Link
-      href={`/admin/usuarios?gestionar=${value}`}
+      href={`/admin/ajustes?gestionar=${value}`}
       scroll={false}
       className="font-semibold text-secondary underline-offset-2 hover:underline"
     >

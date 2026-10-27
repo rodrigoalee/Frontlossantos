@@ -13,7 +13,7 @@ export default async function CotizacionesOrden({ idOrden, puedeCotizar }: { idO
         <p className="text-sm text-base-content/60">Trabajo fuera del catálogo. Al aceptarla, sus líneas pasan a esta orden.</p>
       </div>
 
-      {puedeCotizar && <NuevaCotizacionForm idOrden={idOrden} />}
+      {puedeCotizar && <NuevaCotizacionForm destino={{ tipo: "orden", id: idOrden }} />}
 
       {cotizaciones.map((cotizacion) => (
         <TarjetaCotizacion key={cotizacion.idCotizacion} cotizacion={cotizacion} />

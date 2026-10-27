@@ -1,7 +1,9 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import { useState, useTransition } from "react";
 import { FaMoneyBillWave, FaWhatsapp } from "react-icons/fa6";
+import ConfirmacionAccion from "@/components/ConfirmacionAccion";
 import { facturarYEnviarEnlace, registrarPagoEfectivo, reenviarEnlace } from "../actions";
 import type { ResultadoAccion } from "../types";
 
@@ -39,7 +41,7 @@ export default function AccionesCobro({ idOrden, idFactura, puedeFacturar, puede
             {idFactura ? "Reenviar enlace de pago" : "Facturar y enviar enlace de pago"}
           </button>
         )}
-        {idFactura && puedeRegistrarEfectivo && !confirmandoEfectivo && (
+        {idFactura && puedeRegistrarEfectivo && (
           <button type="button" disabled={pendiente} onClick={() => setConfirmandoEfectivo(true)} className="btn min-h-11 rounded-full px-5">
             <FaMoneyBillWave aria-hidden className="size-4" />
             Registrar pago en efectivo
@@ -48,27 +50,21 @@ export default function AccionesCobro({ idOrden, idFactura, puedeFacturar, puede
       </div>
 
       {confirmandoEfectivo && idFactura && (
-        <div className="flex flex-col gap-3 rounded-2xl bg-emerald-50 p-4">
-          <p className="text-sm text-emerald-900">¿Confirmas que el cliente pagó en caja? La factura quedará como pagada.</p>
-          <div className="flex flex-wrap gap-2">
-            <button type="button" disabled={pendiente} onClick={() => ejecutar(() => registrarPagoEfectivo(idFactura))} className="btn btn-success btn-sm rounded-full px-5">
-              {pendiente && <span className="loading loading-spinner loading-xs" />}
-              Sí, registrar pago
-            </button>
-            <button type="button" disabled={pendiente} onClick={() => setConfirmandoEfectivo(false)} className="btn btn-sm rounded-full px-5">
-              Cancelar
-            </button>
-          </div>
-        </div>
+        <ConfirmacionAccion
+          titulo="¿El cliente pagó en caja?"
+          mensaje="La factura quedará como pagada."
+          textoConfirmar="Sí, registrar pago"
+          tono="exito"
+          pendiente={pendiente}
+          onConfirmar={() => ejecutar(() => registrarPagoEfectivo(idFactura))}
+          onCancelar={() => setConfirmandoEfectivo(false)}
+        />
       )}
 
       {resultado && (
-        <p
-          role={resultado.error ? "alert" : "status"}
-          className={`rounded-2xl px-4 py-3 text-sm ${resultado.error ? "bg-error/10 text-error" : "bg-emerald-50 text-emerald-800"}`}
-        >
+        <AvisoAccion exito={!resultado.error} origen={resultado}>
           {resultado.error ?? resultado.ok}
-        </p>
+        </AvisoAccion>
       )}
     </div>
   );

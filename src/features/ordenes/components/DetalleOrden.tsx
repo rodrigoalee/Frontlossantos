@@ -47,7 +47,7 @@ export default async function DetalleOrden({ idOrden }: { idOrden: number }) {
 
   const abierta = orden.estado !== "Finalizado";
   const puedeEditar = permisos.has("ordenes.editar") && abierta;
-  const puedeReasignar = permisos.has("ordenes.crear") && abierta;
+  const puedeReasignar = permisos.has("ordenes.asignar") && abierta;
 
   let repuestos: RepuestoInventario[] = [];
   let servicios: ServicioCatalogo[] = [];
