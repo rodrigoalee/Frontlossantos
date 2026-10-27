@@ -23,9 +23,6 @@ export default function TablaServicios({ servicios }: { servicios: ServicioCatal
   return (
     <section className="overflow-hidden rounded-3xl border border-base-300 bg-base-100">
       <div className="flex justify-end border-b border-base-300 px-4 py-3 sm:px-5">
-        <p className="text-sm text-base-content/60" aria-live="polite">
-          {visibles} {visibles === 1 ? "servicio" : "servicios"}
-        </p>
       </div>
 
       <div className="p-3 sm:p-4">

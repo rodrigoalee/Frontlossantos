@@ -79,10 +79,10 @@ export async function completarPerfil(
   _prev: CompletarPerfilState,
   formData: FormData,
 ): Promise<CompletarPerfilState> {
-  const telefono = String(formData.get("telefono") ?? "").trim();
+  const telefono = String(formData.get("telefono") ?? "").replace(/[\s-]/g, "");
 
   if (!TELEFONO_E164.test(telefono)) {
-    return { error: "El teléfono debe incluir el código de país, por ejemplo +50255551234.", telefono };
+    return { error: "El teléfono debe incluir el código de país, por ejemplo +50241961558.", telefono };
   }
 
   try {

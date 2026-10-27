@@ -15,11 +15,11 @@ export default function CompletarPerfilForm() {
         id="telefono"
         name="telefono"
         type="tel"
-        placeholder="+50255551234"
+        placeholder="+50241961558"
         autoComplete="tel"
-        defaultValue={state?.telefono}
-        pattern="\+[1-9]\d{7,14}"
-        title="Incluye el código de país, por ejemplo +50255551234."
+        defaultValue={state?.telefono ?? "+502"}
+        pattern="\+[1-9][\d\s\-]{7,18}"
+        title="Incluye el código de país, por ejemplo +50241961558."
         required
         className="input w-full border-0 bg-base-200"
       />
