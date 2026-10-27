@@ -58,8 +58,24 @@ export async function cambiarEstadoCita(idCita: number, estado: EstadoCita): Pro
     if (error instanceof ApiError && error.status === 404) {
       return { error: "Esta cita ya no existe." };
     }
+    if (error instanceof ApiError && error.status === 409 && error.detalle) return { error: error.detalle };
     console.error("Error al cambiar el estado de la cita:", error);
     return { error: "No se pudo actualizar la cita. Intenta más tarde." };
+  }
+
+  refresh();
+  return undefined;
+}
+
+export async function cancelarMiCita(idCita: number): Promise<CambiarEstadoCitaState> {
+  try {
+    await apiFetch<void>(`/api/portal/citas/${idCita}/cancelar`, { method: "POST" });
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 401) redirect("/login");
+    if (error instanceof ApiError && error.status === 404) return { error: "Esta cita ya no existe." };
+    if (error instanceof ApiError && error.status === 409 && error.detalle) return { error: error.detalle };
+    console.error("Error al cancelar la cita:", error);
+    return { error: "No se pudo cancelar la cita. Intenta más tarde." };
   }
 
   refresh();

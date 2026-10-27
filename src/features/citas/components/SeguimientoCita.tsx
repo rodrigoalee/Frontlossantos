@@ -15,6 +15,7 @@ import { obtenerSeguimiento } from "../dal";
 import { formatearFechaCita } from "../formato";
 import { construirHitos, esCancelada, type Hito } from "../seguimiento";
 import type { SeguimientoCita as Seguimiento } from "../types";
+import AccionesCita from "./AccionesCita";
 
 export default async function SeguimientoCita({ idCita }: { idCita: number }) {
   let seguimiento: Seguimiento;
@@ -36,6 +37,7 @@ export default async function SeguimientoCita({ idCita }: { idCita: number }) {
   const hitos = construirHitos(seguimiento);
   const cancelada = esCancelada(seguimiento);
   const actual = hitos.findLast((hito) => hito.estado !== "pendiente");
+  const cancelable = !cancelada && seguimiento.estadoOrden === null && new Date(seguimiento.fechaHora) > new Date();
 
   return (
     <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-3">
@@ -72,6 +74,8 @@ export default async function SeguimientoCita({ idCita }: { idCita: number }) {
               <PasoHito key={hito.titulo} hito={hito} ultimo={i === hitos.length - 1} />
             ))}
           </ol>
+
+          {cancelable && <AccionesCita idCita={seguimiento.idCita} estado={seguimiento.estado} portal />}
         </section>
 
         <CotizacionesCliente idCita={seguimiento.idCita} />

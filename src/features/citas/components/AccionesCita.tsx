@@ -2,10 +2,18 @@
 
 import { useState, useTransition } from "react";
 import { FaCheck, FaXmark } from "react-icons/fa6";
-import { cambiarEstadoCita } from "../actions";
+import { cambiarEstadoCita, cancelarMiCita } from "../actions";
 import type { EstadoCita } from "../types";
 
-export default function AccionesCita({ idCita, estado }: { idCita: number; estado: EstadoCita }) {
+export default function AccionesCita({
+  idCita,
+  estado,
+  portal = false,
+}: {
+  idCita: number;
+  estado: EstadoCita;
+  portal?: boolean;
+}) {
   const [confirmandoCancelacion, setConfirmandoCancelacion] = useState(false);
   const [error, setError] = useState<string>();
   const [pending, startTransition] = useTransition();
@@ -13,7 +21,7 @@ export default function AccionesCita({ idCita, estado }: { idCita: number; estad
   function cambiar(nuevo: EstadoCita) {
     setError(undefined);
     startTransition(async () => {
-      const resultado = await cambiarEstadoCita(idCita, nuevo);
+      const resultado = await (portal ? cancelarMiCita(idCita) : cambiarEstadoCita(idCita, nuevo));
       setError(resultado?.error);
       setConfirmandoCancelacion(false);
     });
@@ -50,7 +58,7 @@ export default function AccionesCita({ idCita, estado }: { idCita: number; estad
         </div>
       ) : (
         <div className="flex flex-wrap gap-2">
-          {estado === "Pendiente" && (
+          {estado === "Pendiente" && !portal && (
             <button
               type="button"
               onClick={() => cambiar("Confirmada")}
