@@ -2,7 +2,9 @@ import type { IconType } from "react-icons";
 import {
   FaBoxesStacked,
   FaCalendarDays,
+  FaChartLine,
   FaClipboardList,
+  FaFileInvoiceDollar,
   FaScrewdriverWrench,
   FaUser,
   FaUserShield,
@@ -51,6 +53,20 @@ export const MODULOS: Modulo[] = [
     descripcion: "Mantén al día los servicios que ofrece el taller y la tarifa de mano de obra de cada uno.",
     permiso: "servicios.leer",
     Icono: FaScrewdriverWrench,
+  },
+  {
+    slug: "facturacion",
+    titulo: "Facturación y pagos",
+    descripcion: "Consulta las facturas emitidas, su estado y cómo se pagaron; reenvía el enlace de pago o registra el efectivo.",
+    permiso: "facturas.leer",
+    Icono: FaFileInvoiceDollar,
+  },
+  {
+    slug: "analiticas",
+    titulo: "Analíticas",
+    descripcion: "Ingresos, órdenes, servicios más vendidos y desempeño del taller en un tablero de Power BI.",
+    permiso: "analiticas.ver",
+    Icono: FaChartLine,
   },
   {
     slug: "usuarios",

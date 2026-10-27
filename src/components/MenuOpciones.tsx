@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { IconType } from "react-icons";
-import { FaArrowRightFromBracket, FaChevronDown, FaGear, FaRegUser } from "react-icons/fa6";
+import { FaArrowRightFromBracket, FaChevronDown, FaFileInvoiceDollar, FaGear, FaRegUser } from "react-icons/fa6";
 import { cerrarSesion } from "@/features/auth/actions";
 
 function IconoCirculo({ Icono }: { Icono: IconType }) {
@@ -68,6 +68,14 @@ export default function MenuOpciones({ iniciales, conPerfil }: { iniciales: stri
             <Link href="/panel/perfil" onClick={() => setAbierto(false)} className={CLASE_OPCION}>
               <IconoCirculo Icono={FaRegUser} />
               Mi perfil
+            </Link>
+          </li>
+        )}
+        {conPerfil && (
+          <li>
+            <Link href="/panel/facturas" onClick={() => setAbierto(false)} className={CLASE_OPCION}>
+              <IconoCirculo Icono={FaFileInvoiceDollar} />
+              Mis facturas
             </Link>
           </li>
         )}

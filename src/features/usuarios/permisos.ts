@@ -9,10 +9,12 @@ const NOMBRE_MODULO: Record<string, string> = {
   Ordenes: "Órdenes de trabajo",
   Vehiculos: "Vehículos",
   Facturas: "Facturación",
+  Analiticas: "Analíticas",
 };
 
 const ETIQUETA_ACCION: Record<string, string> = {
   leer: "Ver",
+  ver: "Ver",
   crear: "Crear",
   editar: "Editar",
   eliminar: "Eliminar",
