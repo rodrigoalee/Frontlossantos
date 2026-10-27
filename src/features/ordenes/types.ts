@@ -16,9 +16,15 @@ export type OrdenLista = {
   servicio: string | null;
 };
 
+export type ConteoOrdenesPorEstado = {
+  enRecepcion: number;
+  enProceso: number;
+  finalizado: number;
+};
+
 export type LineaOrden = {
   idOrdenDetalle: number;
-  tipoLinea: "Repuesto" | "Servicio";
+  tipoLinea: "Repuesto" | "Servicio" | "Adicional";
   repuestoId: number | null;
   servicioId: number | null;
   descripcion: string;

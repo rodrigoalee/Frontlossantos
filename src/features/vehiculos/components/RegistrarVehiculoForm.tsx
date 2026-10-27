@@ -22,7 +22,7 @@ export default function RegistrarVehiculoForm({ accion = registrarVehiculo }: Pr
     <form action={action} className="flex flex-col gap-4">
       <p className="font-semibold text-secondary">Registrar vehículo</p>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {CAMPOS.map((campo) => (
           <div key={campo.name}>
             <label htmlFor={campo.name} className="mb-1.5 block text-sm font-semibold">

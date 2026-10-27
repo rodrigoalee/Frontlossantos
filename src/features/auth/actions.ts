@@ -2,10 +2,9 @@
 
 import { redirect } from "next/navigation";
 import { ApiError, apiFetch } from "@/lib/api";
+import { TELEFONO_E164 } from "@/lib/validaciones";
 import { createSession, destroySession, RUTA_DESPUES_DE_LOGIN } from "./session";
 import type { CompletarPerfilState, LoginResponse, LoginState, RegistroState, UsuarioSesion } from "./types";
-
-const TELEFONO_E164 = /^\+[1-9]\d{7,14}$/;
 
 export async function registrar(_prev: RegistroState, formData: FormData): Promise<RegistroState> {
   const valores = {

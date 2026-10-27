@@ -1,5 +1,5 @@
 import PanelNavbar from "@/components/PanelNavbar";
-import { RUTA_ADMIN, verificarEmpleado } from "@/features/auth/dal";
+import { rutaInicio, verificarEmpleado } from "@/features/auth/dal";
 
 export const instant = false;
 
@@ -8,7 +8,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <>
-      <PanelNavbar nombreCompleto={usuario.nombreCompleto} inicio={RUTA_ADMIN} conPerfil={false} />
+      <PanelNavbar nombreCompleto={usuario.nombreCompleto} inicio={rutaInicio(usuario)} conPerfil={false} />
       {children}
     </>
   );

@@ -3,10 +3,8 @@
 import { refresh } from "next/cache";
 import { redirect } from "next/navigation";
 import { ApiError, apiFetch } from "@/lib/api";
+import { CORREO, TELEFONO_E164 } from "@/lib/validaciones";
 import type { EditarClienteState, NuevoClienteState } from "./types";
-
-const TELEFONO_E164 = /^\+[1-9]\d{7,14}$/;
-const CORREO = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function crearCliente(_prev: NuevoClienteState, formData: FormData): Promise<NuevoClienteState> {
   const valores = {
