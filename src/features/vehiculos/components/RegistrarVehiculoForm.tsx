@@ -3,7 +3,7 @@
 import AvisoAccion from "@/components/AvisoAccion";
 import { useActionState } from "react";
 import { registrarVehiculo } from "../actions";
-import { alSalirDeLaPlaca } from "../formato";
+import { AYUDA_PLACA, PATRON_PLACA, alSalirDeLaPlaca } from "../formato";
 import type { RegistrarVehiculoState } from "../types";
 
 const CAMPOS = [
@@ -36,6 +36,8 @@ export default function RegistrarVehiculoForm({ accion = registrarVehiculo }: Pr
               maxLength={campo.maxLength}
               defaultValue={valores?.[campo.name]}
               onBlur={campo.name === "placa" ? alSalirDeLaPlaca : undefined}
+              pattern={campo.name === "placa" ? PATRON_PLACA : undefined}
+              title={campo.name === "placa" ? AYUDA_PLACA : undefined}
               required
               className={`input w-full border-0 bg-base-200 ${"className" in campo ? campo.className : ""}`}
             />

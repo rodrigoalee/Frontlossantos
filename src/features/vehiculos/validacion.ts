@@ -1,3 +1,5 @@
+import { AYUDA_PLACA, esPlacaValida } from "./formato";
+
 const ANIO_MINIMO = 1900;
 const ANIO_MAXIMO = 2100;
 
@@ -21,6 +23,9 @@ export function validarVehiculo(datos: { placa: string; marca: string; modelo: s
 
   if (!valores.placa || !valores.marca || !valores.modelo || !valores.anio) {
     return { error: "Completa la placa, la marca, el modelo y el año.", valores };
+  }
+  if (!esPlacaValida(valores.placa)) {
+    return { error: AYUDA_PLACA, valores };
   }
   if (!Number.isInteger(anio) || anio < ANIO_MINIMO || anio > ANIO_MAXIMO) {
     return { error: `El año debe estar entre ${ANIO_MINIMO} y ${ANIO_MAXIMO}.`, valores };

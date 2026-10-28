@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { FaCar, FaPlus } from "react-icons/fa6";
-import { formatearPlaca } from "@/features/vehiculos/formato";
+import { AYUDA_PLACA, PATRON_PLACA, formatearPlaca } from "@/features/vehiculos/formato";
 import { registrarVehiculoMostrador } from "../actions";
 import type { VehiculoMostrador } from "../types";
 import { CLASE_CAMPO, Campo, MensajeError } from "./campos";
@@ -35,7 +35,7 @@ function FormVehiculoNuevo({
     <form onSubmit={registrar} className="flex flex-col gap-5">
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <Campo id="vehiculo-placa" etiqueta="Placa">
-          <input id="vehiculo-placa" value={datos.placa} onChange={cambiar("placa")} onBlur={() => setDatos((actual) => ({ ...actual, placa: formatearPlaca(actual.placa.trim().toUpperCase()) }))} maxLength={20} required autoFocus className={`input uppercase ${CLASE_CAMPO}`} />
+          <input id="vehiculo-placa" value={datos.placa} onChange={cambiar("placa")} onBlur={() => setDatos((actual) => ({ ...actual, placa: formatearPlaca(actual.placa.trim().toUpperCase()) }))} maxLength={20} pattern={PATRON_PLACA} title={AYUDA_PLACA} required autoFocus className={`input uppercase ${CLASE_CAMPO}`} />
         </Campo>
         <Campo id="vehiculo-anio" etiqueta="Año">
           <input id="vehiculo-anio" type="number" inputMode="numeric" min={1900} max={2100} value={datos.anio} onChange={cambiar("anio")} required className={`input ${CLASE_CAMPO}`} />

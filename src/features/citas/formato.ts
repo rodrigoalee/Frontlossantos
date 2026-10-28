@@ -1,5 +1,7 @@
 import type { EstadoCita } from "./types";
 
+export const MINIMO_DESCRIPCION = 10;
+
 const ZONA_DEL_TALLER = "America/Guatemala";
 
 const formatoFecha = new Intl.DateTimeFormat("es-GT", {

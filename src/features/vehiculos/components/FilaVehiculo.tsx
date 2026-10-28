@@ -4,7 +4,7 @@ import AvisoAccion from "@/components/AvisoAccion";
 import { useActionState, useState } from "react";
 import { FaPen } from "react-icons/fa6";
 import { actualizarVehiculo } from "../actions";
-import { alSalirDeLaPlaca, formatearPlaca } from "../formato";
+import { AYUDA_PLACA, PATRON_PLACA, alSalirDeLaPlaca, formatearPlaca } from "../formato";
 import type { RegistrarVehiculoState, Vehiculo } from "../types";
 import EliminarVehiculoBoton from "./EliminarVehiculoBoton";
 
@@ -50,6 +50,8 @@ function EditorVehiculo({ vehiculo, clienteId, onTerminar }: EditorProps) {
             maxLength={campo.maxLength}
             defaultValue={state?.valores?.[campo.name] ?? campo.valor}
             onBlur={campo.name === "placa" ? alSalirDeLaPlaca : undefined}
+            pattern={campo.name === "placa" ? PATRON_PLACA : undefined}
+            title={campo.name === "placa" ? AYUDA_PLACA : undefined}
             required
             className={`input input-sm w-full border-0 bg-base-100 text-center ${campo.className ?? ""}`}
           />
