@@ -4,6 +4,7 @@ import { refresh } from "next/cache";
 import { redirect } from "next/navigation";
 import { ApiError, apiFetch } from "@/lib/api";
 import { crearCita, obtenerDisponibilidad } from "./dal";
+import { MINIMO_DESCRIPCION } from "./formato";
 import type { CambiarEstadoCitaState, DiaDisponibilidad, EstadoCita, NuevaCita } from "./types";
 
 const FECHA = /^\d{4}-\d{2}-\d{2}$/;
@@ -28,6 +29,10 @@ export async function consultarDisponibilidad(
 }
 
 export async function agendarCita(datos: NuevaCita): Promise<{ error: string } | undefined> {
+  if (datos.servicioId === null && (datos.descripcionServicio?.trim().length ?? 0) < MINIMO_DESCRIPCION) {
+    return { error: `Describe lo que necesitas con al menos ${MINIMO_DESCRIPCION} caracteres.` };
+  }
+
   try {
     await crearCita(datos);
   } catch (error) {
@@ -37,7 +42,7 @@ export async function agendarCita(datos: NuevaCita): Promise<{ error: string } |
     }
     if (error.status === 401) redirect("/login");
     if (error.status === 404) return { error: "Elige uno de tus vehículos registrados." };
-    if (error.status === 409 && error.detalle) return { error: error.detalle };
+    if ((error.status === 400 || error.status === 409) && error.detalle) return { error: error.detalle };
     return { error: "No se pudo agendar la cita. Revisa los datos e intenta de nuevo." };
   }
 

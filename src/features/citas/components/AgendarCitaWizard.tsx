@@ -6,6 +6,7 @@ import { useState, useTransition } from "react";
 import { formatearPlaca } from "@/features/vehiculos/formato";
 import type { Vehiculo } from "@/features/vehiculos/types";
 import { agendarCita } from "../actions";
+import { MINIMO_DESCRIPCION } from "../formato";
 import { formatearFechaCita, formatearMoneda } from "../formato";
 import type { Servicio, Sucursal } from "../types";
 import SelectorFechaHora from "./SelectorFechaHora";
@@ -42,7 +43,7 @@ export default function AgendarCitaWizard({ vehiculos, sucursales, servicios }: 
   const sucursal = sucursales.find((s) => String(s.idSucursal) === sucursalId);
   const servicio = servicios.find((s) => String(s.idServicio) === servicioId);
   const otro = servicioId === OTRO_SERVICIO;
-  const completo = vehiculo && sucursal && (servicio || (otro && descripcion.trim())) && fechaHora;
+  const completo = vehiculo && sucursal && (servicio || (otro && descripcion.trim().length >= MINIMO_DESCRIPCION)) && fechaHora;
 
   function confirmar() {
     if (!completo) return;
@@ -168,11 +169,15 @@ export default function AgendarCitaWizard({ vehiculos, sucursales, servicios }: 
                 id="descripcion"
                 value={descripcion}
                 onChange={(e) => setDescripcion(e.target.value)}
+                minLength={MINIMO_DESCRIPCION}
                 maxLength={500}
                 rows={3}
                 required
                 className="textarea w-full rounded-2xl border-0 bg-base-200"
               />
+              <p className="mt-1.5 text-xs text-base-content/60">
+                Describe el problema con al menos {MINIMO_DESCRIPCION} caracteres para poder cotizarlo.
+              </p>
             </div>
           )}
 
