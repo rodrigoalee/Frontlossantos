@@ -165,11 +165,6 @@ function FormTarjeta({ token, total, onResultado, onCancelar }: {
         />
       </div>
 
-      <p className="small text-secondary mb-3">
-        Pasarela de prueba: usa <strong>4242 4242 4242 4242</strong> (aprobada) o <strong>4000 0000 0000 0002</strong>{" "}
-        (rechazada), con cualquier fecha futura y CVC.
-      </p>
-
       {error && (
         <div role="alert" className="alert alert-danger py-2 small">
           {error}
