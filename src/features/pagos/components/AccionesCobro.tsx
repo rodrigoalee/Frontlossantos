@@ -2,7 +2,7 @@
 
 import AvisoAccion from "@/components/AvisoAccion";
 import { useState, useTransition } from "react";
-import { FaMoneyBillWave, FaWhatsapp } from "react-icons/fa6";
+import { FaEnvelope, FaMoneyBillWave } from "react-icons/fa6";
 import ConfirmacionAccion from "@/components/ConfirmacionAccion";
 import { facturarYEnviarEnlace, registrarPagoEfectivo, reenviarEnlace } from "../actions";
 import type { ResultadoAccion } from "../types";
@@ -37,7 +37,7 @@ export default function AccionesCobro({ idOrden, idFactura, puedeFacturar, puede
             onClick={() => ejecutar(() => (idFactura ? reenviarEnlace(idFactura) : facturarYEnviarEnlace(idOrden)))}
             className="btn btn-primary min-h-11 rounded-full px-5"
           >
-            {pendiente ? <span className="loading loading-spinner loading-sm" /> : <FaWhatsapp aria-hidden className="size-4" />}
+            {pendiente ? <span className="loading loading-spinner loading-sm" /> : <FaEnvelope aria-hidden className="size-4" />}
             {idFactura ? "Reenviar enlace de pago" : "Facturar y enviar enlace de pago"}
           </button>
         )}

@@ -8,7 +8,7 @@ type Props = {
   permisos: Set<string>;
 };
 
-/** Al recoger el vehículo: factura, enlace de pago por WhatsApp o pago en caja. */
+/** Al recoger el vehículo: factura, enlace de pago por mensaje y correo o pago en caja. */
 export default async function CobroOrden({ idOrden, totalEstimado, permisos }: Props) {
   if (!permisos.has("facturas.leer")) return null;
 

@@ -49,7 +49,7 @@ export default function AccionesCita({
       {confirmando === "Confirmada" && (
         <ConfirmacionAccion
           titulo="¿Confirmar esta cita?"
-          mensaje="El cliente recibirá el aviso por WhatsApp."
+          mensaje="El cliente recibirá el aviso por mensaje y correo."
           textoConfirmar="Sí, confirmar"
           textoCancelar="Volver"
           tono="primario"

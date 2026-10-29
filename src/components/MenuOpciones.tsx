@@ -52,6 +52,7 @@ export default function MenuOpciones({
       <button
         type="button"
         aria-label="Abrir opciones"
+        data-recorrido="opciones"
         aria-expanded={abierto}
         aria-controls="menu-opciones"
         onClick={() => setAbierto((valor) => !valor)}
