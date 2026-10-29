@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { FaHourglassHalf } from "react-icons/fa6";
+import Migas from "@/components/Migas";
 import { MODULOS } from "@/features/admin/modulos";
 
 export const metadata: Metadata = {
@@ -16,13 +17,7 @@ function Proximamente({ slug }: { slug: string }) {
   return (
     <>
       <div>
-        <p className="text-sm text-base-content/60">
-          <Link href="/admin" className="hover:text-secondary">
-            Panel del taller
-          </Link>
-          <span className="mx-2">/</span>
-          <span className="text-secondary">{modulo.titulo}</span>
-        </p>
+        <Migas ruta={[{ etiqueta: "Panel del taller", href: "/admin" }, { etiqueta: modulo.titulo }]} />
         <h1 className="mt-2 text-3xl font-bold text-secondary">{modulo.titulo}</h1>
       </div>
 

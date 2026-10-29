@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import Migas from "@/components/Migas";
 import FichaRepuesto, { FichaRepuestoCargando } from "@/features/repuestos/components/FichaRepuesto";
 
 export const metadata: Metadata = {
@@ -17,17 +17,7 @@ function CargarFicha({ id }: { id: string }) {
 export default function FichaRepuestoPage({ params }: PageProps<"/admin/repuestos/[id]">) {
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-8 sm:py-10">
-      <p className="-mb-4 text-sm text-base-content/60">
-        <Link href="/admin" className="hover:text-secondary">
-          Inicio
-        </Link>
-        <span className="mx-2">/</span>
-        <Link href="/admin/repuestos" className="hover:text-secondary">
-          Repuestos
-        </Link>
-        <span className="mx-2">/</span>
-        <span className="text-secondary">Ficha</span>
-      </p>
+      <Migas className="-mb-4" ruta={[{ etiqueta: "Inicio", href: "/admin" }, { etiqueta: "Repuestos", href: "/admin/repuestos" }, { etiqueta: "Ficha" }]} />
 
       <Suspense fallback={<FichaRepuestoCargando />}>
         {params.then(({ id }) => (

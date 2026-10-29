@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
+import Migas from "@/components/Migas";
 import CargandoPantalla from "@/components/CargandoPantalla";
 import { verificarEmpleado } from "@/features/auth/dal";
 import SeccionRoles from "@/features/usuarios/components/SeccionRoles";
@@ -77,13 +78,7 @@ export default function AjustesPage({ searchParams }: PageProps<"/admin/ajustes"
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 sm:py-10">
       <div>
-        <p className="text-sm text-base-content/60">
-          <Link href="/admin" className="hover:text-secondary">
-            Inicio
-          </Link>
-          <span className="mx-2">/</span>
-          <span className="text-secondary">Ajustes</span>
-        </p>
+        <Migas ruta={[{ etiqueta: "Inicio", href: "/admin" }, { etiqueta: "Ajustes" }]} />
         <h1 className="mt-2 text-3xl font-bold text-secondary">Ajustes</h1>
         <p className="text-base-content/60">Crea las cuentas del personal y decide qué puede hacer cada rol</p>
       </div>

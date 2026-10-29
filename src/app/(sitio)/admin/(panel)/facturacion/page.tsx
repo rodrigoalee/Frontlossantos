@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { FaFileInvoiceDollar } from "react-icons/fa6";
+import Migas from "@/components/Migas";
 import CargandoPantalla from "@/components/CargandoPantalla";
 import { obtenerFacturas } from "@/features/facturacion/dal";
 import TablaFacturas from "@/features/facturacion/components/TablaFacturas";
@@ -50,13 +50,7 @@ export default function FacturacionPage() {
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-8 sm:py-10">
       <div>
-        <p className="text-sm text-base-content/60">
-          <Link href="/admin" className="hover:text-secondary">
-            Inicio
-          </Link>
-          <span className="mx-2">/</span>
-          <span className="text-secondary">Facturación y pagos</span>
-        </p>
+        <Migas ruta={[{ etiqueta: "Inicio", href: "/admin" }, { etiqueta: "Facturación y pagos" }]} />
         <h1 className="mt-2 text-3xl font-bold text-secondary">Facturación y pagos</h1>
         <p className="text-base-content/60">Facturas emitidas, su estado y cómo se pagaron</p>
       </div>
