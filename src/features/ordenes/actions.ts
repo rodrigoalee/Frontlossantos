@@ -1,8 +1,11 @@
 "use server";
 
+import { del, put } from "@vercel/blob";
 import { refresh } from "next/cache";
 import { redirect } from "next/navigation";
+import { verificarSesion } from "@/features/auth/dal";
 import { ApiError, apiFetch } from "@/lib/api";
+import { TAMANO_MAXIMO_FOTO } from "@/lib/comprimirFoto";
 import type { EstadoOrden, NuevaLinea, ResultadoAccion } from "./types";
 
 function traducirError(error: unknown, contexto: string): { error: string } {
@@ -48,6 +51,60 @@ export async function guardarDiagnostico(idOrden: number, diagnostico: string): 
   } catch (error) {
     return traducirError(error, "guardar el diagnóstico");
   }
+  refresh();
+  return undefined;
+}
+
+/**
+ * El archivo va a Vercel Blob y la API solo guarda su URL. Si la API la rechaza, se borra del Blob
+ * para no dejar fotos huérfanas.
+ */
+export async function subirFotoOrden(idOrden: number, datos: FormData): Promise<ResultadoAccion> {
+  // La API vuelve a revisar el permiso, pero así nadie sin acceso llena el almacenamiento.
+  const usuario = await verificarSesion();
+  if (!usuario.permisos?.includes("ordenes.editar")) return { error: "Tu cuenta no tiene permiso para esta acción." };
+
+  const foto = datos.get("foto");
+  const descripcion = String(datos.get("descripcion") ?? "").trim().slice(0, 200) || null;
+  if (!(foto instanceof File) || foto.type !== "image/jpeg" || foto.size > TAMANO_MAXIMO_FOTO) {
+    return { error: "La foto no es válida. Vuelve a tomarla." };
+  }
+
+  let url: string;
+  try {
+    ({ url } = await put(`ordenes/${idOrden}/foto.jpg`, foto, {
+      access: "public",
+      addRandomSuffix: true,
+      contentType: "image/jpeg",
+    }));
+  } catch (error) {
+    console.error("Error al guardar la foto en Vercel Blob:", error);
+    return { error: "No se pudo guardar la foto. Intenta más tarde." };
+  }
+
+  try {
+    await apiFetch<void>(`/api/ordenes/${idOrden}/fotos`, {
+      method: "POST",
+      body: JSON.stringify({ url, descripcion }),
+    });
+  } catch (error) {
+    await del(url).catch((errorBorrado) => console.error("No se pudo borrar la foto rechazada:", errorBorrado));
+    return traducirError(error, "registrar la foto");
+  }
+  refresh();
+  return undefined;
+}
+
+export async function quitarFotoOrden(idOrden: number, idFoto: number): Promise<ResultadoAccion> {
+  let url: string;
+  try {
+    // La URL a borrar la da la API, no el navegador: así no se puede borrar un archivo ajeno.
+    ({ url } = await apiFetch<{ url: string }>(`/api/ordenes/${idOrden}/fotos/${idFoto}`, { method: "DELETE" }));
+  } catch (error) {
+    return traducirError(error, "quitar la foto");
+  }
+  // Ya no está en la orden; si el Blob falla solo queda un archivo sin enlazar que nadie ve.
+  await del(url).catch((error) => console.error("No se pudo borrar la foto de Vercel Blob:", error));
   refresh();
   return undefined;
 }

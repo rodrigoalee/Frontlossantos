@@ -231,7 +231,7 @@ export default function AgendarCitaWizard({ vehiculos, sucursales, servicios }: 
               </dl>
             </section>
             <p className="text-center text-sm text-base-content/60">
-              {servicio ? "El taller confirmará tu cita antes de la visita." : "Recibirás la cotización por WhatsApp y en tu portal."}
+              {servicio ? "El taller confirmará tu cita antes de la visita." : "Recibirás la cotización por mensaje y correo, y también en tu portal."}
             </p>
             <div className="flex flex-wrap justify-end gap-3">
               <button type="button" onClick={() => setPaso(1)} disabled={pendiente} className="btn rounded-full px-6">

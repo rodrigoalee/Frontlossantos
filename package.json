@@ -11,7 +11,9 @@
   "dependencies": {
     "@daypicker/react": "^10.0.2",
     "@handsontable/react-wrapper": "^18.1.2",
+    "@vercel/blob": "^2.8.2",
     "bootstrap": "5.3.3",
+    "driver.js": "^1.10.2",
     "handsontable": "^18.1.2",
     "next": "16.4.0",
     "react": "19.3.0",

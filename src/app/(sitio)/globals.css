@@ -47,3 +47,35 @@
     }
   }
 }
+
+/* Recorrido del panel del cliente (Driver.js) con los colores de la marca */
+.driver-popover.recorrido-lossantos {
+  --driver-popover-font-family: var(--font-poppins);
+  border-radius: var(--radius-box);
+  color: var(--color-base-content);
+  max-width: 320px;
+}
+
+.recorrido-lossantos .driver-popover-title {
+  color: var(--color-secondary);
+}
+
+.recorrido-lossantos .driver-popover-footer-btn {
+  border-radius: 9999px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.recorrido-lossantos .driver-popover-next-btn,
+.recorrido-lossantos .driver-popover-done-btn {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
+  color: var(--color-primary-content);
+}
+
+.recorrido-lossantos .driver-popover-next-btn:hover,
+.recorrido-lossantos .driver-popover-done-btn:hover {
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+}

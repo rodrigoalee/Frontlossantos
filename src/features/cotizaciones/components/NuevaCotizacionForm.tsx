@@ -69,7 +69,7 @@ export default function NuevaCotizacionForm({
   return (
     <form onSubmit={enviar} className="flex flex-col gap-4 rounded-2xl bg-base-200/40 p-4 sm:p-5">
       <p className="text-sm text-base-content/70">
-        Describe el trabajo fuera del catálogo. El cliente la recibe por WhatsApp y la acepta desde su seguimiento.
+        Describe el trabajo fuera del catálogo. El cliente la recibe por mensaje y correo, y la acepta desde su seguimiento.
       </p>
 
       <ul className="flex flex-col gap-3">

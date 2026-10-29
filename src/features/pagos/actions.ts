@@ -16,7 +16,7 @@ function traducirError(error: unknown, contexto: string): { error: string } {
   return { error: "No se pudo completar la acción. Intenta más tarde." };
 }
 
-/** Cobro en caja: emite la factura de la orden y le manda al cliente el enlace de pago por WhatsApp. */
+/** Cobro en caja: emite la factura de la orden y le manda al cliente el enlace de pago por mensaje y correo. */
 export async function facturarYEnviarEnlace(idOrden: number): Promise<ResultadoAccion> {
   try {
     const { idFactura } = await apiFetch<{ idFactura: number }>("/api/facturas", {
@@ -28,7 +28,7 @@ export async function facturarYEnviarEnlace(idOrden: number): Promise<ResultadoA
     return traducirError(error, "emitir la factura");
   }
   refresh();
-  return { ok: "Factura emitida y enlace de pago enviado por WhatsApp." };
+  return { ok: "Factura emitida y enlace de pago enviado por mensaje y correo." };
 }
 
 export async function reenviarEnlace(idFactura: number): Promise<ResultadoAccion> {
@@ -37,7 +37,7 @@ export async function reenviarEnlace(idFactura: number): Promise<ResultadoAccion
   } catch (error) {
     return traducirError(error, "reenviar el enlace de pago");
   }
-  return { ok: "Enlace de pago reenviado por WhatsApp." };
+  return { ok: "Enlace de pago reenviado por mensaje y correo." };
 }
 
 export async function registrarPagoEfectivo(idFactura: number): Promise<ResultadoAccion> {

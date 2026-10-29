@@ -14,6 +14,8 @@ import AgregarLineaForm from "./AgregarLineaForm";
 import BotonEstadoOrden from "./BotonEstadoOrden";
 import CambiarMecanicoForm from "./CambiarMecanicoForm";
 import DiagnosticoOrden from "./DiagnosticoOrden";
+import FotosOrden from "./FotosOrden";
+import GaleriaFotos from "./GaleriaFotos";
 import QuitarLineaBoton from "./QuitarLineaBoton";
 
 function Dato({ etiqueta, children }: { etiqueta: string; children: React.ReactNode }) {
@@ -97,6 +99,17 @@ export default async function DetalleOrden({ idOrden }: { idOrden: number }) {
               <p className="whitespace-pre-line text-base-content/80">
                 {orden.diagnostico?.trim() || "Sin diagnóstico todavía"}
               </p>
+            )}
+          </div>
+
+          <div>
+            <h3 className="mb-2 text-sm font-semibold text-base-content/50">Fotos del vehículo</h3>
+            {puedeEditar ? (
+              <FotosOrden idOrden={orden.idOrdenEncabezado} fotos={orden.fotos} />
+            ) : orden.fotos.length > 0 ? (
+              <GaleriaFotos fotos={orden.fotos} />
+            ) : (
+              <p className="text-base-content/80">Sin fotos todavía</p>
             )}
           </div>
         </section>

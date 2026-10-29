@@ -47,7 +47,7 @@ export default function RecibirVehiculoForm({ citaId }: { citaId: number }) {
       {confirmando && (
         <ConfirmacionAccion
           titulo="¿El vehículo ya llegó?"
-          mensaje="Se abrirá la orden y el cliente recibirá el aviso por WhatsApp."
+          mensaje="Se abrirá la orden y el cliente recibirá el aviso por mensaje y correo."
           textoConfirmar="Sí, recibir"
           textoCancelar="Volver"
           tono="primario"

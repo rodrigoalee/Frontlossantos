@@ -53,6 +53,14 @@ export type OrdenDetalle = {
   citaId: number | null;
   motivoIngreso: string | null;
   mecanicoAsignadoId: number | null;
+  fotos: FotoOrden[];
+};
+
+export type FotoOrden = {
+  idFoto: number;
+  url: string;
+  descripcion: string | null;
+  fechaSubida: string;
 };
 
 export type MecanicoDisponible = {

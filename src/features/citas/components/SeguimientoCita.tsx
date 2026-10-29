@@ -1,6 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import CargandoPantalla from "@/components/CargandoPantalla";
 import CotizacionesCliente from "@/features/cotizaciones/components/CotizacionesCliente";
+import GaleriaFotos from "@/features/ordenes/components/GaleriaFotos";
 import {
   FaCheck,
   FaCircleExclamation,
@@ -77,6 +78,19 @@ export default async function SeguimientoCita({ idCita }: { idCita: number }) {
 
           {cancelable && <AccionesCita idCita={seguimiento.idCita} estado={seguimiento.estado} portal />}
         </section>
+
+        {(seguimiento.diagnostico?.trim() || seguimiento.fotos.length > 0) && (
+          <section className="flex flex-col gap-4 rounded-3xl border border-base-300 bg-base-100 p-5 sm:p-8">
+            <div>
+              <h2 className="text-xl font-semibold text-secondary">Diagnóstico del taller</h2>
+              <p className="text-sm text-base-content/60">Lo que encontró el mecánico al revisar tu vehículo</p>
+            </div>
+            {seguimiento.diagnostico?.trim() && (
+              <p className="whitespace-pre-line text-base-content/80">{seguimiento.diagnostico}</p>
+            )}
+            {seguimiento.fotos.length > 0 && <GaleriaFotos fotos={seguimiento.fotos} />}
+          </section>
+        )}
 
         <CotizacionesCliente idCita={seguimiento.idCita} />
       </div>

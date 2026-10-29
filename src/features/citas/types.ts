@@ -1,3 +1,5 @@
+import type { FotoOrden } from "@/features/ordenes/types";
+
 export type EstadoCita = "Pendiente" | "Confirmada" | "Cancelada";
 
 export type EstadoOrden = "EnRecepcion" | "EnProceso" | "Finalizado";
@@ -60,6 +62,8 @@ export type SeguimientoCita = {
   fechaIngreso: string | null;
   fechaFinalizacion: string | null;
   pagado: boolean;
+  diagnostico: string | null;
+  fotos: FotoOrden[];
 };
 
 export type CitaTaller = {
