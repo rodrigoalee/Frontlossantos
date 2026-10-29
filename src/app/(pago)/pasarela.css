@@ -43,3 +43,20 @@
 .pasarela .tarjeta-pago {
   max-width: 28rem;
 }
+
+/* La hoja de resultado sube desde abajo al aparecer; sin el JS de Bootstrap no hay animación propia. */
+.pasarela .hoja-pago {
+  animation: subir-hoja 0.3s ease-out;
+}
+
+@keyframes subir-hoja {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pasarela .hoja-pago {
+    animation: none;
+  }
+}

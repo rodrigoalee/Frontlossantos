@@ -7,13 +7,16 @@ import type { ResultadoPago, ResumenPago } from "../types";
 
 type Pantalla = "resumen" | "tarjeta" | "resultado";
 
+// Visa y Mastercard, las marcas que acepta la pasarela, llevan 16 dígitos.
+const DIGITOS_TARJETA = 16;
+
 function soloDigitos(valor: string, maximo: number) {
   return valor.replace(/\D/g, "").slice(0, maximo);
 }
 
 /** Agrupa de 4 en 4 como viene impreso en la tarjeta. */
 function formatearNumero(valor: string) {
-  return soloDigitos(valor, 19).replace(/(\d{4})(?=\d)/g, "$1 ");
+  return soloDigitos(valor, DIGITOS_TARJETA).replace(/(\d{4})(?=\d)/g, "$1 ");
 }
 
 /** MM/AA con la barra automática. */
@@ -28,7 +31,8 @@ function marcaDe(numero: string) {
   return null;
 }
 
-function Resumen({ resumen, onPagar }: { resumen: ResumenPago; onPagar: () => void }) {
+/** Sin onPagar (factura ya pagada) el resumen queda de fondo, detrás de la hoja de resultado. */
+function Resumen({ resumen, onPagar }: { resumen: ResumenPago; onPagar?: () => void }) {
   return (
     <>
       <p className="mb-1 text-secondary">Hola, {resumen.nombreCliente}</p>
@@ -58,9 +62,11 @@ function Resumen({ resumen, onPagar }: { resumen: ResumenPago; onPagar: () => vo
         <dd className="col-6 fs-5 fw-bold text-end text-marca mb-0">{formatearMoneda(resumen.total)}</dd>
       </dl>
 
-      <button type="button" onClick={onPagar} className="btn btn-marca btn-lg rounded-pill w-100 fw-semibold py-3">
-        Pagar {formatearMoneda(resumen.total)}
-      </button>
+      {onPagar && (
+        <button type="button" onClick={onPagar} className="btn btn-marca btn-lg rounded-pill w-100 fw-semibold py-3">
+          Pagar {formatearMoneda(resumen.total)}
+        </button>
+      )}
     </>
   );
 }
@@ -104,10 +110,11 @@ function FormTarjeta({ token, total, onResultado, onCancelar }: {
             className="form-control form-control-lg"
             inputMode="numeric"
             autoComplete="cc-number"
-            placeholder="1234 1234 1234 1234"
+            placeholder="4242 4242 4242 4242"
             value={numero}
             onChange={(e) => setNumero(formatearNumero(e.target.value))}
-            minLength={15}
+            pattern="\d{4} \d{4} \d{4} \d{4}"
+            title="Escribe los 16 dígitos de la tarjeta."
             required
             autoFocus
           />
@@ -184,19 +191,38 @@ function FormTarjeta({ token, total, onResultado, onCancelar }: {
   );
 }
 
-function Resultado({ titulo, mensaje }: { titulo: string; mensaje: string }) {
+/**
+ * Hoja inferior al terminar: es obligatoria (sin cerrar, sin clic afuera ni Esc) y su único botón lleva al panel
+ * del cliente. Es un <a> y no un <Link> porque el panel vive en otro layout raíz y la navegación recarga la página.
+ */
+function HojaResultado({ titulo, mensaje }: { titulo: string; mensaje: string }) {
   return (
-    <div className="text-center py-4">
+    <>
+      <div className="offcanvas-backdrop fade show" />
       <div
-        className="rounded-circle bg-success-subtle text-success d-inline-flex align-items-center justify-content-center mb-3 fs-1"
-        style={{ width: "4.5rem", height: "4.5rem" }}
-        aria-hidden
+        className="offcanvas offcanvas-bottom show hoja-pago h-auto rounded-top-4 border-0"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="titulo-resultado"
       >
-        ✓
+        <div className="offcanvas-body text-center px-4 pt-4 pb-5 mx-auto w-100 tarjeta-pago">
+          <div
+            className="rounded-circle bg-success-subtle text-success d-inline-flex align-items-center justify-content-center mb-3 fs-1"
+            style={{ width: "4.5rem", height: "4.5rem" }}
+            aria-hidden
+          >
+            ✓
+          </div>
+          <h2 id="titulo-resultado" className="h4 fw-bold text-marca">
+            {titulo}
+          </h2>
+          <p className="text-secondary mb-4">{mensaje}</p>
+          <a href="/panel" autoFocus className="btn btn-marca btn-lg rounded-pill w-100 fw-semibold py-3">
+            Finalizar y continuar
+          </a>
+        </div>
       </div>
-      <h1 className="h4 fw-bold text-marca">{titulo}</h1>
-      <p className="text-secondary mb-0">{mensaje}</p>
-    </div>
+    </>
   );
 }
 
@@ -210,7 +236,9 @@ export default function PasarelaPago({ token, resumen }: { token: string; resume
         <div className="card-body p-4 p-sm-5">
           <p className="small fw-semibold text-uppercase text-secondary mb-4">Los Santos Customs</p>
 
-          {pantalla === "resumen" && <Resumen resumen={resumen} onPagar={() => setPantalla("tarjeta")} />}
+          {pantalla !== "tarjeta" && (
+            <Resumen resumen={resumen} onPagar={pantalla === "resumen" ? () => setPantalla("tarjeta") : undefined} />
+          )}
           {pantalla === "tarjeta" && (
             <FormTarjeta
               token={token}
@@ -222,10 +250,10 @@ export default function PasarelaPago({ token, resumen }: { token: string; resume
               }}
             />
           )}
-          {pantalla === "resultado" && <Resultado titulo="Pago completado" mensaje={mensaje} />}
         </div>
       </div>
       <p className="text-center small text-secondary mt-3">Pago seguro · no guardamos los datos de tu tarjeta</p>
+      {pantalla === "resultado" && <HojaResultado titulo="Pago completado" mensaje={mensaje} />}
     </main>
   );
 }
