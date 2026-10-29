@@ -1,6 +1,8 @@
 "use client";
 
 import AvisoAccion from "@/components/AvisoAccion";
+import { RecorridoPrimeraVez } from "@/components/Recorrido";
+import Link from "next/link";
 import { useActionState } from "react";
 import { registrarVehiculo } from "../actions";
 import { AYUDA_PLACA, PATRON_PLACA, alSalirDeLaPlaca } from "../formato";
@@ -14,9 +16,11 @@ const CAMPOS = [
 
 type Props = {
   accion?: (prev: RegistrarVehiculoState, formData: FormData) => Promise<RegistrarVehiculoState>;
+  /** En el perfil del cliente: al registrar ofrece agendar la cita, que es lo que sigue. */
+  conSiguientePaso?: boolean;
 };
 
-export default function RegistrarVehiculoForm({ accion = registrarVehiculo }: Props) {
+export default function RegistrarVehiculoForm({ accion = registrarVehiculo, conSiguientePaso = false }: Props) {
   const [state, action, pending] = useActionState(accion, undefined);
   const valores = state?.valores;
 
@@ -72,10 +76,24 @@ export default function RegistrarVehiculoForm({ accion = registrarVehiculo }: Pr
         </AvisoAccion>
       )}
 
-      <button type="submit" disabled={pending} className="btn btn-primary self-start rounded-full px-6">
-        {pending && <span className="loading loading-spinner loading-sm" />}
-        Registrar vehículo
-      </button>
+      <div className="flex flex-wrap gap-3">
+        <button type="submit" disabled={pending} className="btn btn-primary rounded-full px-6">
+          {pending && <span className="loading loading-spinner loading-sm" />}
+          Registrar vehículo
+        </button>
+        {conSiguientePaso && state?.ok && (
+          <>
+            <Link
+              href="/panel/citas/nueva"
+              data-recorrido="agendar-tras-vehiculo"
+              className="btn btn-outline btn-primary rounded-full px-6"
+            >
+              Agendar cita
+            </Link>
+            <RecorridoPrimeraVez nombre="vehiculo" />
+          </>
+        )}
+      </div>
     </form>
   );
 }

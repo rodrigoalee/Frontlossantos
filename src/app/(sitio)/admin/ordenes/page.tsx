@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Suspense } from "react";
+import Migas from "@/components/Migas";
 import { esMecanico, verificarEmpleado } from "@/features/auth/dal";
 import FiltroEstadoOrdenes from "@/features/ordenes/components/FiltroEstadoOrdenes";
 import MisOrdenes from "@/features/ordenes/components/MisOrdenes";
@@ -28,13 +28,7 @@ function Encabezado({
     <div className="flex flex-wrap items-end justify-between gap-4">
       <div>
         {conRuta && (
-          <p className="mb-2 text-sm text-base-content/60">
-            <Link href="/admin" className="hover:text-secondary">
-              Inicio
-            </Link>
-            <span className="mx-2">/</span>
-            <span className="text-secondary">{titulo}</span>
-          </p>
+          <Migas className="mb-2" ruta={[{ etiqueta: "Inicio", href: "/admin" }, { etiqueta: titulo }]} />
         )}
         <h1 className="text-3xl font-bold text-secondary">{titulo}</h1>
         <p className="text-base-content/60">{descripcion}</p>

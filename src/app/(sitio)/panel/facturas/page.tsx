@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { FaFileInvoiceDollar } from "react-icons/fa6";
+import Migas from "@/components/Migas";
 import { formatearFechaCorta, formatearMoneda } from "@/features/citas/formato";
 import BotonPagarFactura from "@/features/facturacion/components/BotonPagarFactura";
 import { obtenerMisFacturas } from "@/features/facturacion/dal";
@@ -92,13 +92,7 @@ export default function MisFacturasPage() {
   return (
     <div className="mx-auto flex w-full max-w-4xl flex-col gap-8 px-4 py-8 sm:py-10">
       <div>
-        <p className="text-sm text-base-content/60">
-          <Link href="/panel" className="hover:text-secondary">
-            Mis citas
-          </Link>
-          <span className="mx-2">/</span>
-          <span className="text-secondary">Mis facturas</span>
-        </p>
+        <Migas ruta={[{ etiqueta: "Mis citas", href: "/panel" }, { etiqueta: "Mis facturas" }]} />
         <h1 className="mt-2 text-3xl font-bold text-secondary">Mis facturas</h1>
         <p className="text-base-content/60">Consulta y paga las facturas de tus visitas</p>
       </div>

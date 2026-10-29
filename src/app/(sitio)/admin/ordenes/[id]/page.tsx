@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import Migas from "@/components/Migas";
 import DetalleOrden, { DetalleOrdenCargando } from "@/features/ordenes/components/DetalleOrden";
 
 export const metadata: Metadata = {
@@ -18,17 +18,7 @@ export default function DetalleOrdenPage({ params }: PageProps<"/admin/ordenes/[
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-8 sm:py-10">
       <div>
-        <p className="text-sm text-base-content/60">
-          <Link href="/admin" className="hover:text-secondary">
-            Inicio
-          </Link>
-          <span className="mx-2">/</span>
-          <Link href="/admin/ordenes" className="hover:text-secondary">
-            Órdenes de trabajo
-          </Link>
-          <span className="mx-2">/</span>
-          <span className="text-secondary">Detalle</span>
-        </p>
+        <Migas ruta={[{ etiqueta: "Inicio", href: "/admin" }, { etiqueta: "Órdenes de trabajo", href: "/admin/ordenes" }, { etiqueta: "Detalle" }]} />
         <h1 className="mt-2 text-3xl font-bold text-secondary">Detalle de la orden</h1>
       </div>
 

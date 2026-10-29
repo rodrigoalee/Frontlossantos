@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import Migas from "@/components/Migas";
 import SeguimientoCita, { SeguimientoCitaCargando } from "@/features/citas/components/SeguimientoCita";
 
 export const metadata: Metadata = {
@@ -18,13 +18,7 @@ export default function SeguimientoCitaPage({ params }: PageProps<"/panel/citas/
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-8 sm:py-10">
       <div>
-        <p className="text-sm text-base-content/60">
-          <Link href="/panel" className="hover:text-secondary">
-            Mis citas
-          </Link>
-          <span className="mx-2">/</span>
-          <span className="text-secondary">Seguimiento</span>
-        </p>
+        <Migas ruta={[{ etiqueta: "Mis citas", href: "/panel" }, { etiqueta: "Seguimiento" }]} />
         <h1 className="mt-2 text-3xl font-bold text-secondary">Seguimiento de tu cita</h1>
         <p className="text-base-content/60">Consulta en qué paso va la atención de tu vehículo.</p>
       </div>

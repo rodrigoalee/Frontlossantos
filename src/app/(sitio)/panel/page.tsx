@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import BotonRecorrido, { RecorridoPrimeraVez } from "@/components/RecorridoPanel";
+import BotonRecorrido, { RecorridoPrimeraVez } from "@/components/Recorrido";
 import ListaCitas, { ListaCitasCargando } from "@/features/citas/components/ListaCitas";
 
 export const metadata: Metadata = {
@@ -17,7 +17,7 @@ export default function PanelPage() {
           <p className="text-base-content/60">Consulta el estado de tus visitas al taller</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <BotonRecorrido />
+          <BotonRecorrido nombre="panel" />
           <Link href="/panel/citas/nueva" data-recorrido="agendar" className="btn btn-primary rounded-full px-6">
             Agendar cita
           </Link>
@@ -26,7 +26,7 @@ export default function PanelPage() {
 
       <Suspense fallback={<ListaCitasCargando />}>
         <ListaCitas />
-        <RecorridoPrimeraVez />
+        <RecorridoPrimeraVez nombre="panel" />
       </Suspense>
     </div>
   );

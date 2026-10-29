@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Suspense } from "react";
+import Migas from "@/components/Migas";
 import CargandoPantalla from "@/components/CargandoPantalla";
+import BotonRecorrido, { RecorridoPrimeraVez } from "@/components/Recorrido";
 import MisDatos from "@/features/perfil/components/MisDatos";
 import RegistrarVehiculoForm from "@/features/vehiculos/components/RegistrarVehiculoForm";
 import VehiculosLista from "@/features/vehiculos/components/VehiculosLista";
@@ -24,20 +25,17 @@ function Esqueleto({ filas, conPantalla = false }: { filas: number; conPantalla?
 export default function PerfilPage() {
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-8 sm:py-10">
-      <div>
-        <p className="text-sm text-base-content/60">
-          <Link href="/panel" className="hover:text-secondary">
-            Mis citas
-          </Link>
-          <span className="mx-2">/</span>
-          <span className="text-secondary">Mi perfil</span>
-        </p>
-        <h1 className="mt-2 text-3xl font-bold text-secondary">Mi perfil</h1>
-        <p className="text-base-content/60">Tus datos de contacto y los vehículos que traes al taller</p>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <Migas ruta={[{ etiqueta: "Mis citas", href: "/panel" }, { etiqueta: "Mi perfil" }]} />
+          <h1 className="mt-2 text-3xl font-bold text-secondary">Mi perfil</h1>
+          <p className="text-base-content/60">Tus datos de contacto y los vehículos que traes al taller</p>
+        </div>
+        <BotonRecorrido nombre="perfil" />
       </div>
 
       <div className="grid items-start gap-6 lg:grid-cols-[1fr_2fr]">
-        <section className="rounded-3xl border border-base-300 bg-base-100 p-5 sm:p-6">
+        <section data-recorrido="mis-datos" className="rounded-3xl border border-base-300 bg-base-100 p-5 sm:p-6">
           <h2 className="mb-5 text-lg font-semibold text-secondary">Mis datos</h2>
           <Suspense fallback={<Esqueleto filas={3} />}>
             <MisDatos />
@@ -49,11 +47,12 @@ export default function PerfilPage() {
           <Suspense fallback={<Esqueleto filas={2} conPantalla />}>
             <VehiculosLista />
           </Suspense>
-          <div className="border-t border-base-300 pt-6">
-            <RegistrarVehiculoForm />
+          <div data-recorrido="registrar-vehiculo" className="border-t border-base-300 pt-6">
+            <RegistrarVehiculoForm conSiguientePaso />
           </div>
         </section>
       </div>
+      <RecorridoPrimeraVez nombre="perfil" />
     </div>
   );
 }

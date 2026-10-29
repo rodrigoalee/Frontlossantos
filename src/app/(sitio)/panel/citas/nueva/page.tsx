@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { FaCarSide } from "react-icons/fa6";
+import Migas from "@/components/Migas";
 import CargandoPantalla from "@/components/CargandoPantalla";
 import AgendarCitaWizard from "@/features/citas/components/AgendarCitaWizard";
 import { obtenerServicios, obtenerSucursales } from "@/features/citas/dal";
@@ -55,13 +56,7 @@ export default function AgendarCitaPage() {
   return (
     <div className="mx-auto flex w-full max-w-4xl flex-col gap-8 px-4 py-8 sm:py-10">
       <div>
-        <p className="text-sm text-base-content/60">
-          <Link href="/panel" className="hover:text-secondary">
-            Mis citas
-          </Link>
-          <span className="mx-2">/</span>
-          <span className="text-secondary">Agendar cita</span>
-        </p>
+        <Migas ruta={[{ etiqueta: "Mis citas", href: "/panel" }, { etiqueta: "Agendar cita" }]} />
         <h1 className="mt-2 text-3xl font-bold text-secondary">Agendar una cita</h1>
         <p className="text-base-content/60">
           Elige tu vehículo, la sede, el servicio y la fecha. El taller confirma la cita antes de tu visita.

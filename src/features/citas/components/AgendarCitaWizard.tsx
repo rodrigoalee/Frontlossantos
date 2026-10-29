@@ -2,6 +2,7 @@
 
 import AvisoAccion from "@/components/AvisoAccion";
 import ConfirmacionAccion from "@/components/ConfirmacionAccion";
+import BotonRecorrido, { RecorridoPrimeraVez } from "@/components/Recorrido";
 import { useState, useTransition } from "react";
 import { formatearPlaca } from "@/features/vehiculos/formato";
 import type { Vehiculo } from "@/features/vehiculos/types";
@@ -82,81 +83,83 @@ export default function AgendarCitaWizard({ vehiculos, sucursales, servicios }: 
             }
           }}
         >
-          <div>
-            <label htmlFor="vehiculo" className="mb-1.5 block text-sm font-semibold">
-              Vehículo
-            </label>
-            <select
-              id="vehiculo"
-              value={vehiculoId}
-              onChange={(e) => setVehiculoId(e.target.value)}
-              required
-              className={CLASE_SELECT}
-            >
-              <option value="" disabled>
-                Elige un vehículo
-              </option>
-              {vehiculos.map((v) => (
-                <option key={v.idVehiculo} value={v.idVehiculo}>
-                  {describirVehiculo(v)}
-                </option>
-              ))}
-            </select>
-            <p className="mt-1.5 text-xs text-base-content/60">Solo aparecen los vehículos registrados a tu nombre.</p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div data-recorrido="datos-cita" className="flex flex-col gap-6">
             <div>
-              <label htmlFor="sede" className="mb-1.5 block text-sm font-semibold">
-                Sede
+              <label htmlFor="vehiculo" className="mb-1.5 block text-sm font-semibold">
+                Vehículo
               </label>
               <select
-                id="sede"
-                value={sucursalId}
-                onChange={(e) => {
-                  setSucursalId(e.target.value);
-                  setFechaHora(null);
-                }}
+                id="vehiculo"
+                value={vehiculoId}
+                onChange={(e) => setVehiculoId(e.target.value)}
                 required
                 className={CLASE_SELECT}
               >
                 <option value="" disabled>
-                  Elige una sede
+                  Elige un vehículo
                 </option>
-                {sucursales.map((s) => (
-                  <option key={s.idSucursal} value={s.idSucursal}>
-                    {s.nombre} — {s.direccion}
+                {vehiculos.map((v) => (
+                  <option key={v.idVehiculo} value={v.idVehiculo}>
+                    {describirVehiculo(v)}
                   </option>
                 ))}
               </select>
+              <p className="mt-1.5 text-xs text-base-content/60">Solo aparecen los vehículos registrados a tu nombre.</p>
             </div>
 
-            <div>
-              <label htmlFor="servicio" className="mb-1.5 block text-sm font-semibold">
-                Servicio
-              </label>
-              <select
-                id="servicio"
-                value={servicioId}
-                onChange={(e) => setServicioId(e.target.value)}
-                required
-                className={CLASE_SELECT}
-              >
-                <option value="" disabled>
-                  Elige un servicio
-                </option>
-                {servicios.map((s) => (
-                  <option key={s.idServicio} value={s.idServicio}>
-                    {s.nombre}
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <div>
+                <label htmlFor="sede" className="mb-1.5 block text-sm font-semibold">
+                  Sede
+                </label>
+                <select
+                  id="sede"
+                  value={sucursalId}
+                  onChange={(e) => {
+                    setSucursalId(e.target.value);
+                    setFechaHora(null);
+                  }}
+                  required
+                  className={CLASE_SELECT}
+                >
+                  <option value="" disabled>
+                    Elige una sede
                   </option>
-                ))}
-                <option value={OTRO_SERVICIO}>Otro servicio (descríbelo)</option>
-              </select>
-              <p className="mt-1.5 text-xs text-base-content/60">
-                {otro
-                  ? "Te enviaremos una cotización; la cita se confirma cuando la aceptes."
-                  : "El precio es estimado; puede variar tras el diagnóstico."}
-              </p>
+                  {sucursales.map((s) => (
+                    <option key={s.idSucursal} value={s.idSucursal}>
+                      {s.nombre} — {s.direccion}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="servicio" className="mb-1.5 block text-sm font-semibold">
+                  Servicio
+                </label>
+                <select
+                  id="servicio"
+                  value={servicioId}
+                  onChange={(e) => setServicioId(e.target.value)}
+                  required
+                  className={CLASE_SELECT}
+                >
+                  <option value="" disabled>
+                    Elige un servicio
+                  </option>
+                  {servicios.map((s) => (
+                    <option key={s.idServicio} value={s.idServicio}>
+                      {s.nombre}
+                    </option>
+                  ))}
+                  <option value={OTRO_SERVICIO}>Otro servicio (descríbelo)</option>
+                </select>
+                <p className="mt-1.5 text-xs text-base-content/60">
+                  {otro
+                    ? "Te enviaremos una cotización; la cita se confirma cuando la aceptes."
+                    : "El precio es estimado; puede variar tras el diagnóstico."}
+                </p>
+              </div>
             </div>
           </div>
 
@@ -181,7 +184,7 @@ export default function AgendarCitaWizard({ vehiculos, sucursales, servicios }: 
             </div>
           )}
 
-          <fieldset>
+          <fieldset data-recorrido="fecha-cita">
             <legend className="mb-1.5 text-sm font-semibold">Fecha y hora</legend>
             {sucursal ? (
               <SelectorFechaHora
@@ -198,9 +201,18 @@ export default function AgendarCitaWizard({ vehiculos, sucursales, servicios }: 
             <p className="mt-2 text-xs text-base-content/60">Lunes a viernes de 8:00 a 18:00, sábados de 8:00 a 13:00.</p>
           </fieldset>
 
-          <button type="submit" disabled={!completo} className="btn btn-primary self-end rounded-full px-8">
-            Continuar
-          </button>
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            <BotonRecorrido nombre="agendar" />
+            <button
+              type="submit"
+              disabled={!completo}
+              data-recorrido="continuar-cita"
+              className="btn btn-primary rounded-full px-8"
+            >
+              Continuar
+            </button>
+          </div>
+          <RecorridoPrimeraVez nombre="agendar" />
         </form>
       ) : (
         completo && (

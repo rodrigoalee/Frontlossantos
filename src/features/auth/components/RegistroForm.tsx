@@ -6,6 +6,7 @@ import { useActionState } from "react";
 import { FaArrowLeft } from "react-icons/fa6";
 import { alSalirDelTelefono } from "@/lib/validaciones";
 import { registrar } from "../actions";
+import GoogleButton from "./GoogleButton";
 import PasswordInput from "./PasswordInput";
 
 const labelClass = "mb-1.5 block text-sm font-semibold";
@@ -82,6 +83,9 @@ export default function RegistroForm() {
           {pending && <span className="loading loading-spinner loading-sm" />}
           Crear
         </button>
+
+        <div className="divider my-4 text-xs text-base-content/60">o</div>
+        <GoogleButton />
 
         <Link
           href="/login"
