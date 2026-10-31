@@ -3,15 +3,13 @@
 import { refresh } from "next/cache";
 import { redirect } from "next/navigation";
 import { ApiError, apiFetch } from "@/lib/api";
+import { completarTelefono, CORREO, TELEFONO_E164 } from "@/lib/validaciones";
 import type { EditarClienteState, NuevoClienteState } from "./types";
-
-const TELEFONO_E164 = /^\+[1-9]\d{7,14}$/;
-const CORREO = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function crearCliente(_prev: NuevoClienteState, formData: FormData): Promise<NuevoClienteState> {
   const valores = {
     nombreCompleto: String(formData.get("nombreCompleto") ?? "").trim(),
-    telefono: String(formData.get("telefono") ?? "").replace(/[\s-]/g, ""),
+    telefono: completarTelefono(String(formData.get("telefono") ?? "")),
     correo: String(formData.get("correo") ?? "").trim().toLowerCase(),
     nit: String(formData.get("nit") ?? "").trim(),
   };
@@ -57,7 +55,7 @@ export async function actualizarCliente(
   const campo = String(formData.get("campo") ?? "");
   const valores = {
     nombreCompleto: String(formData.get("nombreCompleto") ?? "").trim(),
-    telefono: String(formData.get("telefono") ?? "").replace(/[\s-]/g, ""),
+    telefono: completarTelefono(String(formData.get("telefono") ?? "")),
     correo: String(formData.get("correo") ?? "").trim().toLowerCase(),
     nit: String(formData.get("nit") ?? "").trim(),
   };

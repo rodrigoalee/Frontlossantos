@@ -1,7 +1,9 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import { useActionState, useState } from "react";
 import { FaPen } from "react-icons/fa6";
+import { alSalirDelTelefono } from "@/lib/validaciones";
 import { actualizarCliente } from "../actions";
 import type { EditarClienteState } from "../types";
 
@@ -59,14 +61,15 @@ function EditorDato({ idCliente, cliente, campo, etiqueta, tipo = "text", maxLen
             maxLength={maxLength}
             required={campo !== "nit"}
             defaultValue={state?.valor ?? cliente[campo]}
+            onBlur={campo === "telefono" ? alSalirDelTelefono : undefined}
             autoFocus
             className="input input-sm w-full border-0 bg-base-200"
           />
           {ayuda && <p className="text-xs text-base-content/60">{ayuda}</p>}
           {state?.error && (
-            <p role="alert" className="text-xs text-error">
+            <AvisoAccion origen={state}>
               {state.error}
-            </p>
+            </AvisoAccion>
           )}
           <div className="flex gap-2">
             <button type="submit" disabled={pending} className="btn btn-primary btn-xs rounded-full px-4">

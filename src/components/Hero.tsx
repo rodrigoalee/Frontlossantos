@@ -24,11 +24,6 @@ export default function Hero() {
           con su orden de trabajo, sus repuestos y su factura, para que sepas exactamente qué se
           le hizo a tu carro y cuánto costó.
         </p>
-        <p className="mt-4 max-w-xl text-sm">
-          Si ya eres cliente, entra a tu portal para agendar una cita y seguir en qué va tu vehículo.
-          <br />
-          Si trabajas aquí, entra al sistema de gestión.
-        </p>
 
         <div className="mt-8 flex gap-4">
           <Link href="/login" className="btn btn-primary rounded-full px-8">

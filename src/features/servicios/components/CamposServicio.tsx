@@ -23,7 +23,6 @@ export default function CamposServicio({ valores, compacto = false }: Props) {
           defaultValue={valores?.nombre}
           className={entrada}
         />
-        <p className="mt-1.5 text-xs text-base-content/60">Así lo verán los clientes al agendar su cita.</p>
       </div>
       <div>
         <label htmlFor="tarifaManoObra" className={etiqueta}>
@@ -41,7 +40,6 @@ export default function CamposServicio({ valores, compacto = false }: Props) {
           defaultValue={valores?.tarifaManoObra}
           className={entrada}
         />
-        <p className="mt-1.5 text-xs text-base-content/60">Con IVA incluido. Los repuestos se cobran aparte.</p>
       </div>
     </>
   );

@@ -16,3 +16,16 @@ export function leerFiltroOrdenes(valor: string | string[] | undefined): FiltroO
 export function leerBusqueda(valor: string | string[] | undefined) {
   return (Array.isArray(valor) ? valor[0] : valor)?.trim().slice(0, 100) ?? "";
 }
+
+export type FiltroMisOrdenes = Extract<FiltroOrdenes, { estado: EstadoOrden }>;
+
+export const FILTROS_MIS_ORDENES = FILTROS_ORDENES.filter((filtro): filtro is FiltroMisOrdenes => "estado" in filtro);
+
+export function leerFiltroMisOrdenes(valor: string | string[] | undefined): FiltroMisOrdenes {
+  return FILTROS_MIS_ORDENES.find((filtro) => filtro.valor === valor) ?? FILTROS_MIS_ORDENES[0];
+}
+
+export function leerPagina(valor: string | string[] | undefined) {
+  const pagina = Number(Array.isArray(valor) ? valor[0] : valor);
+  return Number.isInteger(pagina) && pagina > 0 ? Math.min(pagina, 10_000) : 1;
+}

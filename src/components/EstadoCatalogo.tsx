@@ -1,6 +1,8 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import { useState, useTransition } from "react";
+import ConfirmacionAccion from "@/components/ConfirmacionAccion";
 
 type ResultadoAccion = { error?: string } | undefined;
 
@@ -48,7 +50,7 @@ export default function EstadoCatalogo({
 
       <p className="text-sm text-base-content/70">{activo ? descripcionActivo : descripcionBaja}</p>
 
-      {activo && darDeBaja && !confirmando && (
+      {activo && darDeBaja && (
         <button
           type="button"
           onClick={() => {
@@ -62,28 +64,15 @@ export default function EstadoCatalogo({
       )}
 
       {activo && darDeBaja && confirmando && (
-        <div className="flex flex-col gap-3 rounded-2xl bg-error/10 p-4">
-          <p className="text-sm text-error">{confirmacionBaja}</p>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => ejecutar(darDeBaja)}
-              disabled={pending}
-              className="btn btn-error btn-sm rounded-full px-5"
-            >
-              {pending && <span className="loading loading-spinner loading-xs" />}
-              Sí, dar de baja
-            </button>
-            <button
-              type="button"
-              onClick={() => setConfirmando(false)}
-              disabled={pending}
-              className="btn btn-sm rounded-full px-5"
-            >
-              No
-            </button>
-          </div>
-        </div>
+        <ConfirmacionAccion
+          titulo="¿Dar de baja?"
+          mensaje={confirmacionBaja}
+          textoConfirmar="Sí, dar de baja"
+          textoCancelar="Volver"
+          pendiente={pending}
+          onConfirmar={() => ejecutar(darDeBaja)}
+          onCancelar={() => setConfirmando(false)}
+        />
       )}
 
       {!activo && reactivar && (
@@ -99,9 +88,9 @@ export default function EstadoCatalogo({
       )}
 
       {error && (
-        <p role="alert" className="text-sm text-error">
+        <AvisoAccion>
           {error}
-        </p>
+        </AvisoAccion>
       )}
     </section>
   );

@@ -1,7 +1,11 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
+import { RecorridoPrimeraVez } from "@/components/Recorrido";
+import Link from "next/link";
 import { useActionState } from "react";
 import { registrarVehiculo } from "../actions";
+import { AYUDA_PLACA, PATRON_PLACA, alSalirDeLaPlaca } from "../formato";
 import type { RegistrarVehiculoState } from "../types";
 
 const CAMPOS = [
@@ -12,9 +16,11 @@ const CAMPOS = [
 
 type Props = {
   accion?: (prev: RegistrarVehiculoState, formData: FormData) => Promise<RegistrarVehiculoState>;
+  /** En el perfil del cliente: al registrar ofrece agendar la cita, que es lo que sigue. */
+  conSiguientePaso?: boolean;
 };
 
-export default function RegistrarVehiculoForm({ accion = registrarVehiculo }: Props) {
+export default function RegistrarVehiculoForm({ accion = registrarVehiculo, conSiguientePaso = false }: Props) {
   const [state, action, pending] = useActionState(accion, undefined);
   const valores = state?.valores;
 
@@ -22,7 +28,7 @@ export default function RegistrarVehiculoForm({ accion = registrarVehiculo }: Pr
     <form action={action} className="flex flex-col gap-4">
       <p className="font-semibold text-secondary">Registrar vehículo</p>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {CAMPOS.map((campo) => (
           <div key={campo.name}>
             <label htmlFor={campo.name} className="mb-1.5 block text-sm font-semibold">
@@ -33,6 +39,9 @@ export default function RegistrarVehiculoForm({ accion = registrarVehiculo }: Pr
               name={campo.name}
               maxLength={campo.maxLength}
               defaultValue={valores?.[campo.name]}
+              onBlur={campo.name === "placa" ? alSalirDeLaPlaca : undefined}
+              pattern={campo.name === "placa" ? PATRON_PLACA : undefined}
+              title={campo.name === "placa" ? AYUDA_PLACA : undefined}
               required
               className={`input w-full border-0 bg-base-200 ${"className" in campo ? campo.className : ""}`}
             />
@@ -57,20 +66,34 @@ export default function RegistrarVehiculoForm({ accion = registrarVehiculo }: Pr
       </div>
 
       {state?.error && (
-        <p role="alert" className="text-sm text-error">
+        <AvisoAccion origen={state}>
           {state.error}
-        </p>
+        </AvisoAccion>
       )}
       {state?.ok && (
-        <p role="status" className="text-sm text-emerald-700">
+        <AvisoAccion exito origen={state}>
           Vehículo registrado.
-        </p>
+        </AvisoAccion>
       )}
 
-      <button type="submit" disabled={pending} className="btn btn-primary self-start rounded-full px-6">
-        {pending && <span className="loading loading-spinner loading-sm" />}
-        Registrar vehículo
-      </button>
+      <div className="flex flex-wrap gap-3">
+        <button type="submit" disabled={pending} className="btn btn-primary rounded-full px-6">
+          {pending && <span className="loading loading-spinner loading-sm" />}
+          Registrar vehículo
+        </button>
+        {conSiguientePaso && state?.ok && (
+          <>
+            <Link
+              href="/panel/citas/nueva"
+              data-recorrido="agendar-tras-vehiculo"
+              className="btn btn-outline btn-primary rounded-full px-6"
+            >
+              Agendar cita
+            </Link>
+            <RecorridoPrimeraVez nombre="vehiculo" />
+          </>
+        )}
+      </div>
     </form>
   );
 }

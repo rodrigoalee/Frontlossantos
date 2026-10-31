@@ -13,8 +13,8 @@ const SERVICIOS_DEL_TALLER: Servicio[] = [
     descripcion: "Servicios preventivos para que tu vehículo no falle en el camino.",
   },
   {
-    titulo: "Personalización",
-    descripcion: "Modificaciones estéticas y de rendimiento a tu medida.",
+    titulo: "Diagnóstico y Reparación",
+    descripcion: "Detectamos y solucionamos problemas mecánicos.",
   },
 ];
 

@@ -1,3 +1,5 @@
+import type { FotoOrden } from "@/features/ordenes/types";
+
 export type EstadoCita = "Pendiente" | "Confirmada" | "Cancelada";
 
 export type EstadoOrden = "EnRecepcion" | "EnProceso" | "Finalizado";
@@ -40,8 +42,9 @@ export type DiaDisponibilidad = {
 export type NuevaCita = {
   vehiculoId: number;
   sucursalId: number;
-  servicioId: number;
+  servicioId: number | null;
   fechaHora: string;
+  descripcionServicio?: string;
 };
 
 export type SeguimientoCita = {
@@ -59,6 +62,8 @@ export type SeguimientoCita = {
   fechaIngreso: string | null;
   fechaFinalizacion: string | null;
   pagado: boolean;
+  diagnostico: string | null;
+  fotos: FotoOrden[];
 };
 
 export type CitaTaller = {
@@ -80,6 +85,7 @@ export type CitaTallerDetalle = CitaTaller & {
   clienteId: number;
   telefonoCliente: string;
   motivo: string | null;
+  servicioPersonalizado: boolean;
 };
 
 export type CambiarEstadoCitaState = {

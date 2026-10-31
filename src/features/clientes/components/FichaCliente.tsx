@@ -48,7 +48,7 @@ export default async function FichaCliente({ idCliente }: { idCliente: number })
     <>
       <h1 className="sr-only">{cliente.nombreCompleto}</h1>
 
-      <div className="grid items-start gap-6 lg:grid-cols-[1fr_2fr]">
+      <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
         <section className="flex flex-col gap-5 rounded-3xl border border-base-300 bg-base-100 p-5 sm:p-6">
           <h2 className="text-xl font-bold text-secondary">Datos de contacto</h2>
           <dl className="flex flex-col gap-4">
@@ -65,7 +65,6 @@ export default async function FichaCliente({ idCliente }: { idCliente: number })
               etiqueta="Teléfono"
               tipo="tel"
               maxLength={20}
-              ayuda="Con código de país, por ejemplo +50255551234."
             >
               <a href={`tel:${cliente.telefono}`} className="hover:text-primary">
                 {formatearTelefono(cliente.telefono)}
@@ -140,7 +139,7 @@ export function FichaClienteCargando() {
   return (
     <div className="flex flex-col gap-6" aria-busy="true" aria-label="Cargando la ficha del cliente">
       <CargandoPantalla texto="Cargando ficha…" />
-      <div className="grid gap-6 lg:grid-cols-[1fr_2fr]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
         <div className="skeleton h-56 rounded-3xl" />
         <div className="skeleton h-56 rounded-3xl" />
       </div>
