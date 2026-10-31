@@ -22,7 +22,7 @@ function CitasSinOrden({ citas }: { citas: CitaTaller[] }) {
         <h2 className="text-xl font-bold text-secondary">
           Citas de hoy sin orden <span className="text-base font-normal text-base-content/50">({citas.length})</span>
         </h2>
-        <p className="text-sm text-base-content/60">Cuando el carro llegue, abre su orden y asígnale un mecánico.</p>
+        <p className="text-sm text-base-content/60">Cuando el carro llegue, recíbelo desde la cita.</p>
       </div>
       <ul className="flex flex-col gap-3">
         {citas.map((cita) => (
@@ -39,8 +39,8 @@ function CitasSinOrden({ citas }: { citas: CitaTaller[] }) {
                 {cita.servicio && ` · ${cita.servicio}`}
               </p>
             </div>
-            <Link href={`/admin/ordenes/nueva?cita=${cita.idCita}`} className="btn btn-primary btn-sm rounded-full px-5">
-              Abrir orden
+            <Link href={`/admin/citas/${cita.idCita}`} className="btn btn-primary btn-sm rounded-full px-5">
+              Recibir
             </Link>
           </li>
         ))}

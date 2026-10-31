@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { IconType } from "react-icons";
-import { FaArrowRightFromBracket, FaChevronDown, FaGear, FaRegUser } from "react-icons/fa6";
+import { FaArrowRightFromBracket, FaChevronDown, FaFileInvoiceDollar, FaGear, FaRegUser, FaSliders } from "react-icons/fa6";
 import { cerrarSesion } from "@/features/auth/actions";
 
 function IconoCirculo({ Icono }: { Icono: IconType }) {
@@ -17,7 +17,15 @@ function IconoCirculo({ Icono }: { Icono: IconType }) {
 const CLASE_OPCION =
   "flex w-full cursor-pointer items-center gap-4 rounded-2xl p-1 text-left text-sm transition-colors hover:bg-neutral-content/10";
 
-export default function MenuOpciones({ iniciales, conPerfil }: { iniciales: string; conPerfil: boolean }) {
+export default function MenuOpciones({
+  iniciales,
+  conPerfil,
+  conAjustes,
+}: {
+  iniciales: string;
+  conPerfil: boolean;
+  conAjustes: boolean;
+}) {
   const [abierto, setAbierto] = useState(false);
   const contenedor = useRef<HTMLDivElement>(null);
 
@@ -44,6 +52,7 @@ export default function MenuOpciones({ iniciales, conPerfil }: { iniciales: stri
       <button
         type="button"
         aria-label="Abrir opciones"
+        data-recorrido="opciones"
         aria-expanded={abierto}
         aria-controls="menu-opciones"
         onClick={() => setAbierto((valor) => !valor)}
@@ -68,6 +77,22 @@ export default function MenuOpciones({ iniciales, conPerfil }: { iniciales: stri
             <Link href="/panel/perfil" onClick={() => setAbierto(false)} className={CLASE_OPCION}>
               <IconoCirculo Icono={FaRegUser} />
               Mi perfil
+            </Link>
+          </li>
+        )}
+        {conPerfil && (
+          <li>
+            <Link href="/panel/facturas" onClick={() => setAbierto(false)} className={CLASE_OPCION}>
+              <IconoCirculo Icono={FaFileInvoiceDollar} />
+              Mis facturas
+            </Link>
+          </li>
+        )}
+        {conAjustes && (
+          <li>
+            <Link href="/admin/ajustes" onClick={() => setAbierto(false)} className={CLASE_OPCION}>
+              <IconoCirculo Icono={FaSliders} />
+              Ajustes
             </Link>
           </li>
         )}

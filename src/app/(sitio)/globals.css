@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+@plugin "daisyui" {
+  themes: false;
+}
+
+/* Tema de la marca Los Santos Customs */
+@plugin "daisyui/theme" {
+  name: "lossantos";
+  default: true;
+  color-scheme: light;
+
+  --color-base-100: #ffffff;
+  --color-base-200: #e6e6ea;
+  --color-base-300: #d9d9de;
+  --color-base-content: #1f2a2e;
+
+  --color-primary: #e8804a;
+  --color-primary-content: #ffffff;
+  --color-secondary: #3e0e09;
+  --color-secondary-content: #ffffff;
+    --color-neutral: #000000;
+  --color-neutral-content: #ffffff;
+
+
+  --color-error: #dc2626;
+  --color-error-content: #ffffff;
+
+  --radius-field: 0.6rem;
+  --radius-box: 0.75rem;
+  --border: 1px;
+}
+
+@theme inline {
+  --font-sans: var(--font-poppins);
+}
+
+@theme {
+  --animate-aparecer: aparecer 200ms ease-out 150ms both;
+
+  @keyframes aparecer {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+/* Recorrido del panel del cliente (Driver.js) con los colores de la marca */
+.driver-popover.recorrido-lossantos {
+  --driver-popover-font-family: var(--font-poppins);
+  border-radius: var(--radius-box);
+  color: var(--color-base-content);
+  max-width: 320px;
+}
+
+.recorrido-lossantos .driver-popover-title {
+  color: var(--color-secondary);
+}
+
+.recorrido-lossantos .driver-popover-footer-btn {
+  border-radius: 9999px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.recorrido-lossantos .driver-popover-next-btn,
+.recorrido-lossantos .driver-popover-done-btn {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
+  color: var(--color-primary-content);
+}
+
+.recorrido-lossantos .driver-popover-next-btn:hover,
+.recorrido-lossantos .driver-popover-done-btn:hover {
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+}

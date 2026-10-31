@@ -2,16 +2,15 @@
 
 import { redirect } from "next/navigation";
 import { ApiError, apiFetch } from "@/lib/api";
+import { completarTelefono, TELEFONO_E164 } from "@/lib/validaciones";
 import { createSession, destroySession, RUTA_DESPUES_DE_LOGIN } from "./session";
 import type { CompletarPerfilState, LoginResponse, LoginState, RegistroState, UsuarioSesion } from "./types";
-
-const TELEFONO_E164 = /^\+[1-9]\d{7,14}$/;
 
 export async function registrar(_prev: RegistroState, formData: FormData): Promise<RegistroState> {
   const valores = {
     nombreCompleto: String(formData.get("nombreCompleto") ?? "").trim(),
     correo: String(formData.get("correo") ?? "").trim(),
-    telefono: String(formData.get("telefono") ?? "").replace(/[\s-]/g, ""),
+    telefono: completarTelefono(String(formData.get("telefono") ?? "")),
   };
   const password = String(formData.get("password") ?? "");
 
@@ -80,10 +79,10 @@ export async function completarPerfil(
   _prev: CompletarPerfilState,
   formData: FormData,
 ): Promise<CompletarPerfilState> {
-  const telefono = String(formData.get("telefono") ?? "").trim();
+  const telefono = completarTelefono(String(formData.get("telefono") ?? ""));
 
   if (!TELEFONO_E164.test(telefono)) {
-    return { error: "El teléfono debe incluir el código de país, por ejemplo +50255551234.", telefono };
+    return { error: "El teléfono debe incluir el código de país, por ejemplo +50241961558.", telefono };
   }
 
   try {

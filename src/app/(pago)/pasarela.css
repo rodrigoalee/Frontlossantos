@@ -1,0 +1,62 @@
+/* Colores de la marca sobre Bootstrap, solo para la pasarela de pago. */
+.pasarela {
+  --marca: #e8804a;
+  --marca-oscuro: #d96f38;
+  --marca-secundario: #3e0e09;
+  --bs-body-font-family: var(--font-poppins), system-ui, sans-serif;
+  --bs-body-bg: #f4f1ee;
+  --bs-link-color-rgb: 232, 128, 74;
+  min-height: 100dvh;
+}
+
+.pasarela .text-marca {
+  color: var(--marca-secundario);
+}
+
+.pasarela .btn-marca {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--marca);
+  --bs-btn-border-color: var(--marca);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--marca-oscuro);
+  --bs-btn-hover-border-color: var(--marca-oscuro);
+  --bs-btn-active-bg: var(--marca-oscuro);
+  --bs-btn-disabled-bg: var(--marca);
+  --bs-btn-disabled-border-color: var(--marca);
+  --bs-btn-disabled-color: #fff;
+}
+
+.pasarela .btn-outline-marca {
+  --bs-btn-color: var(--marca);
+  --bs-btn-border-color: var(--marca);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--marca);
+  --bs-btn-hover-border-color: var(--marca);
+  --bs-btn-active-bg: var(--marca-oscuro);
+}
+
+.pasarela .form-control:focus {
+  border-color: var(--marca);
+  box-shadow: 0 0 0 0.2rem rgba(232, 128, 74, 0.25);
+}
+
+.pasarela .tarjeta-pago {
+  max-width: 28rem;
+}
+
+/* La hoja de resultado sube desde abajo al aparecer; sin el JS de Bootstrap no hay animación propia. */
+.pasarela .hoja-pago {
+  animation: subir-hoja 0.3s ease-out;
+}
+
+@keyframes subir-hoja {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pasarela .hoja-pago {
+    animation: none;
+  }
+}

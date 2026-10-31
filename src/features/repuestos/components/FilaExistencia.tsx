@@ -1,5 +1,6 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import { useActionState, useState } from "react";
 import { FaPen } from "react-icons/fa6";
 import { fijarExistencia } from "../actions";
@@ -55,9 +56,9 @@ function EditorExistencia({ existencia, idRepuesto, onTerminar }: EditorProps) {
           </div>
           <p className="text-xs text-base-content/60">Escribe lo que contaste en bodega, no la diferencia.</p>
           {state?.error && (
-            <p role="alert" className="text-xs text-error">
+            <AvisoAccion origen={state}>
               {state.error}
-            </p>
+            </AvisoAccion>
           )}
         </form>
       </td>

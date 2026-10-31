@@ -1,5 +1,6 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import { DayPicker } from "@daypicker/react";
 import { es } from "@daypicker/react/locale";
 import "@daypicker/react/style.css";
@@ -119,11 +120,12 @@ export default function SelectorFechaHora({ sucursalId, valor, onCambio }: Props
 
       <div className="flex-1">
         {carga?.error && !cargando ? (
-          <div role="alert" className="flex flex-col items-start gap-3 text-sm text-error">
-            {carga.error}
+          <div className="flex flex-col items-start gap-3 text-sm text-base-content/60">
+            No se pudieron cargar los horarios.
             <button type="button" onClick={() => setIntento((n) => n + 1)} className="btn btn-sm rounded-full">
               Reintentar
             </button>
+            <AvisoAccion accion={{ texto: "Reintentar", onClick: () => setIntento((n) => n + 1) }}>{carga.error}</AvisoAccion>
           </div>
         ) : !diaElegido ? (
           <p className="text-sm text-base-content/60">Elige un día en el calendario para ver sus horarios.</p>

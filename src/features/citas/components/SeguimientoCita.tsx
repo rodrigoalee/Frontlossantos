@@ -1,5 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import CargandoPantalla from "@/components/CargandoPantalla";
+import CotizacionesCliente from "@/features/cotizaciones/components/CotizacionesCliente";
+import GaleriaFotos from "@/features/ordenes/components/GaleriaFotos";
 import {
   FaCheck,
   FaCircleExclamation,
@@ -14,6 +16,7 @@ import { obtenerSeguimiento } from "../dal";
 import { formatearFechaCita } from "../formato";
 import { construirHitos, esCancelada, type Hito } from "../seguimiento";
 import type { SeguimientoCita as Seguimiento } from "../types";
+import AccionesCita from "./AccionesCita";
 
 export default async function SeguimientoCita({ idCita }: { idCita: number }) {
   let seguimiento: Seguimiento;
@@ -35,42 +38,62 @@ export default async function SeguimientoCita({ idCita }: { idCita: number }) {
   const hitos = construirHitos(seguimiento);
   const cancelada = esCancelada(seguimiento);
   const actual = hitos.findLast((hito) => hito.estado !== "pendiente");
+  const cancelable = !cancelada && seguimiento.estadoOrden === null && new Date(seguimiento.fechaHora) > new Date();
 
   return (
-    <div className="grid gap-6 lg:grid-cols-3">
-      <section className="flex flex-col gap-6 rounded-3xl border border-base-300 bg-base-100 p-5 sm:p-8 lg:col-span-2">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div className="min-w-0">
-            <h2 className="text-xl font-semibold break-words text-secondary">
-              {seguimiento.servicio ?? (seguimiento.motivo?.trim() || "Cita en el taller")}
-            </h2>
-            <p className="text-sm text-base-content/60">Avance de tu visita</p>
+    <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-3">
+      <div className="flex min-w-0 flex-col gap-6 lg:col-span-2">
+        <section className="flex flex-col gap-6 rounded-3xl border border-base-300 bg-base-100 p-5 sm:p-8">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="min-w-0">
+              <h2 className="text-xl font-semibold break-words text-secondary">
+                {seguimiento.servicio ?? (seguimiento.motivo?.trim() || "Cita en el taller")}
+              </h2>
+              <p className="text-sm text-base-content/60">Avance de tu visita</p>
+            </div>
+            <span
+              className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${
+                cancelada ? "bg-red-100 text-red-800" : "bg-primary/15 text-secondary"
+              }`}
+            >
+              {cancelada ? "Cancelada" : actual?.titulo}
+            </span>
           </div>
-          <span
-            className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${
-              cancelada ? "bg-red-100 text-red-800" : "bg-primary/15 text-secondary"
-            }`}
-          >
-            {cancelada ? "Cancelada" : actual?.titulo}
-          </span>
-        </div>
 
-        {cancelada && (
-          <div role="alert" className="flex items-start gap-3 rounded-2xl bg-red-50 p-4 text-sm text-red-800">
-            <FaCircleExclamation aria-hidden className="mt-0.5 size-4 shrink-0" />
-            <p>
-              Esta cita fue cancelada, así que el seguimiento se detuvo. Si necesitas otra visita, agenda una nueva
-              cita o contáctanos.
-            </p>
-          </div>
+          {cancelada && (
+            <div role="alert" className="flex items-start gap-3 rounded-2xl bg-red-50 p-4 text-sm text-red-800">
+              <FaCircleExclamation aria-hidden className="mt-0.5 size-4 shrink-0" />
+              <p>
+                Esta cita fue cancelada, así que el seguimiento se detuvo. Si necesitas otra visita, agenda una nueva
+                cita o contáctanos.
+              </p>
+            </div>
+          )}
+
+          <ol className="flex flex-col">
+            {hitos.map((hito, i) => (
+              <PasoHito key={hito.titulo} hito={hito} ultimo={i === hitos.length - 1} />
+            ))}
+          </ol>
+
+          {cancelable && <AccionesCita idCita={seguimiento.idCita} estado={seguimiento.estado} portal />}
+        </section>
+
+        {(seguimiento.diagnostico?.trim() || seguimiento.fotos.length > 0) && (
+          <section className="flex flex-col gap-4 rounded-3xl border border-base-300 bg-base-100 p-5 sm:p-8">
+            <div>
+              <h2 className="text-xl font-semibold text-secondary">Diagnóstico del taller</h2>
+              <p className="text-sm text-base-content/60">Lo que encontró el mecánico al revisar tu vehículo</p>
+            </div>
+            {seguimiento.diagnostico?.trim() && (
+              <p className="whitespace-pre-line text-base-content/80">{seguimiento.diagnostico}</p>
+            )}
+            {seguimiento.fotos.length > 0 && <GaleriaFotos fotos={seguimiento.fotos} />}
+          </section>
         )}
 
-        <ol className="flex flex-col">
-          {hitos.map((hito, i) => (
-            <PasoHito key={hito.titulo} hito={hito} ultimo={i === hitos.length - 1} />
-          ))}
-        </ol>
-      </section>
+        <CotizacionesCliente idCita={seguimiento.idCita} />
+      </div>
 
       <aside className="flex flex-col gap-6">
         <section className="flex flex-col gap-5 rounded-3xl border border-base-300 bg-base-100 p-5 sm:p-6">
@@ -172,7 +195,7 @@ function Dato({ etiqueta, children }: { etiqueta: string; children: React.ReactN
 
 export function SeguimientoCitaCargando() {
   return (
-    <div className="grid gap-6 lg:grid-cols-3" aria-busy="true" aria-label="Cargando el seguimiento">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-3" aria-busy="true" aria-label="Cargando el seguimiento">
       <CargandoPantalla texto="Cargando el seguimiento…" />
       <div className="flex flex-col gap-5 rounded-3xl border border-base-300 p-8 lg:col-span-2">
         <div className="skeleton h-6 w-1/2" />

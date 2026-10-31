@@ -16,9 +16,15 @@ export type OrdenLista = {
   servicio: string | null;
 };
 
+export type ConteoOrdenesPorEstado = {
+  enRecepcion: number;
+  enProceso: number;
+  finalizado: number;
+};
+
 export type LineaOrden = {
   idOrdenDetalle: number;
-  tipoLinea: "Repuesto" | "Servicio";
+  tipoLinea: "Repuesto" | "Servicio" | "Adicional";
   repuestoId: number | null;
   servicioId: number | null;
   descripcion: string;
@@ -47,6 +53,14 @@ export type OrdenDetalle = {
   citaId: number | null;
   motivoIngreso: string | null;
   mecanicoAsignadoId: number | null;
+  fotos: FotoOrden[];
+};
+
+export type FotoOrden = {
+  idFoto: number;
+  url: string;
+  descripcion: string | null;
+  fechaSubida: string;
 };
 
 export type MecanicoDisponible = {
@@ -68,12 +82,6 @@ export type ServicioCatalogo = {
   nombre: string;
   tarifaManoObra: number;
   activo: boolean;
-};
-
-export type NuevaOrden = {
-  citaId: number;
-  mecanicoAsignadoId: number | null;
-  motivoIngreso: string | null;
 };
 
 export type NuevaLinea = {

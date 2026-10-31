@@ -11,6 +11,7 @@ export default function CitaCard({ cita }: { cita: CitaPortal }) {
   return (
     <Link
       href={`/panel/citas/${cita.idCita}`}
+      data-recorrido="cita"
       aria-label={`Ver seguimiento de ${titulo}, ${estado.etiqueta.toLowerCase()}`}
       className="group flex items-center gap-4 rounded-3xl bg-base-200/40 px-5 py-4 transition-colors hover:bg-base-200/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:px-7 sm:py-5"
     >

@@ -1,9 +1,12 @@
 "use client";
 
+import AvisoAccion from "@/components/AvisoAccion";
 import Link from "next/link";
 import { useActionState } from "react";
 import { FaArrowLeft } from "react-icons/fa6";
+import { alSalirDelTelefono } from "@/lib/validaciones";
 import { registrar } from "../actions";
+import GoogleButton from "./GoogleButton";
 import PasswordInput from "./PasswordInput";
 
 const labelClass = "mb-1.5 block text-sm font-semibold";
@@ -52,6 +55,7 @@ export default function RegistroForm() {
               placeholder={campo.placeholder}
               autoComplete={campo.autoComplete}
               defaultValue={state?.valores?.[campo.id]}
+              onBlur={campo.id === "telefono" ? alSalirDelTelefono : undefined}
               required
               className="input mb-5 w-full border-0 bg-base-200"
             />
@@ -70,15 +74,18 @@ export default function RegistroForm() {
         <PasswordInput id="confirmarPassword" name="confirmarPassword" autoComplete="new-password" />
 
         {state?.error && (
-          <p role="alert" className="mt-3 text-center text-sm text-error">
+          <AvisoAccion origen={state}>
             {state.error}
-          </p>
+          </AvisoAccion>
         )}
 
         <button type="submit" disabled={pending} className="btn btn-primary mt-6 w-full rounded-full">
           {pending && <span className="loading loading-spinner loading-sm" />}
           Crear
         </button>
+
+        <div className="divider my-4 text-xs text-base-content/60">o</div>
+        <GoogleButton />
 
         <Link
           href="/login"

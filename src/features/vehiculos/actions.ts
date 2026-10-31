@@ -4,32 +4,15 @@ import { refresh } from "next/cache";
 import { redirect } from "next/navigation";
 import { ApiError, apiFetch } from "@/lib/api";
 import type { EliminarVehiculoState, RegistrarVehiculoState } from "./types";
+import { validarVehiculo } from "./validacion";
 
-const ANIO_MINIMO = 1900;
-const ANIO_MAXIMO = 2100;
-
-type VehiculoLeido = {
-  error?: string;
-  valores: Record<string, string>;
-  cuerpo?: { placa: string; marca: string; modelo: string; anio: number };
-};
-
-function leerVehiculo(formData: FormData): VehiculoLeido {
-  const valores = {
-    placa: String(formData.get("placa") ?? "").toUpperCase().replace(/[\s-]/g, ""),
-    marca: String(formData.get("marca") ?? "").trim(),
-    modelo: String(formData.get("modelo") ?? "").trim(),
-    anio: String(formData.get("anio") ?? "").trim(),
-  };
-  const anio = Number(valores.anio);
-
-  if (!valores.placa || !valores.marca || !valores.modelo || !valores.anio) {
-    return { error: "Completa la placa, la marca, el modelo y el año.", valores };
-  }
-  if (!Number.isInteger(anio) || anio < ANIO_MINIMO || anio > ANIO_MAXIMO) {
-    return { error: `El año debe estar entre ${ANIO_MINIMO} y ${ANIO_MAXIMO}.`, valores };
-  }
-  return { valores, cuerpo: { placa: valores.placa, marca: valores.marca, modelo: valores.modelo, anio } };
+function leerVehiculo(formData: FormData) {
+  return validarVehiculo({
+    placa: String(formData.get("placa") ?? ""),
+    marca: String(formData.get("marca") ?? ""),
+    modelo: String(formData.get("modelo") ?? ""),
+    anio: String(formData.get("anio") ?? ""),
+  });
 }
 
 export async function registrarVehiculo(
