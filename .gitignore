@@ -40,3 +40,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# bocetos de diseño
+.superpowers/
+
+# Claude Code
+.claude/
