@@ -43,3 +43,6 @@ next-env.d.ts
 
 # bocetos de diseño
 .superpowers/
+
+# Claude Code
+.claude/
